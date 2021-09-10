@@ -23,7 +23,7 @@ export default {
       type: String,
       required: true,
       default: "primary",
-      validator: (value) => {
+      validator: (value: string) => {
         return buttonsTypes.indexOf(value) !== -1;
       },
     },
@@ -31,7 +31,7 @@ export default {
       type: String,
       required: true,
       default: "large",
-      validator: (value) => {
+      validator: (value: string) => {
         return buttonsSizes.indexOf(value) !== -1;
       },
     },
