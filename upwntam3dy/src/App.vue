@@ -3,7 +3,7 @@
     <the-navbar />
     <!-- Page Content -->
     <div class="flex mt-4">
-      <div class="w-1/4 h-screen bg-white p-4 -mt-4 mr-6">
+      <div class="w-1/5 h-screen bg-white p-4 -mt-4 mr-6">
         <!-- Search Input -->
         <div class="flex justify-center mt-8">
           <input
@@ -13,7 +13,7 @@
           />
         </div>
 
-        <div class="mt-14 ml-6">
+        <div class="mt-14 flex flex-col items-center">
           <!-- Selection Item -->
           <div class="my-6 flex flex-col">
             <label for="terms" class="mb-2 font-bold">Term</label>
@@ -49,8 +49,8 @@
           </div>
         </div>
       </div>
-      <!-- Filter By Date Buttons -->
-      <div class="w-1/2">
+      <div class="w-3/5">
+        <!-- Filter By Date Buttons -->
         <div class="flex justify-end">
           <the-button
             class="mr-4"
@@ -69,7 +69,7 @@
           <question-card />
         </div>
       </div>
-      <div class="w-1/4 flex flex-col items-center mt-4">
+      <div class="w-1/5 flex flex-col items-center mt-4">
         <the-button content="Ask A Question" type="primary" size="large" />
         <!-- Leaderboard Card -->
         <leaderboard-card />
