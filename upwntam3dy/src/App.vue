@@ -13,40 +13,11 @@
           />
         </div>
 
+        <!-- Selection Items -->
         <div class="mt-14 flex flex-col items-center">
-          <!-- Selection Item -->
-          <div class="my-6 flex flex-col">
-            <label for="terms" class="mb-2 font-bold">Term</label>
-            <select
-              name="terms"
-              id="terms"
-              class="w-60 rounded-lg p-2 outline-none bg-gray-200"
-            >
-              <option value="1">1</option>
-            </select>
-          </div>
-
-          <div class="my-6 flex flex-col">
-            <label for="terms" class="mb-2 font-bold">Course</label>
-            <select
-              name="terms"
-              id="terms"
-              class="w-60 rounded-lg p-2 outline-none bg-gray-200"
-            >
-              <option value="1">1</option>
-            </select>
-          </div>
-
-          <div class="my-6 flex flex-col">
-            <label for="terms" class="mb-2 font-bold">Tag</label>
-            <select
-              name="terms"
-              id="terms"
-              class="w-60 rounded-lg p-2 outline-none bg-gray-200"
-            >
-              <option value="1">1</option>
-            </select>
-          </div>
+          <the-selector defaultChoice="1" label="Term" :values="['1', '2']" />
+          <the-selector defaultChoice="1" label="Course" :values="['1', '2']" />
+          <the-selector defaultChoice="1" label="Tag" :values="['1', '2']" />
         </div>
       </div>
       <div class="w-3/5">
@@ -63,15 +34,17 @@
         </div>
         <!-- Question cards -->
         <div class="flex flex-col mt-4 h-screen">
-          <!-- Question Card -->
-          <question-card />
-          <question-card />
-          <question-card />
+          <question-card
+            :likes="10"
+            owner="Abdelrahman Deghedy"
+            text="What is the square root of 9?"
+            :answersNumber="8"
+            :time="Date.now()"
+          />
         </div>
       </div>
       <div class="w-1/5 flex flex-col items-center mt-4">
         <the-button content="Ask A Question" type="primary" size="large" />
-        <!-- Leaderboard Card -->
         <leaderboard-card />
       </div>
     </div>
@@ -85,6 +58,7 @@ import TheButton from "./components/TheButton.vue";
 import QuestionCard from "./components/QuestionCard.vue";
 
 import LeaderboardCard from "./components/LeaderboardCard.vue";
+import TheSelector from "./components/TheSelector.vue";
 
 export default {
   components: {
@@ -92,6 +66,7 @@ export default {
     TheButton,
     QuestionCard,
     LeaderboardCard,
+    TheSelector,
   },
   data() {
     return {};
