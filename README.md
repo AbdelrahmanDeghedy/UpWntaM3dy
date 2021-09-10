@@ -1,5 +1,5 @@
 # UpWntaM3dy
-### A Decentralized Q/A Website for Students.
+### A Centralized Q/A Website for Students.
 
 1. Get sick of following what's app groups all day long? and reading though all old messages in order to find a specific answer?
 2. Tired of Facebook endless distractions?
