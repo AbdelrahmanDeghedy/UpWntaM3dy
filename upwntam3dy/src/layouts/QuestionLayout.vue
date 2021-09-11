@@ -1,5 +1,5 @@
 <template>
-  <div :class="(mode === 'questionDetails' || 'questionCreate') && 'px-20'">
+  <div :class="['questionDetails', 'questionCreate'].includes(mode) && 'px-20'">
     <div class="flex justify-around">
       <filter-nav-bar v-if="mode === 'questions'" class="w-1/5" />
       <div :class="mode === 'questionDetails' ? 'w-4/5' : 'w-3/5'">
@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-      mode: "questionCreate", // questions, questionDetails, or questionCreate
+      mode: "questions", // questions, questionDetails, or questionCreate
     };
   },
 };

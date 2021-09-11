@@ -34,10 +34,9 @@ export default {
     // TheButton,
     QuestionCreate,
   },
+
   data() {
-    return {
-      //
-    };
+    return {};
   },
 };
 </script>

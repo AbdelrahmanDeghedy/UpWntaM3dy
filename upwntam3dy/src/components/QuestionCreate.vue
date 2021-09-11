@@ -3,13 +3,14 @@
     <textarea
       v-model="text"
       type="text"
-      class="outline-none text-2xl"
+      class="outline-none text-2xl question-text"
       placeholder="What's in Your Mind?"
+      :dir="language === 'en' ? 'ltr' : 'rtl'"
     />
     <div class="flex justify-end">
       <the-button class="mt-4" content="Ask" size="large" type="secondary" />
     </div>
-    <div v-html="markdown"></div>
+    <div :dir="language === 'en' ? 'ltr' : 'rtl'" v-html="markdown"></div>
   </div>
 </template>
 
@@ -28,7 +29,13 @@ export default {
     return {
       markdown: "",
       text: "",
+      language: "en", // or ar
     };
   },
 };
 </script>
+
+<style scoped>
+.question-text {
+}
+</style>

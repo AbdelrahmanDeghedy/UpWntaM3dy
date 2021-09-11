@@ -11,7 +11,7 @@
       </div>
       <div class="flex ml-2 my-2">
         <div class="text-blue-800 font-bold">{{ owner }}</div>
-        <div class="opacity-80 ml-2">{{ time }}ago</div>
+        <div class="opacity-80 ml-2">{{ dateToDays(time) }} days ago</div>
       </div>
       <div class="ml-4">
         <div class="flex">
@@ -35,6 +35,7 @@
 
 <script>
 import TheButton from "./TheButton.vue";
+import { getDayDifference } from "@/_utils/helper";
 
 export default {
   props: {
@@ -56,7 +57,7 @@ export default {
     time: {
       type: Date,
       required: true,
-      default: Date.now(),
+      default: new Date(2021, 3, 5),
     },
     likes: {
       type: Number,
@@ -66,6 +67,11 @@ export default {
   },
   components: {
     TheButton,
+  },
+  methods: {
+    dateToDays(date) {
+      return getDayDifference(Date.now(), date);
+    },
   },
   data() {
     return {
