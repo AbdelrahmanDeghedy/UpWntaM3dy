@@ -1,4 +1,4 @@
-const users = [
+export const users = [
   {
     UnniversityId: 18010917,
     name: "Abdelrahman Deghedy",
@@ -29,7 +29,7 @@ const users = [
   },
 ];
 
-const answers = [
+export const answers = [
   {
     id: 10,
     ownerId: 180110918,
@@ -48,12 +48,12 @@ const answers = [
   },
 ];
 
-const questions = [
+export const questions = [
   {
     id: 4,
     ownerId: 18010917,
     text: "What's the square root of 9?",
-    time: Date.now(),
+    time: new Date (2021, 3, 5),
     likes: 15,
     course: {
       term: 5,
@@ -66,18 +66,18 @@ const questions = [
     id: 2,
     ownerId: 18010918,
     text: "What's the square root of 16?",
-    time: Date.now(),
+    time: new Date (2021, 3, 5),
     likes: 5,
     course: {
       term: 5,
       name: "Operating Systems",
       tags: "lec2",
     },
-    answersIds: [5],
+    answersIds: [5, 1],
   },
 ];
 
-const courseInfoPerTerm = [
+export const courseInfoPerTerm = [
   {
     courses: [
       {

@@ -22,8 +22,9 @@ import TheNavbar from "@/components/TheNavbar.vue";
 import QuestionLayout from "@/layouts/QuestionLayout.vue";
 import QuestionDetail from "@/components/QuestionDetail.vue";
 import Questions from "@/components/Questions.vue";
-// import TheButton from "@/components/TheButton.vue";
 import QuestionCreate from "@/components/QuestionCreate.vue";
+
+import { users, answers, questions, courseInfoPerTerm } from '@/_utils/data';
 
 export default {
   components: {
@@ -31,10 +32,19 @@ export default {
     QuestionLayout,
     QuestionDetail,
     Questions,
-    // TheButton,
     QuestionCreate,
   },
-
+  mounted () {
+    this.loadData();
+  },
+  methods : {
+    loadData () {
+      this.$store.commit ("loadUsers", users);
+      this.$store.commit ("loadAnswers", answers);
+      this.$store.commit ("loadQuestions", questions);
+      this.$store.commit ("loadCourseInfoPerTerm", courseInfoPerTerm);
+    }
+  },
   data() {
     return {};
   },

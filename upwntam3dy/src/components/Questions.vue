@@ -9,11 +9,13 @@
     <!-- Question cards -->
     <div class="flex flex-col mt-4 h-screen">
       <question-card
-        :likes="10"
-        owner="Abdelrahman Deghedy"
-        text="What is the square root of 9?"
-        :answersNumber="8"
-        :time="Date.now()"
+        v-for="question in this.$store.state.questions" 
+        :key="question"
+        :likes="question.likes"
+        :owner="getUsernameFromUserId(question.ownerId)"
+        :text="question.text"
+        :answersNumber="question.answersIds.length"
+        :time="parseDate(question.time)"
       />
     </div>
   </div>
@@ -22,11 +24,20 @@
 <script>
 import TheButton from "@/components/TheButton.vue";
 import QuestionCard from "@/components/QuestionCard.vue";
+import { getDayDifference } from '@/_utils/helper';
 
 export default {
   components: {
     TheButton,
     QuestionCard,
+  },
+  methods : {
+    getUsernameFromUserId (userId) {
+        return this.$store.state.users.filter (user => user.UnniversityId === userId)[0].name;
+    },
+    parseDate (date) {
+      return getDayDifference (date);
+    }
   },
   data() {
     return {

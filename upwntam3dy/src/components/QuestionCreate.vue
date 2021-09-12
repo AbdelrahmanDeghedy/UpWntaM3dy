@@ -24,6 +24,7 @@ export default {
   },
   updated() {
     this.markdown = marked(this.text);
+    // console.log(this.markdown);
   },
   data() {
     return {

@@ -7,10 +7,16 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faThumbsUp, faBookmark } from "@fortawesome/free-solid-svg-icons";
 
+import { store } from '@/store/index'
+
+
 library.add(faThumbsUp, faBookmark);
 
-const app = createApp(App);
+export const app = createApp(App);
+
+app.use (store);
 
 app.component("font-awesome-icon", FontAwesomeIcon);
 
 app.use(router).mount("#app");
+
