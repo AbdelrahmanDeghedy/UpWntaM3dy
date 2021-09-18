@@ -35,9 +35,24 @@ export default {
     Questions,
     QuestionCreate,
   },
+  data() {
+    return {
+      // mode: "questions", // questions, questionDetails, or questionCreate
+    };
+  },
+  watch: {
+    $route() {
+      if (this.$route.name === "Ask") {
+        this.$store.commit("setPageMode", "questionCreate");
+      } else if (this.$route.name === "Questions") {
+        this.$store.commit("setPageMode", "questions");
+      } else if (this.$route.name === "Question") {
+        this.$store.commit("setPageMode", "questionDetails");
+      }
+    },
+  },
   mounted() {
     this.loadData();
-
     console.log("router mode", this.$store.state.pageMode);
   },
 
@@ -49,11 +64,6 @@ export default {
       this.$store.commit("loadCourseInfoPerTerm", courseInfoPerTerm);
       console.log("done", this.$store.state.courseInfoPerTerm);
     },
-  },
-  data() {
-    return {
-      // mode: "questions", // questions, questionDetails, or questionCreate
-    };
   },
 };
 </script>
