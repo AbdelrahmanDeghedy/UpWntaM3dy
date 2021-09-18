@@ -79,6 +79,28 @@ export const questions = [
 
 export const courseInfoPerTerm = [
   {
+    term : "1",
+    courses: [
+      {
+        name: "Data Structure",
+        tags: "chapter1",
+      },
+      {
+        name: "Micro Processor 2",
+        tags: "chapter1",
+      },
+      {
+        name: "Electromagnetic 2",
+        tags: "chapter1",
+      },
+      {
+        name: "Operating Systems",
+        tags: "chapter1",
+      },
+    ],
+  },
+  {
+    term : "2",
     courses: [
       {
         name: "Data Structure",

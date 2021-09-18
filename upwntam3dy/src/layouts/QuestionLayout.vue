@@ -9,12 +9,15 @@
       </div>
 
       <div class="w-1/5 ml-6 flex flex-col items-center mt-4">
-        <the-button
-          v-if="mode !== 'questionCreate'"
-          content="Ask A Question"
-          type="primary"
-          size="large"
-        />
+        <router-link :to="{ name: 'Ask' }">
+          <the-button
+            @click="handlePageRouting()"
+            v-if="mode !== 'questionCreate'"
+            content="Ask A Question"
+            type="primary"
+            size="large"
+          />
+        </router-link>
         <leaderboard-card />
       </div>
     </div>
@@ -33,10 +36,21 @@ export default {
     LeaderboardCard,
     FilterNavBar,
   },
+  updated() {
+    //
+  },
+  mounted() {
+    //
+  },
   data() {
     return {
-      mode: "questions", // questions, questionDetails, or questionCreate
+      mode: this.$store.state.pageMode,
     };
+  },
+  methods: {
+    handlePageRouting() {
+      this.$store.commit("setPageMode", "questionCreate");
+    },
   },
 };
 </script>

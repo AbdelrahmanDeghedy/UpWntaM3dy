@@ -11,9 +11,9 @@
 
     <!-- Selection Items -->
     <div class="mt-14 flex flex-col items-center">
-      <the-selector defaultChoice="1" label="Term" :values="['1', '2']" />
-      <the-selector defaultChoice="1" label="Course" :values="['1', '2']" />
-      <the-selector defaultChoice="1" label="Tag" :values="['1', '2']" />
+      <the-selector defaultChoice="1" label="Term" :values="terms" />
+      <the-selector label="Course" :values="courses" />
+      <the-selector label="Tag" :values="['1', '2']" />
     </div>
   </div>
 </template>
@@ -27,8 +27,34 @@ export default {
   },
   data() {
     return {
-      //
+      terms : [],
+      courses : []
     };
+  },
+  updated(){
+    console.log(this.$store.state.courseInfoPerTerm);
+
+  },
+  mounted(){
+    this.loadTerms();
+    this.loadCourses();
+    // This component is rendered before app, so load the data (after 0!) to 
+    // make the data be loaded (a hack!)
+    // setTimeout(() => {console.log(this.$store.state.courseInfoPerTerm)}, 0);
+
+  },
+  methods : {
+    loadTerms (){     
+      setTimeout(() => {this.$store.state.courseInfoPerTerm.forEach(element => {
+        this.terms.push (element.term);
+      });}, 0);
+    },
+    loadCourses (){
+      setTimeout(() => {this.$store.state.courseInfoPerTerm.forEach(element => {
+        console.log(element.courses);
+        this.courses.push (element.courses.name);
+      });}, 0);
+    },
   },
 };
 </script>

@@ -11,7 +11,7 @@
         <div class="cursor-pointer">
           <font-awesome-icon icon="thumbs-up" :style="{ color: 'gray' }" />
         </div>
-        <div>{{ likes }}0 Likes</div>
+        <div>{{ likes }} Likes</div>
       </div>
 
       <!-- Bookmark -->

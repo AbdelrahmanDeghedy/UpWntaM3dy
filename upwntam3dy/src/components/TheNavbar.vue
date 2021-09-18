@@ -1,6 +1,13 @@
 <template>
   <div class="h-20 bg-gray-200 flex justify-around rounded-bl-lg rounded-br-lg">
-    <div class="flex items-center">UpWntaM3dy</div>
+    <router-link :to="{ name: 'Questions' }" class="flex">
+      <div
+        class="flex items-center cursor-pointer"
+        @click="handlePageRouting()"
+      >
+        UpWntaM3dy
+      </div>
+    </router-link>
     <div class="flex items-center">&nbsp;</div>
     <div class="flex items-center">&nbsp;</div>
     <div class="flex items-center">&nbsp;</div>
@@ -14,6 +21,11 @@ export default {
     return {
       //
     };
+  },
+  methods: {
+    handlePageRouting() {
+      this.$store.commit("setPageMode", "questions");
+    },
   },
 };
 </script>

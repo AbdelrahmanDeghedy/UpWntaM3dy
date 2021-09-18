@@ -5,10 +5,15 @@
       <div class="opacity-60">Answers</div>
     </div>
     <div class="py-6 w-4/6">
-      <div class="text-2xl font-semibold cursor-pointer">
-        <!-- What's the square root of 9? -->
-        {{ text }}
-      </div>
+      <router-link :to="{ name: 'Question', params: { qId: id } }">
+        <div
+          class="text-2xl font-semibold cursor-pointer"
+          @click="handlePageRouting()"
+        >
+          <!-- What's the square root of 9? -->
+          {{ text }}
+        </div>
+      </router-link>
       <div class="flex ml-2 my-2">
         <div class="text-blue-800 font-bold">{{ owner }}</div>
         <div class="opacity-80 ml-2">{{ time }} days ago</div>
@@ -43,6 +48,11 @@ export default {
       required: true,
       default: 0,
     },
+    id: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
     text: {
       type: String,
       required: true,
@@ -68,6 +78,9 @@ export default {
     TheButton,
   },
   methods: {
+    handlePageRouting() {
+      this.$store.commit("setPageMode", "questionDetails");
+    },
   },
   data() {
     return {

@@ -1,19 +1,17 @@
-import { createStore } from 'vuex';
-import { stateType } from './interfaces';
+import { createStore } from "vuex";
+import { stateType } from "./interfaces";
 
-import { mutations } from './mutations';
-
+import { mutations } from "./mutations";
 
 export const store = createStore({
-    state () : stateType {
-        return {
-            users : [],
-            answers : [],
-            questions : [],
-            courseInfoPerTerm : []
-        }
-    },
-    mutations,
-    
-})
- 
+  state(): stateType {
+    return {
+      users: [],
+      answers: [],
+      questions: [],
+      courseInfoPerTerm: [],
+      pageMode: "questions",
+    };
+  },
+  mutations,
+});
