@@ -53,7 +53,7 @@ export const questions = [
     id: 4,
     ownerId: 18010917,
     text: "What's the square root of 9?",
-    time: new Date (2021, 3, 5),
+    time: new Date(2021, 3, 5),
     likes: 15,
     course: {
       term: 5,
@@ -66,7 +66,7 @@ export const questions = [
     id: 2,
     ownerId: 18010918,
     text: "What's the square root of 16?",
-    time: new Date (2021, 3, 5),
+    time: new Date(2021, 3, 5),
     likes: 5,
     course: {
       term: 5,
@@ -79,44 +79,44 @@ export const questions = [
 
 export const courseInfoPerTerm = [
   {
-    term : "1",
+    term: "1",
     courses: [
       {
         name: "Data Structure",
-        tags: "chapter1",
+        tags: ["chapter1"],
       },
       {
         name: "Micro Processor 2",
-        tags: "chapter1",
+        tags: ["chapter1"],
       },
       {
         name: "Electromagnetic 2",
-        tags: "chapter1",
+        tags: ["chapter1"],
       },
       {
         name: "Operating Systems",
-        tags: "chapter1",
+        tags: ["chapter1"],
       },
     ],
   },
   {
-    term : "2",
+    term: "2",
     courses: [
       {
-        name: "Data Structure",
-        tags: "chapter1",
+        name: "Eskat",
+        tags: ["chapter1"],
       },
       {
-        name: "Micro Processor 2",
-        tags: "chapter1",
+        name: "MicroController",
+        tags: ["chapter1"],
       },
       {
-        name: "Electromagnetic 2",
-        tags: "chapter1",
+        name: "Energy",
+        tags: ["chapter1"],
       },
       {
-        name: "Operating Systems",
-        tags: "chapter1",
+        name: "Math1",
+        tags: ["chapter1"],
       },
     ],
   },

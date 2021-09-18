@@ -11,9 +11,18 @@
 
     <!-- Selection Items -->
     <div class="mt-14 flex flex-col items-center">
-      <the-selector defaultChoice="1" label="Term" :values="terms" />
-      <the-selector label="Course" :values="courses" />
-      <the-selector label="Tag" :values="['1', '2']" />
+      <the-selector
+        defaultChoice="1"
+        label="Term"
+        :values="terms"
+        @currentValueChange="getCurrentTerm"
+      />
+      <the-selector
+        label="Course"
+        :values="courses"
+        @currentValueChange="getCurrentCourse"
+      />
+      <the-selector label="Tag" :values="tags" />
     </div>
   </div>
 </template>
@@ -27,33 +36,65 @@ export default {
   },
   data() {
     return {
-      terms : [],
-      courses : []
+      terms: [],
+      courses: [],
+      tags: [],
+      currentTerm: "1",
+      currentCourse: "",
     };
   },
-  updated(){
+  updated() {
     console.log(this.$store.state.courseInfoPerTerm);
-
   },
-  mounted(){
+  mounted() {
     this.loadTerms();
-    this.loadCourses();
-    // This component is rendered before app, so load the data (after 0!) to 
+    this.loadCourses(this.currentTerm);
+    // This component is rendered before app, so load the data (after 0!) to
     // make the data be loaded (a hack!)
     // setTimeout(() => {console.log(this.$store.state.courseInfoPerTerm)}, 0);
-
   },
-  methods : {
-    loadTerms (){     
-      setTimeout(() => {this.$store.state.courseInfoPerTerm.forEach(element => {
-        this.terms.push (element.term);
-      });}, 0);
+  methods: {
+    getCurrentCourse(currentCourse) {
+      this.currentCourse = currentCourse;
+      this.tags = [];
+      this.loadTags(this.currentCourse);
     },
-    loadCourses (){
-      setTimeout(() => {this.$store.state.courseInfoPerTerm.forEach(element => {
-        console.log(element.courses);
-        this.courses.push (element.courses.name);
-      });}, 0);
+    getCurrentTerm(currentTerm) {
+      this.currentTerm = currentTerm;
+      this.courses = [];
+      this.tags = [];
+      this.loadCourses(this.currentTerm);
+    },
+    loadTerms() {
+      setTimeout(() => {
+        this.$store.state.courseInfoPerTerm.forEach((element) => {
+          this.terms.push(element.term);
+        });
+      }, 0);
+    },
+    loadCourses(currentTerm) {
+      setTimeout(() => {
+        this.$store.state.courseInfoPerTerm.forEach((element) => {
+          if (element.term === currentTerm) {
+            element.courses.forEach((course) => {
+              this.courses.push(course.name);
+            });
+          }
+        });
+      }, 0);
+    },
+    loadTags(currentCourse) {
+      setTimeout(() => {
+        this.$store.state.courseInfoPerTerm.forEach((courses) => {
+          courses.courses.forEach((course) => {
+            if (course.name === currentCourse) {
+              course.tags.forEach((tag) => {
+                this.tags.push(tag);
+              });
+            }
+          });
+        });
+      }, 0);
     },
   },
 };

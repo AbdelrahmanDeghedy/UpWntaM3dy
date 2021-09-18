@@ -15,7 +15,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import "./index.css";
 import TheNavbar from "@/components/TheNavbar.vue";
 
@@ -41,7 +41,7 @@ export default {
     };
   },
   watch: {
-    $route() {
+    $route(): void {
       if (this.$route.name === "Ask") {
         this.$store.commit("setPageMode", "questionCreate");
       } else if (this.$route.name === "Questions") {
@@ -51,13 +51,13 @@ export default {
       }
     },
   },
-  mounted() {
+  mounted(): void {
     this.loadData();
     console.log("router mode", this.$store.state.pageMode);
   },
 
   methods: {
-    loadData() {
+    loadData(): void {
       this.$store.commit("loadUsers", users);
       this.$store.commit("loadAnswers", answers);
       this.$store.commit("loadQuestions", questions);

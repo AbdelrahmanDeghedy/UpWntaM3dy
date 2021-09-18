@@ -2,7 +2,8 @@
   <div class="my-6 flex flex-col">
     <label :for="label" class="mb-2 font-bold">{{ label }}</label>
     <select
-      v-model="defaultVal"
+      @change="currentValueChange()"
+      v-model="currentValue"
       :name="label"
       :id="label"
       class="cursor-pointer w-60 rounded-lg p-2 outline-none bg-gray-200"
@@ -35,8 +36,13 @@ export default {
   },
   data() {
     return {
-      defaultVal: this.defaultChoice,
+      currentValue: this.defaultChoice,
     };
+  },
+  methods: {
+    currentValueChange() {
+      this.$emit("currentValueChange", this.currentValue);
+    },
   },
 };
 </script>

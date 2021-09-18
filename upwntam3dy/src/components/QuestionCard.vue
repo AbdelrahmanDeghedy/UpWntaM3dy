@@ -38,7 +38,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import TheButton from "./TheButton.vue";
 
 export default {
@@ -78,11 +78,11 @@ export default {
     TheButton,
   },
   methods: {
-    handlePageRouting() {
+    handlePageRouting(): void {
       this.$store.commit("setPageMode", "questionDetails");
     },
   },
-  data() {
+  data(): any {
     return {
       //
     };
