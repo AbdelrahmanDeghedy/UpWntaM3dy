@@ -37,6 +37,7 @@ export const answers = [
     text: "It's 3!",
     time: Date.now(),
     likes: 20,
+    liked: false,
   },
   {
     id: 5,
@@ -45,6 +46,7 @@ export const answers = [
     text: "It's 3!",
     time: Date.now(),
     likes: 5,
+    liked: false,
   },
 ];
 
@@ -56,6 +58,7 @@ export const questions = [
     fullQuestionText : "What's the square root of 9, please?",
     time: new Date(2021, 3, 5),
     likes: 15,
+    liked: false,
     course: {
       term: 5,
       name: "Operating Systems",
@@ -70,6 +73,7 @@ export const questions = [
     fullQuestionText : "What's the square root of 16, please?",
     time: new Date(2021, 3, 5),
     likes: 5,
+    liked: false,
     course: {
       term: 5,
       name: "Operating Systems",

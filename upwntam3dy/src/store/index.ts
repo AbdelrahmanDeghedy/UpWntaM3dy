@@ -11,6 +11,10 @@ export const store = createStore({
       questions: [],
       courseInfoPerTerm: [],
       pageMode: "questions",
+      likePrimaryColor: "#4287f5",
+      likeSecondaryColor: "#e3e3e3",
+      bookmarkPrimaryColor: "#d4267a",
+      bookmarkSecondaryColor: "#b5a1b2",
     };
   },
   mutations,
