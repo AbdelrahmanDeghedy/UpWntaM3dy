@@ -2,7 +2,7 @@
   <div class="shadow-md bg-white flex rounded-xl overflow-hidden m-2">
     <div class="py-6 w-1/6 flex flex-col">
       <div class="flex flex-col items-center my-2">
-        <div>{{ answersNumber }} 10</div>
+        <div>{{ answersNumber }} </div>
         <div class="opacity-60">Answers</div>
       </div>
 
@@ -28,12 +28,11 @@
       <div class="flex justify-between">
         <div class="py-6 w-4/6 ml-4">
           <div class="text-2xl font-semibold cursor-pointer">
-            What's the square root of 9?
             {{ text }}
           </div>
           <div class="flex ml-2 my-2">
             <div class="text-blue-800 font-bold">
-              {{ owner }}Abdelrahman Deghedy
+              {{ owner }}
             </div>
             <div class="opacity-80 ml-2">{{ time }}2 days ago</div>
           </div>
@@ -47,11 +46,11 @@
       <hr class="mx-4 -mt-4" />
       <div class="mt-4">
         <div class="ml-4 mb-4">
-          Full Question CONTENT
+          {{ fullQuestionText }}
         </div>
 
         <div class="font-bold text-xl mb-2 ml-4">
-          2 Answers
+          {{ answersNumber }} Answers
         </div>
 
         <hr class="mx-2" />
@@ -82,8 +81,45 @@ export default {
   },
   data() {
     return {
-      //
+      likes : this.findQuestionById(this.$route.params.qId).likes,
+      answersNumber : this.getAnswersOfQuestion(this.$route.params.qId).length,
+      text : this.findQuestionById(this.$route.params.qId).title,
+      owner : this.getUsernameFromId(this.findQuestionById(this.$route.params.qId).ownerId),
+      fullQuestionText : this.findQuestionById(this.$route.params.qId).fullQuestionText,
     };
   },
+  mounted(){
+    console.log("testt>", this.$route.params.qId);
+    console.log("testt>", this.getUsernameFromId(18010918));
+    
+    
+  },
+  computed : {
+//
+  },
+  methods :{
+    getUsernameFromId(uid){
+      return this.$store.state.users.filter(user => {
+        return user.universityId === uid
+      })[0].name;
+    },
+    getAnswersOfQuestion(qId) {
+      let answers = [];
+      this.$store.state.answers.forEach((answer) => {
+        console.log("testtt", qId);
+        if (answer.questionOfAnswerId === +qId) {
+          answers.push(answer);
+        }
+      });
+      return answers;
+    },
+    findQuestionById (qId) {
+      return this.$store.state.questions.filter((question) => {
+        if (+question.id === +qId) {
+          return question;
+        }
+      })[0]
+    }
+  }
 };
 </script>

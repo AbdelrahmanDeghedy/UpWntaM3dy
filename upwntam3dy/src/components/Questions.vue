@@ -35,7 +35,7 @@ export default {
   methods: {
     getUsernameFromUserId(userId) {
       return this.$store.state.users.filter(
-        (user) => user.UnniversityId === userId
+        (user) => user.universityId === userId
       )[0].name;
     },
     parseDate(date) {

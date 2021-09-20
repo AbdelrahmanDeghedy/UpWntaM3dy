@@ -1,6 +1,6 @@
 export const users = [
   {
-    UnniversityId: 18010917,
+    universityId: 18010917,
     name: "Abdelrahman Deghedy",
     points: 532,
     rank: 2,
@@ -14,7 +14,7 @@ export const users = [
     },
   },
   {
-    UnniversityId: 18010918,
+    universityId: 18010918,
     name: "Habiba Deghedy",
     points: 532,
     rank: 2,
@@ -52,7 +52,8 @@ export const questions = [
   {
     id: 4,
     ownerId: 18010917,
-    text: "What's the square root of 9?",
+    title: "What's the square root of 9?",
+    fullQuestionText : "What's the square root of 9, please?",
     time: new Date(2021, 3, 5),
     likes: 15,
     course: {
@@ -65,7 +66,8 @@ export const questions = [
   {
     id: 2,
     ownerId: 18010918,
-    text: "What's the square root of 16?",
+    title: "What's the square root of 16?",
+    fullQuestionText : "What's the square root of 16, please?",
     time: new Date(2021, 3, 5),
     likes: 5,
     course: {
