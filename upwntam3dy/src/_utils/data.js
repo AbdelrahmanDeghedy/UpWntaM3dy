@@ -32,7 +32,7 @@ export const users = [
 export const answers = [
   {
     id: 10,
-    ownerId: 180110918,
+    ownerId: 18010918,
     questionOfAnswerId: 4,
     text: "It's 3!",
     time: Date.now(),
@@ -40,7 +40,7 @@ export const answers = [
   },
   {
     id: 5,
-    ownerId: 180110917,
+    ownerId: 18010917,
     questionOfAnswerId: 2,
     text: "It's 3!",
     time: Date.now(),

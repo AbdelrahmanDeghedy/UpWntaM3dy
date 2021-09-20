@@ -14,7 +14,7 @@
         :id="question.id"
         :likes="question.likes"
         :owner="getUsernameFromUserId(question.ownerId)"
-        :text="question.text"
+        :text="question.title"
         :answersNumber="question.answersIds.length"
         :time="parseDate(question.time)"
       />

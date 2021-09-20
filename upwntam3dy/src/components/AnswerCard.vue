@@ -2,10 +2,10 @@
   <div class="bg-white flex rounded-xl overflow-hidden">
     <div class="py-6 w-4/6">
       <div class="flex ml-2 my-2">
-        <div class="text-blue-800 font-bold">{{ owner }}</div>
-        <div class="opacity-80 ml-2">{{ time }}ago</div>
+        <div class="text-blue-800 font-bold">{{ getUsernameFromId(answer.ownerId) }}</div>
+        <div class="opacity-80 ml-2">{{ answerTime }} days ago</div>
       </div>
-      <div class="ml-4">Answer TEXT</div>
+      <div class="ml-4">{{answer.text}}</div>
     </div>
     <div class="py-6 flex items-center">
       <div class="flex">
@@ -13,7 +13,7 @@
           <font-awesome-icon icon="thumbs-up" :style="{ color: 'gray' }" />
         </div>
         <div class="flex items-center justify-center ml-2">
-          {{ likes }} Likes
+          {{ answer.likes }} Likes
         </div>
       </div>
       <div
@@ -26,42 +26,24 @@
 </template>
 
 <script>
-// import TheButton from "./TheButton.vue";
+import getFromIdMixin from '@/mixins/getFromIdMixin';
+import { getDayDifference } from '@/_utils/helper.ts'
+
 
 export default {
   props: {
-    answersNumber: {
-      type: Number,
-      required: true,
-      default: 0,
-    },
-    text: {
-      type: String,
-      required: true,
-      default: "NO QUESTION PROVIDED!!",
-    },
-    owner: {
-      type: String,
-      required: true,
-      default: "NO OWNER PROVIDED!!",
-    },
-    time: {
-      type: Date,
-      required: true,
-      default: Date.now(),
-    },
-    likes: {
-      type: Number,
-      required: true,
-      default: 0,
-    },
+    answer : {
+      type : Object,
+      required: true
+    }
   },
+  mixins: [ getFromIdMixin ],
   components: {
     // TheButton,
   },
   data() {
     return {
-      //
+      answerTime: getDayDifference(this.answer.time),
     };
   },
 };

@@ -25,7 +25,7 @@ export default {
     },
     defaultChoice: {
       type: String,
-      required: true,
+      required: false,
       default: "NO VALUES",
     },
     label: {

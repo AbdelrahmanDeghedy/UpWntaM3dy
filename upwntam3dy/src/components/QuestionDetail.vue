@@ -27,14 +27,14 @@
     <div class="flex flex-col w-5/6">
       <div class="flex justify-between">
         <div class="py-6 w-4/6 ml-4">
-          <div class="text-2xl font-semibold cursor-pointer">
+          <div class="text-2xl font-semibold">
             {{ text }}
           </div>
           <div class="flex ml-2 my-2">
             <div class="text-blue-800 font-bold">
               {{ owner }}
             </div>
-            <div class="opacity-80 ml-2">{{ time }}2 days ago</div>
+            <div class="opacity-80 ml-2">{{ time }} days ago</div>
           </div>
         </div>
 
@@ -57,13 +57,10 @@
 
         <!-- Answers -->
         <div class="ml-4">
-          <answer-card />
-          <hr class="mx-2" />
-
-          <answer-card />
-          <hr class="mx-2" />
-
-          <answer-card />
+          <div v-for="answer in getAnswersOfQuestion($route.params.qId)" :key='answer'>
+            <answer-card :answer="answer" />
+            <hr class="mx-2" />
+          </div>
         </div>
       </div>
     </div>
@@ -74,52 +71,44 @@
 import AnswerCard from "@/components/AnswerCard";
 import TheButton from "@/components/TheButton";
 
+import getFromIdMixin from '@/mixins/getFromIdMixin';
+import { getDayDifference } from '@/_utils/helper.ts'
+
 export default {
   components: {
     AnswerCard,
     TheButton,
   },
+  mixins: [ getFromIdMixin ],
   data() {
     return {
-      likes : this.findQuestionById(this.$route.params.qId).likes,
-      answersNumber : this.getAnswersOfQuestion(this.$route.params.qId).length,
-      text : this.findQuestionById(this.$route.params.qId).title,
-      owner : this.getUsernameFromId(this.findQuestionById(this.$route.params.qId).ownerId),
-      fullQuestionText : this.findQuestionById(this.$route.params.qId).fullQuestionText,
+      likes : 0,
+      answersNumber : 0,
+      text : "",
+      owner : "",
+      fullQuestionText : "",
+      time: 0,
     };
   },
-  mounted(){
-    console.log("testt>", this.$route.params.qId);
-    console.log("testt>", this.getUsernameFromId(18010918));
+  async mounted(){
+    await setTimeout(() => {
+      this.initializeValues();
+    }, 0)
     
-    
+    // console.log("testt>", this.$route);
   },
   computed : {
 //
   },
   methods :{
-    getUsernameFromId(uid){
-      return this.$store.state.users.filter(user => {
-        return user.universityId === uid
-      })[0].name;
-    },
-    getAnswersOfQuestion(qId) {
-      let answers = [];
-      this.$store.state.answers.forEach((answer) => {
-        console.log("testtt", qId);
-        if (answer.questionOfAnswerId === +qId) {
-          answers.push(answer);
-        }
-      });
-      return answers;
-    },
-    findQuestionById (qId) {
-      return this.$store.state.questions.filter((question) => {
-        if (+question.id === +qId) {
-          return question;
-        }
-      })[0]
-    }
+   initializeValues(){
+      this.likes = this.findQuestionById(this.$route.params.qId)?.likes;
+      this.answersNumber = this.getAnswersOfQuestion(this.$route.params.qId)?.length;
+      this.text = this.findQuestionById(this.$route.params.qId)?.title;
+      this.owner = this.getUsernameFromId(this.findQuestionById(this.$route.params.qId)?.ownerId);
+      this.fullQuestionText = this.findQuestionById(this.$route.params.qId)?.fullQuestionText;
+      this.time = getDayDifference (this.findQuestionById(this.$route.params.qId)?.time);
+   }
   }
 };
 </script>
