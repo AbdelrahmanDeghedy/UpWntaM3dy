@@ -21,7 +21,7 @@
       <div class="ml-4">
         <div class="flex">
           <div class="cursor-pointer" @click="toggleLike">
-            <font-awesome-icon icon="thumbs-up" :style="{ color: likeColor }" />
+            <font-awesome-icon icon="thumbs-up" :style="{ color: currentLikeColor }" />
           </div>
           <div class="ml-2">{{ likes }} Likes</div>
         </div>
@@ -33,7 +33,7 @@
         class="mt-2 bg-gray-100 w-8 h-8 flex items-center justify-center rounded-full shadow-md cursor-pointer"
         @click="toggleBookmark"
       >
-        <font-awesome-icon icon="bookmark" :style="{ color: bookmarkColor }" />
+        <font-awesome-icon icon="bookmark" :style="{ color: currentBookmarkColor }" />
       </div>
     </div>
   </div>
@@ -82,21 +82,22 @@ export default {
     TheButton,
   },
   mounted(){
-    console.log(this.findQuestionById(this.id));
-    console.log(this.$store.state.questions);
+    // console.log(this.findQuestionById(this.id));
+    // console.log(this.$store.state.questions);
   },
   methods: {
     toggleBookmark(){
-      this.bookmarkColor = this.$store.state.bookmarkSecondaryColor;
-      this.bookmarkColor = this.findQuestionById(this.id).bookmarked ? this.$store.state.bookmarkSecondaryColor : this.$store.state.bookmarkPrimaryColor,
+      this.currentBookmarkColor = this.$store.state.bookmarkSecondaryColor;
+      this.currentBookmarkColor = this.findQuestionById(this.id).bookmarked ? this.$store.state.bookmarkSecondaryColor : this.$store.state.bookmarkPrimaryColor,
       
       this.findQuestionById(this.id).bookmarked = !this.findQuestionById(this.id).bookmarked;
     },
     toggleLike(){
       // optimistic updates
-      this.likeColor = this.findQuestionById(this.id).liked ? this.$store.state.likeSecondaryColor : this.$store.state.likePrimaryColor,
+      this.currentLikeColor = this.findQuestionById(this.id).liked ? this.$store.state.likeSecondaryColor : this.$store.state.likePrimaryColor,
       
       this.findQuestionById(this.id).liked = !this.findQuestionById(this.id).liked;
+      this.findQuestionById(this.id).likes = this.findQuestionById(this.id).liked ? this.findQuestionById(this.id).likes + 1 : this.findQuestionById(this.id).likes - 1; 
       
     },
     handlePageRouting(): void {
@@ -105,8 +106,8 @@ export default {
   },
   data(): any {
     return {
-      likeColor: this.findQuestionById(this.id).liked ? this.$store.state.likePrimaryColor : this.$store.state.likeSecondaryColor,
-      bookmarkColor: this.findQuestionById(this.id).bookmarked ? this.$store.state.bookmarkPrimaryColor : this.$store.state.bookmarkSecondaryColor,
+      currentLikeColor: this.findQuestionById(this.id).liked ? this.$store.state.likePrimaryColor : this.$store.state.likeSecondaryColor,
+      currentBookmarkColor: this.findQuestionById(this.id).bookmarked ? this.$store.state.bookmarkPrimaryColor : this.$store.state.bookmarkSecondaryColor,
     };
   },
 };
