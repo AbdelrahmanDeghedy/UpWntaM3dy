@@ -1,7 +1,11 @@
+import { answerInterface } from '@/_utils/interfaces/answer'
+import { questionInterface } from '@/_utils/interfaces/question'
+import { userInterface } from '@/_utils/interfaces/user'
+
 export interface stateType {
-  users: [];
-  answers: [];
-  questions: [];
+  users: userInterface[];
+  answers: answerInterface[];
+  questions: questionInterface[];
   courseInfoPerTerm: [];
   
   pageMode: "questions" | "questionDetails" | "questionCreate";

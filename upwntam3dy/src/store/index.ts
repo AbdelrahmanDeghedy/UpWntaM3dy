@@ -3,6 +3,8 @@ import { stateType } from "./interfaces";
 
 import { mutations } from "./mutations";
 
+
+
 export const store = createStore({
   state(): stateType {
     return {
