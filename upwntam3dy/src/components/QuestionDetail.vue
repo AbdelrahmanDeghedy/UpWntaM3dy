@@ -95,7 +95,7 @@ export default {
   async mounted(){
     await setTimeout(() => {
       this.initializeValues();
-    }, 100)
+    }, 0)
     
   },
   computed : {
@@ -108,7 +108,7 @@ export default {
       this.text = this.findQuestionById(this.$route.params.qId)?.title;
       this.owner = this.getUsernameFromId(this.findQuestionById(this.$route.params.qId)?.ownerId);
       this.fullQuestionText = this.findQuestionById(this.$route.params.qId)?.fullQuestionText;
-      this.time = getDayDifference (this.findQuestionById(this.$route.params.qId)?.time);
+      this.time = this.findQuestionById(this.$route.params.qId)?.time;
 
       this.currentLikeColor = this.findQuestionById(this.$route.params.qId)?.liked ? this.$store.state?.likePrimaryColor : this.$store.state?.likeSecondaryColor;
       this.currentBookmarkColor = this.findQuestionById(this.$route.params.qId)?.bookmarked ? this.$store.state?.bookmarkPrimaryColor : this.$store.state?.bookmarkSecondaryColor;

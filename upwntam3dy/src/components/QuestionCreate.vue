@@ -15,7 +15,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import TheButton from "@/components/TheButton.vue";
 import marked from "marked";
 import { getDayDifference } from "@/_utils/helper";
@@ -32,8 +32,8 @@ export default {
     // console.log(this.markdown);
   },
   mounted(){
-    console.log((new DateFormatter("", {startOf: "12/12/2012"})).date);
-    
+    // console.log(ty (new DateFormatter("12/12/2020", {local: false, utcTime: false})).date());
+    console.log(this.parseDate(new Date("2021-02-08")));
   },
   data() {
     return {
@@ -55,7 +55,7 @@ export default {
         ownerId: 18010917,
         title: this.$refs["markdown-content"].textContent + "..",  // The first 50 of the text itself, not the HTML content
         fullQuestionText: this.markdown,
-        time: this.parseDate("12/12/2012"),
+        time: this.parseDate(Date.now()),
         likes: 0,
         liked: false,
         answersIds: [],

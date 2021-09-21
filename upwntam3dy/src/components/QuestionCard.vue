@@ -80,7 +80,7 @@ export default {
       this.answersNumber = this.question.answersIds.length;
       this.text = this.question.title;
       this.owner =  this.getUsernameFromId(this.question.ownerId);
-      this.time = this.parseDate(this.question.time);
+      this.time = this.question.time;
       this.likes = this.question.likes;
       this.id = this.question.id;
     },
