@@ -11,12 +11,7 @@
       <question-card
         v-for="question in this.$store.state.questions"
         :key="question"
-        :id="question.id"
-        :likes="question.likes"
-        :owner="getUsernameFromUserId(question.ownerId)"
-        :text="question.title"
-        :answersNumber="question.answersIds.length"
-        :time="parseDate(question.time)"
+        :question="question"
       />
     </div>
   </div>
@@ -25,7 +20,6 @@
 <script>
 import TheButton from "@/components/TheButton.vue";
 import QuestionCard from "@/components/QuestionCard.vue";
-import { getDayDifference } from "@/_utils/helper";
 
 export default {
   components: {
@@ -33,14 +27,7 @@ export default {
     QuestionCard,
   },
   methods: {
-    getUsernameFromUserId(userId) {
-      return this.$store.state.users.filter(
-        (user) => user.universityId === userId
-      )[0].name;
-    },
-    parseDate(date) {
-      return getDayDifference(date);
-    },
+    //
   },
   data() {
     return {

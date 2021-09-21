@@ -46,8 +46,7 @@
 
       <hr class="mx-4 -mt-4" />
       <div class="mt-4">
-        <div class="ml-4 mb-4">
-          {{ fullQuestionText }}
+        <div class="ml-4 mb-4" v-html="fullQuestionText">
         </div>
 
         <div class="font-bold text-xl mb-2 ml-4">
@@ -96,7 +95,7 @@ export default {
   async mounted(){
     await setTimeout(() => {
       this.initializeValues();
-    }, 0)
+    }, 100)
     
   },
   computed : {
@@ -111,22 +110,22 @@ export default {
       this.fullQuestionText = this.findQuestionById(this.$route.params.qId)?.fullQuestionText;
       this.time = getDayDifference (this.findQuestionById(this.$route.params.qId)?.time);
 
-      this.currentLikeColor = this.findQuestionById(this.$route.params.qId).liked ? this.$store.state.likePrimaryColor : this.$store.state.likeSecondaryColor;
-      this.currentBookmarkColor = this.findQuestionById(this.$route.params.qId).bookmarked ? this.$store.state.bookmarkPrimaryColor : this.$store.state.bookmarkSecondaryColor;
+      this.currentLikeColor = this.findQuestionById(this.$route.params.qId)?.liked ? this.$store.state?.likePrimaryColor : this.$store.state?.likeSecondaryColor;
+      this.currentBookmarkColor = this.findQuestionById(this.$route.params.qId)?.bookmarked ? this.$store.state?.bookmarkPrimaryColor : this.$store.state?.bookmarkSecondaryColor;
    },
 
     toggleBookmark(){
       this.currentBookmarkColor = this.$store.state.bookmarkSecondaryColor;
       this.currentBookmarkColor = this.findQuestionById(this.$route.params.qId).bookmarked ? this.$store.state.bookmarkSecondaryColor : this.$store.state.bookmarkPrimaryColor,
       
-      this.findQuestionById(this.$route.params.qId).bookmarked = !this.findQuestionById(this.$route.params.qId).bookmarked;
+      this.findQuestionById(this.$route.params.qId).bookmarked = !this.findQuestionById(this.$route.params.qId)?.bookmarked;
     },
     toggleLike(){
       // optimistic updates
       this.currentLikeColor = this.findQuestionById(this.$route.params.qId).liked ? this.$store.state.likeSecondaryColor : this.$store.state.likePrimaryColor,
       
-      this.findQuestionById(this.$route.params.qId).liked = !this.findQuestionById(this.$route.params.qId).liked;
-      this.findQuestionById(this.$route.params.qId).likes = this.findQuestionById(this.$route.params.qId).liked ? this.findQuestionById(this.$route.params.qId).likes + 1 : this.findQuestionById(this.$route.params.qId).likes - 1; 
+      this.findQuestionById(this.$route.params.qId).liked = !this.findQuestionById(this.$route.params.qId)?.liked;
+      this.findQuestionById(this.$route.params.qId).likes = this.findQuestionById(this.$route.params.qId)?.liked ? this.findQuestionById(this.$route.params.qId).likes + 1 : this.findQuestionById(this.$route.params.qId).likes - 1; 
       
       this.initializeValues();
     },

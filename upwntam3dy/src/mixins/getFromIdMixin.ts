@@ -10,7 +10,7 @@ export default {
     if (!qId) return "";
     const answers = [];
     this.$store.state.answers.forEach((answer) => {
-        if (answer.questionOfAnswerId === +qId) {
+        if (String(answer.questionOfAnswerId) === String(qId)) {
         answers.push(answer);
         }
     });
@@ -19,7 +19,7 @@ export default {
     findQuestionById (qId) {
     if (!qId) return "";
     return this.$store.state.questions.filter((question) => {
-        if (+question.id === +qId) {
+        if (String(question.id) === String(qId)) {
         return question;
         }
     })[0]

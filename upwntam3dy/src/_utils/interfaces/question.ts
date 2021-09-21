@@ -6,10 +6,5 @@ export interface questionInterface {
     time: Date,
     likes: number,
     liked: false,
-    course: {
-      term: number,
-      name: string,
-      tags: string,
-    },
     answersIds: number[],
 }

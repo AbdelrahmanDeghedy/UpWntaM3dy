@@ -43,49 +43,50 @@
 import TheButton from "./TheButton.vue";
 
 import getFromIdMixin from '@/mixins/getFromIdMixin';
+import { questions } from '@/_utils/data';
+import { getDayDifference } from "@/_utils/helper";
 
 export default {
-  mixins: [getFromIdMixin],
+  mixins: [ getFromIdMixin ],
   props: {
-    answersNumber: {
-      type: Number,
+    question: {
+      type: Object,
       required: true,
-      default: 0,
-    },
-    id: {
-      type: Number,
-      required: true,
-      default: 0,
-    },
-    text: {
-      type: String,
-      required: true,
-      default: "NO QUESTION PROVIDED!!",
-    },
-    owner: {
-      type: String,
-      required: true,
-      default: "NO OWNER PROVIDED!!",
-    },
-    time: {
-      type: Number,
-      required: true,
-      default: 100,
-    },
-    likes: {
-      type: Number,
-      required: true,
-      default: 0,
     },
   },
   components: {
     TheButton,
   },
-  mounted(){
+  async mounted(){
+    await this.initializeValues();
     // console.log(this.findQuestionById(this.id));
     // console.log(this.$store.state.questions);
   },
+  data(): any {
+    return {
+      answersNumber: 0,
+      text: "",
+      owner: "",
+      time: 0,
+      likes: 0,
+      id: 0,
+
+      currentLikeColor: this.findQuestionById(this.id).liked ? this.$store.state.likePrimaryColor : this.$store.state.likeSecondaryColor,
+      currentBookmarkColor: this.findQuestionById(this.id).bookmarked ? this.$store.state.bookmarkPrimaryColor : this.$store.state.bookmarkSecondaryColor,
+    };
+  },
   methods: {
+    initializeValues(){
+      this.answersNumber = this.question.answersIds.length;
+      this.text = this.question.title;
+      this.owner =  this.getUsernameFromId(this.question.ownerId);
+      this.time = this.parseDate(this.question.time);
+      this.likes = this.question.likes;
+      this.id = this.question.id;
+    },
+    parseDate(date) {
+      return getDayDifference(date);
+    },
     toggleBookmark(){
       this.currentBookmarkColor = this.$store.state.bookmarkSecondaryColor;
       this.currentBookmarkColor = this.findQuestionById(this.id).bookmarked ? this.$store.state.bookmarkSecondaryColor : this.$store.state.bookmarkPrimaryColor,
@@ -103,12 +104,6 @@ export default {
     handlePageRouting(): void {
       this.$store.commit("setPageMode", "questionDetails");
     },
-  },
-  data(): any {
-    return {
-      currentLikeColor: this.findQuestionById(this.id).liked ? this.$store.state.likePrimaryColor : this.$store.state.likeSecondaryColor,
-      currentBookmarkColor: this.findQuestionById(this.id).bookmarked ? this.$store.state.bookmarkPrimaryColor : this.$store.state.bookmarkSecondaryColor,
-    };
   },
 };
 </script>

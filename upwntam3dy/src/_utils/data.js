@@ -59,11 +59,6 @@ export const questions = [
     time: new Date(2021, 3, 5),
     likes: 15,
     liked: false,
-    course: {
-      term: 5,
-      name: "Operating Systems",
-      tags: "lec1",
-    },
     answersIds: [10],
   },
   {
@@ -74,11 +69,6 @@ export const questions = [
     time: new Date(2021, 3, 5),
     likes: 5,
     liked: false,
-    course: {
-      term: 5,
-      name: "Operating Systems",
-      tags: "lec2",
-    },
     answersIds: [5, 1],
   },
 ];
