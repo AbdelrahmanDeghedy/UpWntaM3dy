@@ -100,6 +100,7 @@ export default {
       this.findQuestionById(this.id).liked = !this.findQuestionById(this.id).liked;
       this.findQuestionById(this.id).likes = this.findQuestionById(this.id).liked ? this.findQuestionById(this.id).likes + 1 : this.findQuestionById(this.id).likes - 1; 
       
+      this.initializeValues();
     },
     handlePageRouting(): void {
       this.$store.commit("setPageMode", "questionDetails");
