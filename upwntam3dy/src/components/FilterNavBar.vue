@@ -3,9 +3,11 @@
     <!-- Search Input -->
     <div class="flex justify-center mt-8">
       <input
+        class="h-8 rounded-md shadow-md outline-none p-4 py-6 text-base bg-gray-100"
+        @input="filterQuestions"
         type="text"
+        v-model="searchText"
         placeholder="Search For a Specific Question"
-        class="h-8 rounded-md shadow-md outline-none p-4 py-6 text-l bg-gray-100"
       />
     </div>
 
@@ -41,10 +43,11 @@ export default {
       tags: [],
       currentTerm: "1",
       currentCourse: "",
+      searchText: ""
     };
   },
   updated() {
-    console.log(this.$store.state.courseInfoPerTerm);
+    // console.log(this.$store.state.courseInfoPerTerm);
   },
   mounted() {
     this.loadTerms();
@@ -54,6 +57,9 @@ export default {
     // setTimeout(() => {console.log(this.$store.state.courseInfoPerTerm)}, 0);
   },
   methods: {
+    filterQuestions(){
+      this.$store.commit("filterQuestions", this.searchText);
+    },
     getCurrentCourse(currentCourse) {
       this.currentCourse = currentCourse;
       this.tags = [];

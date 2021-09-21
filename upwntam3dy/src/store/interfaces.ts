@@ -6,6 +6,8 @@ export interface stateType {
   users: userInterface[];
   answers: answerInterface[];
   questions: questionInterface[];
+  backupQuestions: questionInterface[],
+  
   courseInfoPerTerm: [];
   
   pageMode: "questions" | "questionDetails" | "questionCreate";

@@ -61,6 +61,7 @@ export default {
       this.$store.commit("loadUsers", users);
       this.$store.commit("loadAnswers", answers);
       this.$store.commit("loadQuestions", questions);
+      this.$store.commit("loadBackupQuestions", questions);
       this.$store.commit("loadCourseInfoPerTerm", courseInfoPerTerm);
       console.log("done", this.$store.state.courseInfoPerTerm);
     },

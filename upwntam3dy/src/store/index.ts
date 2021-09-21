@@ -11,6 +11,7 @@ export const store = createStore({
       users: [],
       answers: [],
       questions: [],
+      backupQuestions: [],
       courseInfoPerTerm: [],
       pageMode: "questions",
       likePrimaryColor: "#4287f5",

@@ -53,7 +53,7 @@ export default {
       this.$store.commit("createQuestion", {
         id: randomIdGenerator(),
         ownerId: 18010917,
-        title: this.$refs["markdown-content"].textContent + "..",  // The first 50 of the text itself, not the HTML content
+        title: this.$refs["markdown-content"].textContent + "..", 
         fullQuestionText: this.markdown,
         time: this.parseDate(Date.now()),
         likes: 0,
