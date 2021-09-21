@@ -17,7 +17,7 @@
       <!-- Bookmark -->
       <div class="flex flex-col items-center my-2">
         <div
-          class="mt-2 bg-gray-500 w-8 h-8 flex items-center justify-center rounded-full shadow-md cursor-pointer"
+          class="mt-2 bg-gray-100 w-8 h-8 flex items-center justify-center rounded-full shadow-md cursor-pointer"
           @click="toggleBookmark"
         >
           <font-awesome-icon icon="bookmark" :style="{ color: currentBookmarkColor }" />
@@ -59,7 +59,7 @@
         <!-- Answers -->
         <div class="ml-4">
           <div v-for="answer in getAnswersOfQuestion($route.params.qId)" :key='answer'>
-            <answer-card :answer="answer" />
+            <answer-card :answer="answer" @syncAnswersLikeState="syncAnswersLikeState" />
             <hr class="mx-2" />
           </div>
         </div>
@@ -89,8 +89,8 @@ export default {
       owner : "",
       fullQuestionText : "",
       time: 0,
-      currentLikeColor : false,
-      currentBookmarkColor: false,
+      currentLikeColor : "",
+      currentBookmarkColor: "",
     };
   },
   async mounted(){
@@ -129,6 +129,15 @@ export default {
       this.findQuestionById(this.$route.params.qId).likes = this.findQuestionById(this.$route.params.qId).liked ? this.findQuestionById(this.$route.params.qId).likes + 1 : this.findQuestionById(this.$route.params.qId).likes - 1; 
       
       this.initializeValues();
+    },
+    syncAnswersLikeState(answer){
+      this.$store.state.answers.filter(ans => {
+        return ans.id === answer.id;
+      })[0].liked = answer.liked;
+
+      this.$store.state.answers.filter(ans => {
+        return ans.id === answer.id;
+      })[0].likes = answer.likes;
     },
   }
 };

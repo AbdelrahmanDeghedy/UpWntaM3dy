@@ -9,18 +9,18 @@
     </div>
     <div class="py-6 flex items-center">
       <div class="flex">
-        <div class="cursor-pointer">
-          <font-awesome-icon icon="thumbs-up" :style="{ color: 'gray' }" />
+        <div class="cursor-pointer" @click="toggleLike">
+          <font-awesome-icon icon="thumbs-up" :style="{ color: currentLikeColor }" />
         </div>
         <div class="flex items-center justify-center ml-2">
           {{ answer.likes }} Likes
         </div>
       </div>
-      <div
+      <!-- <div
         class="ml-4 mt-2 bg-gray-500 w-8 h-8 flex  items-center justify-center rounded-full shadow-md cursor-pointer"
       >
         <font-awesome-icon icon="bookmark" :style="{ color: 'white' }" />
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -44,7 +44,26 @@ export default {
   data() {
     return {
       answerTime: getDayDifference(this.answer.time),
+      currentLikeColor : "",
+      answerLocal: this.answer,
     };
   },
+  mounted(){
+    this.initializeValues();
+  },
+  methods: {
+    initializeValues(){
+      this.currentLikeColor = this.answer.liked ? this.$store.state.likePrimaryColor : this.$store.state.likeSecondaryColor;
+    },
+    toggleLike(){
+      // optimistic updates
+      this.currentLikeColor = this.answer.liked ? this.$store.state.likeSecondaryColor : this.$store.state.likePrimaryColor,
+      
+      this.answerLocal.liked = !this.answerLocal.liked;
+      this.answerLocal.likes = this.answerLocal.liked ? this.answerLocal.likes + 1 : this.answerLocal.likes - 1; 
+      
+      this.$emit("syncAnswersLikeState", this.answerLocal);
+    },
+  }
 };
 </script>
