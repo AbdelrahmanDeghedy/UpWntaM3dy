@@ -9,7 +9,7 @@
       :dir="language === 'en' ? 'ltr' : 'rtl'"
     />
     <div class="flex justify-end">
-      <the-button class="mt-4" content="Ask" size="large" type="secondary" @click="createQuestion" />
+      <the-button class="mt-4" :content="editMode ? 'Save' : 'Ask'" size="large" type="secondary" @click="editMode ? editQuestion() : createQuestion()" />
     </div>
     <div class="hidden" ref="markdown-content" :dir="language === 'en' ? 'ltr' : 'rtl'" v-html="markdown"></div>
   </div>
@@ -22,23 +22,33 @@ import { getDayDifference } from "@/_utils/helper";
 
 import { randomIdGenerator } from '@/_utils/helper'
 
-import { DateFormatter } from '@/_utils/dateFormatter';
+// import { DateFormatter } from '@/_utils/dateFormatter';
 
 export default {
   components: {
     TheButton,
   },
+  props: {
+    editMode : {
+      type: Object,
+      required: false,
+      default : undefined
+    },
+    id: {
+      type: String,
+      required: false
+    },
+  },
   updated() {
     // console.log(this.markdown);
   },
   mounted(){
-    // console.log(ty (new DateFormatter("12/12/2020", {local: false, utcTime: false})).date());
-    console.log(this.parseDate(new Date("2021-02-08")));
+    console.log(this.parseDate(new Date("2021-02-08"))); 
   },
   data() {
     return {
       markdown: "",
-      text: "",
+      text: this.editMode ? this.editMode.editText : "",
       language: "en", // or ar
     };
   },
@@ -48,6 +58,19 @@ export default {
     },
     syncInput(){
       this.markdown = marked(this.text);
+    },
+    editQuestion(){
+      this.$store.commit("editQuestionContent",{
+        id : this.id,
+        title : this.$refs["markdown-content"].textContent + "..", 
+        fullQuestionText : this.markdown,
+      })
+
+      console.log(this.$store.state.questions);
+
+      // Route to questions page
+      this.$router.push({ name: "Questions" });
+      this.$store.commit("setPageMode", "questions");
     },
     createQuestion(){
       this.$store.commit("createQuestion", {

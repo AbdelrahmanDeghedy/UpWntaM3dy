@@ -1,5 +1,5 @@
 <template>
-  <div class="shadow-md bg-white flex rounded-xl overflow-hidden m-2">
+  <div v-if="questionMode === 'details'" class="shadow-md bg-white flex rounded-xl overflow-hidden m-2">
     <div class="py-6 w-1/6 flex flex-col">
       <div class="flex flex-col items-center my-2">
         <div>{{ answersNumber }} </div>
@@ -40,7 +40,7 @@
         </div>
 
         <div class="flex items-center mr-8">
-          <the-button content="Edit" type="secondary" size="small" />
+          <the-button content="Edit" type="secondary" size="small" @click="handleEdit" />
         </div>
       </div>
 
@@ -65,19 +65,29 @@
       </div>
     </div>
   </div>
+  <div v-else-if="questionMode === 'edit'">
+    <question-create 
+      :editMode = "{ editText : fullQuestionText }"
+      :id="$route.params.qId"
+    />
+  </div>
 </template>
 
 <script>
 import AnswerCard from "@/components/AnswerCard";
 import TheButton from "@/components/TheButton";
+import QuestionCreate from '@/components/QuestionCreate.vue'
 
 import getFromIdMixin from '@/mixins/getFromIdMixin';
-import { getDayDifference } from '@/_utils/helper.ts'
+// import { getDayDifference } from '@/_utils/helper.ts'
+
+
 
 export default {
   components: {
     AnswerCard,
     TheButton,
+    QuestionCreate,
   },
   mixins: [ getFromIdMixin ],
   data() {
@@ -90,6 +100,7 @@ export default {
       time: 0,
       currentLikeColor : "",
       currentBookmarkColor: "",
+      questionMode: "details",  // "details" or "edit"
     };
   },
   async mounted(){
@@ -102,6 +113,9 @@ export default {
 //
   },
   methods :{
+    handleEdit(){
+     this.questionMode = "edit";
+    },
    initializeValues(){
       this.likes = this.findQuestionById(this.$route.params.qId)?.likes;
       this.answersNumber = this.getAnswersOfQuestion(this.$route.params.qId)?.length;

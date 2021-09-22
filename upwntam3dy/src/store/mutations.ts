@@ -25,6 +25,16 @@ export const mutations = {
     state.questions.push(payload);
   },
 
+  editQuestionContent (state: stateType, payload : { id: number, title: string, fullQuestionText : string }): void {
+    const modifiedQuestionId = state.questions.findIndex((question) => {
+      return String(question.id) === String(payload.id);
+    });
+    
+    console.log(state.questions[modifiedQuestionId].title, payload.title);
+    state.questions[modifiedQuestionId].title = payload.title;
+    state.questions[modifiedQuestionId].fullQuestionText = payload.fullQuestionText;
+  },
+
   filterQuestions (state: stateType, filterText : string): void {
     state.questions = state.backupQuestions.filter((question) => {
       return question.title.toLowerCase().includes(filterText.toLowerCase());

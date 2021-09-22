@@ -13,3 +13,7 @@ export function randomIdGenerator() : string {
   };
   return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
 }
+
+export function HTMLToText(HTML : string) : string {
+  return HTML.replace(/<[^>]*>/g, '');
+}
