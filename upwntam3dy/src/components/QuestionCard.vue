@@ -83,19 +83,19 @@ export default {
       this.time = this.question.time;
       this.likes = this.question.likes;
       this.id = this.question.id;
+      this.currentLikeColor = this.findQuestionById(this.id).liked ? this.$store.state.likePrimaryColor : this.$store.state.likeSecondaryColor;
+      this.currentBookmarkColor = this.findQuestionById(this.id).bookmarked ? this.$store.state.bookmarkPrimaryColor : this.$store.state.bookmarkSecondaryColor;
+
     },
     parseDate(date) {
       return getDayDifference(date);
     },
-    toggleBookmark(){
-      this.currentBookmarkColor = this.$store.state.bookmarkSecondaryColor;
-      this.currentBookmarkColor = this.findQuestionById(this.id).bookmarked ? this.$store.state.bookmarkSecondaryColor : this.$store.state.bookmarkPrimaryColor,
-      
+    toggleBookmark(){      
       this.findQuestionById(this.id).bookmarked = !this.findQuestionById(this.id).bookmarked;
+      this.initializeValues();
     },
     toggleLike(){
       // optimistic updates
-      this.currentLikeColor = this.findQuestionById(this.id).liked ? this.$store.state.likeSecondaryColor : this.$store.state.likePrimaryColor,
       
       this.findQuestionById(this.id).liked = !this.findQuestionById(this.id).liked;
       this.findQuestionById(this.id).likes = this.findQuestionById(this.id).liked ? this.findQuestionById(this.id).likes + 1 : this.findQuestionById(this.id).likes - 1; 
