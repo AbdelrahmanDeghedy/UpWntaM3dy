@@ -21,6 +21,8 @@ import marked from "marked";
 import { getDayDifference } from "@/_utils/helper";
 
 import { randomIdGenerator } from '@/_utils/helper'
+import { HTMLToText } from '@/_utils/helper'
+
 
 // import { DateFormatter } from '@/_utils/dateFormatter';
 
@@ -41,6 +43,7 @@ export default {
   },
   updated() {
     // console.log(this.markdown);
+    console.log(this.markdown, HTMLToText(this.markdown).split("\n"));
   },
   mounted(){
     console.log(this.parseDate(new Date("2021-02-08"))); 
@@ -48,7 +51,7 @@ export default {
   data() {
     return {
       markdown: "",
-      text: this.editMode ? this.editMode.editText : "",
+      text: this.editMode ? HTMLToText(this.editMode.editText) : "",
       language: "en", // or ar
     };
   },
@@ -60,9 +63,10 @@ export default {
       this.markdown = marked(this.text);
     },
     editQuestion(){
+      this.syncInput();
       this.$store.commit("editQuestionContent",{
         id : this.id,
-        title : this.$refs["markdown-content"].textContent + "..", 
+        title : HTMLToText(this.markdown).split("\n")[0].replaceAll("&#39;", "'") + '..',
         fullQuestionText : this.markdown,
       })
 
@@ -76,7 +80,7 @@ export default {
       this.$store.commit("createQuestion", {
         id: randomIdGenerator(),
         ownerId: 18010917,
-        title: this.$refs["markdown-content"].textContent + "..", 
+        title: HTMLToText(this.markdown).split("\n")[0] + '..',
         fullQuestionText: this.markdown,
         time: this.parseDate(Date.now()),
         likes: 0,
