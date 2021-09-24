@@ -63,7 +63,7 @@
           </div>
         </div>
 
-        <div class="mt-4 mx-auto mb-4">
+        <div class="mt-4 mx-auto mb-4" ref="answerComment">
             <question-create 
               :answerMode="true"
               :id="$route.params.qId"
@@ -112,16 +112,29 @@ export default {
       questionMode: "details",  // "details" or "edit"
     };
   },
+  updated(){
+    this.scrollToAnswer();
+  },
   async mounted(){
     await setTimeout(() => {
       this.initializeValues();
     }, 0)
+      this.scrollToAnswer();
+
     
   },
   computed : {
-//
+    //
   },
   methods :{
+    async scrollToAnswer(){
+      if (!this.$store.state.scrollToAnswer) return;
+      
+      this.$refs.answerComment.scrollIntoView({behavior: 'smooth'});
+      await setTimeout(() => {
+        this.$store.commit("toggleScrollToAnswer");
+      }, 0); 
+    },
     handleEdit(){
      this.questionMode = "edit";
     },

@@ -28,7 +28,9 @@
       </div>
     </div>
     <div class="py-6 w-1/6 flex flex-col items-center">
-      <the-button content="Answer" type="secondary" size="small" />
+      <router-link :to="{ name: 'Question', params: { qId: id } }">
+        <the-button content="Answer" type="secondary" size="small" @click="handleAnswerClick"/>
+      </router-link>
       <div
         class="mt-2 bg-gray-100 w-8 h-8 flex items-center justify-center rounded-full shadow-md cursor-pointer"
         @click="toggleBookmark"
@@ -43,7 +45,7 @@
 import TheButton from "./TheButton.vue";
 
 import getFromIdMixin from '@/mixins/getFromIdMixin';
-import { questions } from '@/_utils/data';
+// import { questions } from '@/_utils/data';
 import { getDayDifference } from "@/_utils/helper";
 
 export default {
@@ -76,6 +78,11 @@ export default {
     };
   },
   methods: {
+    handleAnswerClick(){
+      this.handlePageRouting();
+      this.$store.commit("toggleScrollToAnswer");
+      // console.log(this.$store.state.scrollToAnswer);
+    },
     initializeValues(){
       this.answersNumber = this.question.answersIds.length;
       this.text = this.question.title;

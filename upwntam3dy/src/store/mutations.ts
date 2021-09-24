@@ -47,4 +47,8 @@ export const mutations = {
   setPageMode(state: stateType, payload: any): void {
     state.pageMode = payload;
   },
+
+  toggleScrollToAnswer(state: stateType): void {
+    state.scrollToAnswer= !state.scrollToAnswer;
+  },
 };

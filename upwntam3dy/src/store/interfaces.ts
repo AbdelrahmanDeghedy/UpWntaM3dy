@@ -16,4 +16,6 @@ export interface stateType {
   likeSecondaryColor: string;
   bookmarkPrimaryColor: string;
   bookmarkSecondaryColor: string;
+
+  scrollToAnswer: boolean;
 }

@@ -18,6 +18,7 @@ export const store = createStore({
       likeSecondaryColor: "#e3e3e3",
       bookmarkPrimaryColor: "#d4267a",
       bookmarkSecondaryColor: "#b5a1b2",
+      scrollToAnswer: false
     };
   },
   mutations,
