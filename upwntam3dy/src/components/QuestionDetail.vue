@@ -62,6 +62,14 @@
             <hr class="mx-2" />
           </div>
         </div>
+
+        <div class="mt-4 mx-auto mb-4">
+            <question-create 
+              :answerMode="true"
+            />
+        </div>
+
+
       </div>
     </div>
   </div>

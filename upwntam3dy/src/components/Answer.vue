@@ -1,22 +1,15 @@
 <template>
-  <!-- <div class="bg-white rounded-3xl p-6 flex flex-col shadow-md"> -->
-  <div :class="answerMode ? answerConfig.containerClass: createConfig.containerClass">
+  <div class="bg-white rounded-3xl p-6 flex flex-col shadow-md">
     <textarea
-      :class="answerMode ? answerConfig.textareaClass : createConfig.textareaClass"
       v-model="text"
       @input="syncInput()"
       type="text"
-      :placeholder="answerMode ? answerConfig.textareaPlaceholder : createConfig.textareaPlaceholder"
+      class="outline-none text-2xl question-text"
+      placeholder="What's in Your Mind?"
       :dir="language === 'en' ? 'ltr' : 'rtl'"
     />
     <div class="flex justify-end">
-      <the-button 
-        class="mt-4"
-        :size="answerMode ? answerConfig.buttonSize : createConfig.buttonSize"
-        :content="answerMode ? answerConfig.buttonContent : createConfig.buttonContent"
-        type="secondary"
-        @click="handleClickingMode" 
-      />
+      <the-button class="mt-4" :content="editMode ? 'Save' : 'Ask'" size="large" type="secondary" @click="editMode ? editQuestion() : createQuestion()" />
     </div>
     <div class="hidden" ref="markdown-content" :dir="language === 'en' ? 'ltr' : 'rtl'" v-html="markdown"></div>
   </div>
@@ -38,11 +31,6 @@ export default {
     TheButton,
   },
   props: {
-    answerMode :{
-      type: Boolean,
-      required: false,
-      default: false,
-    },
     editMode : {
       type: Object,
       required: false,
@@ -53,52 +41,26 @@ export default {
       required: false
     },
   },
+  updated() {
+    // console.log(this.markdown);
+    console.log(this.markdown, HTMLToText(this.markdown).split("\n"));
+  },
+  mounted(){
+    console.log(this.parseDate(new Date("2021-02-08"))); 
+  },
   data() {
     return {
       markdown: "",
       text: this.editMode ? HTMLToText(this.editMode.editText) : "",
       language: "en", // or ar
-      createConfig : {
-        containerClass: "bg-white rounded-3xl p-6 flex flex-col shadow-md",
-        textareaClass: "outline-none text-2xl question-text",
-        textareaPlaceholder : "What's in Your Mind?",
-        buttonSize: "large",
-        buttonContent: this.editMode ? 'Save' : 'Ask'
-      },
-      answerConfig :{
-        containerClass: "bg-gray-100 rounded-3xl p-6 flex justify-between shadow-md w-11/12 mx-auto",
-        textareaPlaceholder : "Do you have an answer?",
-        textareaClass: "bg-gray-100 w-10/12 outline-none",
-        buttonSize: "small",
-        buttonContent: "Answer",
-      }
     };
   },
-  updated() {
-    // console.log(this.markdown);
-    // console.log(this.markdown, HTMLToText(this.markdown).split("\n"));
-  },
-  mounted(){
-    //
-  },
   methods : {
-    handleClickingMode(){
-      if (this.editMode) {
-        this.editQuestion();
-      } else if (this.answerMode) {
-        this.answerQuestion();
-      } else {
-        this.createQuestion();
-      }
-    },
     parseDate(date) {
       return getDayDifference(date);
     },
     syncInput(){
       this.markdown = marked(this.text);
-    },
-    answerQuestion(){
-      //
     },
     editQuestion(){
       this.syncInput();
@@ -117,7 +79,7 @@ export default {
     createQuestion(){
       this.$store.commit("createQuestion", {
         id: randomIdGenerator(),
-        ownerId: 18010917,  // current user id
+        ownerId: 18010917,
         title: HTMLToText(this.markdown).split("\n")[0] + '..',
         fullQuestionText: this.markdown,
         time: this.parseDate(Date.now()),
