@@ -98,7 +98,17 @@ export default {
       this.markdown = marked(this.text);
     },
     answerQuestion(){
-      //
+      this.$store.commit("createAnswer", {
+        id: randomIdGenerator(),
+        ownerId: 18010917,  // current user id
+        questionOfAnswerId: this.id,
+        text: this.markdown,
+        time: this.parseDate(Date.now()),
+        likes: 0,
+        liked: false,
+      });
+      this.text = "";
+
     },
     editQuestion(){
       this.syncInput();

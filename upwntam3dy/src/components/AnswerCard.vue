@@ -5,7 +5,7 @@
         <div class="text-blue-800 font-bold">{{ getUsernameFromId(answer.ownerId) }}</div>
         <div class="opacity-80 ml-2">{{ answerTime }} days ago</div>
       </div>
-      <div class="ml-4">{{answer.text}}</div>
+      <div class="ml-4" v-html="answer.text"></div>
     </div>
     <div class="py-6 flex items-center">
       <div class="flex">

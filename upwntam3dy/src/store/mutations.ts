@@ -30,7 +30,6 @@ export const mutations = {
       return String(question.id) === String(payload.id);
     });
     
-    console.log(state.questions[modifiedQuestionId].title, payload.title);
     state.questions[modifiedQuestionId].title = payload.title;
     state.questions[modifiedQuestionId].fullQuestionText = payload.fullQuestionText;
   },
@@ -39,6 +38,10 @@ export const mutations = {
     state.questions = state.backupQuestions.filter((question) => {
       return question.title.toLowerCase().includes(filterText.toLowerCase());
     })
+  },
+
+  createAnswer (state: stateType, payload: answerInterface): void {
+    state.answers.push(payload);
   },
 
   setPageMode(state: stateType, payload: any): void {

@@ -66,6 +66,7 @@
         <div class="mt-4 mx-auto mb-4">
             <question-create 
               :answerMode="true"
+              :id="$route.params.qId"
             />
         </div>
 
