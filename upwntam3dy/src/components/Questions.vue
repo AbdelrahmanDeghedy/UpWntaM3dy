@@ -2,9 +2,33 @@
   <div>
     <!-- Filter By Date Buttons -->
     <div class="flex justify-end">
-      <the-button class="mr-4" content="Month" type="ternary" size="small" />
-      <the-button class="mr-4" content="Week" type="ternary" size="small" />
-      <the-button class="mr-4" content="Day" type="ternary" size="small" />
+      <the-button
+        @click="handleActiveBtns(0)"
+        :disabled="btnStates[0]"
+        class="mr-4"
+        content="Month"
+        :key="change"
+        type="ternary"
+        size="small"
+      />
+      <the-button
+        @click="handleActiveBtns(1)"
+        :disabled="btnStates[1]"
+        class="mr-4"
+        :key="change"
+        content="Week"
+        type="ternary"
+        size="small"
+      />
+      <the-button
+        @click="handleActiveBtns(2)"
+        class="mr-4"
+        :disabled="btnStates[2]"
+        :key="change"
+        content="Day"
+        type="ternary"
+        size="small"
+      />
     </div>
     <!-- Question cards -->
     <div class="flex flex-col mt-4 h-screen">
@@ -26,13 +50,32 @@ export default {
     TheButton,
     QuestionCard,
   },
-  methods: {
-    //
-  },
   data() {
     return {
-      //
+      activeBtn: "Day",
+      btnStates: [true, true, false],
+      change: 0
     };
+  },
+  mounted () {
+    //
+  },
+  methods: {
+    handleFilter(type) {
+      this.activeBtn = type;
+    },
+    handleActiveBtns(val) {
+      this.btnStates.forEach((btnState, index) => {
+        this.btnStates[val] = false;
+        index !== val && (this.btnStates[index] = true);
+      })
+      this.change = Math.random();
+    },
   },
 };
 </script>
+
+<style scoped>
+.clicked {
+}
+</style>

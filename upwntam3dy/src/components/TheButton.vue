@@ -1,7 +1,8 @@
 <template>
   <button
+    ref="btn"
     :class="
-      `flex items-center justify-center UpWntaM3dyButton__btn-${type} UpWntaM3dyButton__${size}-size opacity-80 hover:opacity-100`
+      `flex items-center justify-center UpWntaM3dyButton__btn-${type} UpWntaM3dyButton__${size}-size opacity-80 hover:opacity-100 transition-all`
     "
   >
     {{ content }}
@@ -14,6 +15,11 @@ const buttonsSizes = ["large", "small"];
 
 export default {
   props: {
+    disabled : {
+      type: Boolean,
+      required: false,
+      default : false
+    },
     content: {
       type: String,
       required: true,
@@ -41,6 +47,15 @@ export default {
       //
     };
   },
+  mounted(){
+    this.disabled && (this.disabledEffect());
+  },
+  methods: {
+    disabledEffect(){
+      this.$refs.btn.classList.remove("opacity-80", "hover:opacity-100");
+      this.$refs.btn.classList.add(`opacity-50`);
+    },
+  }
 };
 </script>
 
@@ -63,7 +78,7 @@ export default {
 }
 
 .UpWntaM3dyButton__btn-ternary {
-  background: #c6c6c6;
+  background: #797777;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 1rem;
   padding: 1rem;
