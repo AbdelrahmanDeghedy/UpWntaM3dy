@@ -1,16 +1,16 @@
 <template>
     <div class="pagination-color-primary h-14 w-96 mx-auto shadow-lg rounded-md mt-2 flex items-center justify-around p-4 text-xl">
-      <div class="font-bold cursor-pointer" @click="decrementActivePagBtns"> &#60; </div>
+      <div class="font-bold cursor-pointer select-none" @click="decrementActivePagBtns"> &#60; </div>
       <div class="flex items-center">
         <div
-            class="px-6 cursor-pointer"
+            class="px-6 cursor-pointer select-none"
             ref="firstPagVal"
             @click="handleActiveBtns('firstPagVal', firstPagVal)"
         > 
             {{ firstPagVal }}
         </div>
         <div 
-            class="px-6 cursor-pointer"
+            class="px-6 cursor-pointer select-none"
             v-if="buttonsActiveRange.length > 1"
             ref="secondPagVal"
             @click="handleActiveBtns('secondPagVal', secondPagVal)"
@@ -18,7 +18,7 @@
             {{ secondPagVal }} 
         </div>
         <div 
-            class="px-6 cursor-pointer"
+            class="px-6 cursor-pointer select-none"
             v-if="buttonsActiveRange.length > 2" 
             ref="thirdPagVal"
             @click="handleActiveBtns('thirdPagVal', thirdPagVal)"
@@ -26,7 +26,7 @@
             {{ thirdPagVal }} 
         </div>
       </div>
-      <div class="font-bold cursor-pointer" @click="incrementActivePagBtns"> &#62; </div>
+      <div class="font-bold cursor-pointer select-none" @click="incrementActivePagBtns"> &#62; </div>
     </div>
 </template>
 
