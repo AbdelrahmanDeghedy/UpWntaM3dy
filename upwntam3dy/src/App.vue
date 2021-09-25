@@ -1,7 +1,11 @@
 <template>
   <div class="bg-yellow-100 min-h-screen">
     <the-navbar />
-    <question-layout class="mt-4" :key="$store.state.pageMode">
+    <user-profile 
+      v-if="$store.state.pageMode ==='profile'"
+      class="pt-10"
+    />
+    <question-layout v-else class="mt-4" :key="$store.state.pageMode">
       <template #questionDetail>
         <question-detail />
       </template>
@@ -23,6 +27,7 @@ import QuestionLayout from "@/layouts/QuestionLayout.vue";
 import QuestionDetail from "@/components/QuestionDetail.vue";
 import Questions from "@/components/Questions.vue";
 import QuestionCreate from "@/components/QuestionCreate.vue";
+import UserProfile from '@/components/UserProfile.vue';
 
 import { users, answers, questions, courseInfoPerTerm } from "@/_utils/data";
 
@@ -34,6 +39,7 @@ export default {
     QuestionDetail,
     Questions,
     QuestionCreate,
+    UserProfile,
   },
   data() {
     return {
@@ -48,6 +54,8 @@ export default {
         this.$store.commit("setPageMode", "questions");
       } else if (this.$route.name === "Question") {
         this.$store.commit("setPageMode", "questionDetails");
+      } else if (this.$route.name === "Profile") {
+        this.$store.commit("setPageMode", "profile");
       }
     },
   },

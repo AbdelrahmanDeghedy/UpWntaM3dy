@@ -67,7 +67,7 @@ export default ({
     },
     async mounted(){
         await setTimeout(() => {
-            this.initializeButtonValues();
+            this.$store.state.pageMode === "profile" || (this.initializeButtonValues());
         }, 0)
         this.initializeNumberOfPaginationButtons();
         this.partitionList();
