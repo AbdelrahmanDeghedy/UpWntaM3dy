@@ -33,14 +33,16 @@
     <!-- Question cards -->
     <div class="flex flex-col mt-4">
       <question-card
-        v-for="question in this.$store.state.questions"
+        v-for="question in renderedQuestions"
         :key="question"
         :question="question"
       />
     </div>
 
     <pagination-buttons 
-      :maxRange="10"
+      class="mb-10"
+      :list="this.$store.state.questions"
+      @paginatedList="syncCurrentList"
     />
 
   </div>
@@ -62,13 +64,17 @@ export default {
     return {
       activeBtn: "Day",
       btnStates: [true, true, false],
-      change: 0
+      change: 0,
+      renderedQuestions: [],
     };
   },
   mounted () {
     //
   },
   methods: {
+    syncCurrentList(questions){
+      this.renderedQuestions = questions;
+    },
     handleFilter(type) {
       this.activeBtn = type;
     },

@@ -5,7 +5,7 @@
         <div
             class="px-6 cursor-pointer"
             ref="firstPagVal"
-            @click="handleActiveBtns('firstPagVal')"
+            @click="handleActiveBtns('firstPagVal', firstPagVal)"
         > 
             {{ firstPagVal }}
         </div>
@@ -13,7 +13,7 @@
             class="px-6 cursor-pointer"
             v-if="buttonsActiveRange.length > 1"
             ref="secondPagVal"
-            @click="handleActiveBtns('secondPagVal')"
+            @click="handleActiveBtns('secondPagVal', secondPagVal)"
         > 
             {{ secondPagVal }} 
         </div>
@@ -21,7 +21,7 @@
             class="px-6 cursor-pointer"
             v-if="buttonsActiveRange.length > 2" 
             ref="thirdPagVal"
-            @click="handleActiveBtns('thirdPagVal')"
+            @click="handleActiveBtns('thirdPagVal', thirdPagVal)"
         > 
             {{ thirdPagVal }} 
         </div>
@@ -34,11 +34,11 @@
 
 export default ({
     props :{
-        maxRange : {
-            type: Number,
+        list : {
+            type: Array,
             required: true,
-            default: 1
-        }
+            default: () => []
+        },
     },
     data() {
         return {
@@ -48,45 +48,84 @@ export default ({
             firstPagVal: 1,
             secondPagVal: 2,
             thirdPagVal: 3,
+            localList: [],
+            partitionSize: 5,
+            numberOfPagButtons: 0,
+            currentPaginatedList: 0,
         }
     },
-    mounted(){
-        this.initializeButtonValues();
+    async mounted(){
+        await setTimeout(() => {
+            this.initializeButtonValues();
+        }, 0)
+        this.initializeNumberOfPaginationButtons();
+        this.partitionList();
+        this.initializeInitialPaginatedList();
     },
     methods : {
+        initializeInitialPaginatedList(){
+            this.$emit("paginatedList", this.localList[0]);
+        },
+        initializeNumberOfPaginationButtons(){
+            this.numberOfPagButtons = +Math.ceil(this.list.length / this.partitionSize);
+        },
+        partitionList(){
+            let partition = [];
+            if (this.list.length <= this.partitionSize) {
+                partition = this.list;
+                this.localList.push(partition);
+                return;
+            }
+            
+            let partitionStart = 0;
+            for (let j = 0; j < this.numberOfPagButtons; j++) {
+                partitionStart = j * this.partitionSize;
+                for (let i = partitionStart; i < partitionStart + this.partitionSize && i < this.list.length; i++) {
+                    partition.push(this.list[i]);
+                }
+                this.localList.push(partition);
+                partition = [];
+            }
+            
+            console.log("behold", this.localList);
+        },
         decrementActivePagBtns(){
             if (this.buttonValues.includes(this.buttonsActiveRange[0] - 1)) {
                 this.buttonsActiveRange = this.buttonsActiveRange.map(el => el - 1);
                 [this.firstPagVal, this.secondPagVal, this.thirdPagVal] = this.buttonsActiveRange;
+                this.currentPaginatedList--;
+                this.$emit("paginatedList", this.localList[this.currentPaginatedList - 1])
             }            
         },
         incrementActivePagBtns(){
             if (this.buttonValues.includes(this.buttonsActiveRange[2] + 1)) {
                 this.buttonsActiveRange = this.buttonsActiveRange.map(el => el + 1);
                 [this.firstPagVal, this.secondPagVal, this.thirdPagVal] = this.buttonsActiveRange;
+                this.currentPaginatedList++;
+                this.$emit("paginatedList", this.localList[this.currentPaginatedList - 1])
             }
         },
-        handleActiveBtns(value){
+        handleActiveBtns(value, content){
             if (value.includes("first")) {
                 this.$refs.firstPagVal.classList.add(...this.selectedClass);
-                this.$refs.secondPagVal.classList.remove(...this.selectedClass);
-                this.$refs.thirdPagVal.classList.remove(...this.selectedClass);
+                this.secondPagVal && (this.$refs.secondPagVal.classList.remove(...this.selectedClass));
+                this.thirdPagVal &&(this.$refs.thirdPagVal.classList.remove(...this.selectedClass));
             }
             else if (value.includes("second")) {
                 this.$refs.secondPagVal.classList.add(...this.selectedClass);
                 this.$refs.firstPagVal.classList.remove(...this.selectedClass);
-                this.$refs.thirdPagVal.classList.remove(...this.selectedClass);
-
+                this.thirdPagVal && (this.$refs.thirdPagVal.classList.remove(...this.selectedClass));
             }
             else if (value.includes("third")) {
                 this.$refs.thirdPagVal.classList.add(...this.selectedClass);
                 this.$refs.firstPagVal.classList.remove(...this.selectedClass);
                 this.$refs.secondPagVal.classList.remove(...this.selectedClass);
-
             }
+            this.currentPaginatedList = content;
+            this.$emit("paginatedList", this.localList[this.currentPaginatedList - 1])
         },
         initializeButtonValues () {
-            for (let i = 1; i <= this.maxRange; i++) {
+            for (let i = 1; i <= this.numberOfPagButtons; i++) {
                 this.buttonValues.push(i);
             }
             
@@ -98,9 +137,6 @@ export default ({
             
             [this.firstPagVal, this.secondPagVal, this.thirdPagVal] = this.buttonsActiveRange;
             this.$refs.firstPagVal.classList.add(...this.selectedClass);
-            
-            console.log(this.buttonValues);
-            console.log(this.buttonsActiveRange);
         }
     }
 
