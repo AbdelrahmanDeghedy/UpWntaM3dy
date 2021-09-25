@@ -28,7 +28,10 @@
     <div class="flex flex-col w-5/6">
       <div class="flex justify-between">
         <div class="py-6 w-4/6 ml-4">
-          <div class="text-2xl font-semibold">
+          <div 
+            class="text-2xl font-semibold"
+            :dir="language === 'en' ? 'ltr' : 'rtl'"
+          >
             {{ text }}
           </div>
           <div class="flex ml-2 my-2">
@@ -46,7 +49,11 @@
 
       <hr class="mx-4 -mt-4" />
       <div class="mt-4">
-        <div class="ml-4 mb-4" v-html="fullQuestionText">
+        <div 
+          class="ml-4 mb-4 px-8"
+          v-html="fullQuestionText" 
+          :dir="language === 'en' ? 'ltr' : 'rtl'"
+        >
         </div>
 
         <div class="font-bold text-xl mb-2 ml-4">
@@ -89,6 +96,7 @@ import QuestionCreate from '@/components/QuestionCreate.vue'
 
 import getFromIdMixin from '@/mixins/getFromIdMixin';
 // import { getDayDifference } from '@/_utils/helper.ts'
+import { isArabic } from '@/_utils/helper';
 
 
 
@@ -101,6 +109,7 @@ export default {
   mixins: [ getFromIdMixin ],
   data() {
     return {
+      language: "en",
       likes : 0,
       answersNumber : 0,
       text : "",
@@ -118,8 +127,10 @@ export default {
   async mounted(){
     await setTimeout(() => {
       this.initializeValues();
-    }, 0)
       this.scrollToAnswer();
+      this.handleLanguage();
+    }, 0)
+    
 
     
   },
@@ -127,6 +138,13 @@ export default {
     //
   },
   methods :{
+    handleLanguage(){
+      if (isArabic(this.text)) {
+        this.language = "ar";
+      } else {
+        this.language = "en";
+      }
+    },
     async scrollToAnswer(){
       if (!this.$store.state.scrollToAnswer) return;
       

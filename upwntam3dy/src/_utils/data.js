@@ -4,7 +4,7 @@ export const users = [
     name: "Abdelrahman Deghedy",
     points: 532,
     rank: 2,
-    bio: "Be input-driven, not output-driven",
+    bio: "Let fate be free",
     picture: "",
     answers: {
       answerIds: [5, 8, 4],
@@ -16,8 +16,8 @@ export const users = [
   {
     universityId: 18010918,
     name: "Habiba Deghedy",
-    points: 532,
-    rank: 2,
+    points: 200,
+    rank: 5,
     bio: "Be input-driven, not output-driven",
     picture: "",
     answers: {

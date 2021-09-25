@@ -8,9 +8,9 @@
       <router-link :to="{ name: 'Question', params: { qId: id } }">
         <div
           class="text-2xl font-semibold cursor-pointer"
+          :dir="language === 'en' ? 'ltr' : 'rtl'"
           @click="handlePageRouting()"
         >
-          <!-- What's the square root of 9? -->
           {{ text }}
         </div>
       </router-link>
@@ -47,6 +47,7 @@ import TheButton from "./TheButton.vue";
 import getFromIdMixin from '@/mixins/getFromIdMixin';
 // import { questions } from '@/_utils/data';
 import { getDayDifference } from "@/_utils/helper";
+import { isArabic } from '@/_utils/helper';
 
 export default {
   mixins: [ getFromIdMixin ],
@@ -61,11 +62,13 @@ export default {
   },
   async mounted(){
     await this.initializeValues();
+    this.handleLanguage();
     // console.log(this.findQuestionById(this.id));
     // console.log(this.$store.state.questions);
   },
   data(): any {
     return {
+      language: "en",
       answersNumber: 0,
       text: "",
       owner: "",
@@ -78,6 +81,13 @@ export default {
     };
   },
   methods: {
+    handleLanguage(){
+      if (isArabic(this.text)) {
+        this.language = "ar";
+      } else {
+        this.language = "en";
+      }
+    },
     handleAnswerClick(){
       this.handlePageRouting();
       this.$store.commit("toggleScrollToAnswer");

@@ -49,6 +49,6 @@ export const mutations = {
   },
 
   toggleScrollToAnswer(state: stateType): void {
-    state.scrollToAnswer= !state.scrollToAnswer;
+    state.scrollToAnswer = !state.scrollToAnswer;
   },
 };

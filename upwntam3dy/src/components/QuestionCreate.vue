@@ -5,6 +5,7 @@
       :class="answerMode ? answerConfig.textareaClass : createConfig.textareaClass"
       v-model="text"
       @input="syncInput()"
+      @keyup="handleLanguage"
       type="text"
       :placeholder="answerMode ? answerConfig.textareaPlaceholder : createConfig.textareaPlaceholder"
       :dir="language === 'en' ? 'ltr' : 'rtl'"
@@ -29,7 +30,7 @@ import { getDayDifference } from "@/_utils/helper";
 
 import { randomIdGenerator } from '@/_utils/helper'
 import { HTMLToText } from '@/_utils/helper'
-
+import { isArabic } from '@/_utils/helper';
 
 // import { DateFormatter } from '@/_utils/dateFormatter';
 
@@ -57,7 +58,7 @@ export default {
     return {
       markdown: "",
       text: this.editMode ? HTMLToText(this.editMode.editText) : "",
-      language: "en", // or ar
+      language: "en",
       createConfig : {
         containerClass: "bg-white rounded-3xl p-6 flex flex-col shadow-md",
         textareaClass: "outline-none text-2xl question-text",
@@ -82,6 +83,13 @@ export default {
     //
   },
   methods : {
+    handleLanguage(){
+      if (isArabic(this.text)) {
+        this.language = "ar";
+      } else {
+        this.language = "en";
+      }
+    },
     handleClickingMode(){
       if (this.editMode) {
         this.editQuestion();

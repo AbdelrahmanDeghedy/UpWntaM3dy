@@ -17,3 +17,9 @@ export function randomIdGenerator() : string {
 export function HTMLToText(HTML : string) : string {
   return HTML.replace(/<[^>]*>/g, '');
 }
+
+export const isArabic =  (text : string) => {
+  const pattern = /[\u0600-\u06FF\u0750-\u077F]/;
+  const result = pattern.test(text);
+  return result;
+}
