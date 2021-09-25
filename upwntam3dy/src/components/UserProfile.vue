@@ -1,10 +1,11 @@
 <template>
     <div class="bg-yellow-200 m-8 rounded-xl shadow-lg p-6 flex flex-col relative">
-       
        <the-popup v-if="showPopup">
                 <div class="w-full h-full flex flex-col justify-between p-4">
                     <div class="mt-2">
                         <input 
+                            v-model="bioText"
+                            placeholder="Enter a cool bio!"
                             type="text" 
                             class=" rounded-lg h-14 w-full p-2 px-4 outline-none border border-black focus:border-2 focus:border-blue-700 shadow-sm"
                         /> 
@@ -15,64 +16,71 @@
                             content="Save"
                             type="ternary"
                             size="small"
+                            @click="disablePopup"
                         />
                         <div 
                             class="ml-4 text-black cursor-pointer text-lg"
-                            @click="togglePopup"
+                            @click="discardChanges"
                         >
                             Cancel
                         </div>
                     </div>
                 </div>
         </the-popup>     
-            
-
-        <div class="flex items-center">
-            <div class="w-1/4 ml-20 flex justify-center items-center">
-                <the-button 
-                    content="Saved Answers"
-                    type="primary"
-                    size="large"
-                />
-            </div>
-            <div class=" w-2/4 flex flex-col items-center py-8">
-                <div class="w-48 h-48 rounded-full overflow-hidden shadow-lg flex justify-center items-center">
-                    <img 
-                        class="w-48 h-48"
-                        src="https://www.imgonline.com.ua/examples/bee-on-daisy.jpg" 
-                        alt="profile pic"
-                    >
+       
+        
+        <div ref="profileContainer" class="">
+            <div class="flex items-center">
+                <div class="w-1/4 ml-20 flex justify-center items-center">
+                    <the-button 
+                        content="Saved Answers"
+                        type="primary"
+                        size="large"
+                        :disabled="disableBtn"
+                        :key="disableBtn"
+                    />
                 </div>
-                <div class="mt-4 text-2xl font-bold">
-                    Abdelrahman Deghedy
+                <div class=" w-2/4 flex flex-col items-center py-8">
+                    <div class="w-48 h-48 rounded-full overflow-hidden shadow-lg flex justify-center items-center">
+                        <img 
+                            class="w-48 h-48"
+                            src="https://www.imgonline.com.ua/examples/bee-on-daisy.jpg" 
+                            alt="profile pic"
+                        >
+                    </div>
+                    <div class="mt-4 text-2xl font-bold">
+                        Abdelrahman Deghedy
+                    </div>
+                    <div class="mt-2 w-96 text-center">
+                        {{ bioText }}
+                    </div>
                 </div>
-                <div class="mt-2 w-96 text-center">
-                    I'm Abdelrahman. I aspire to make the world a better place. I like engaging with others and learning from them.
+                <div 
+                    class="mr-20 w-1/4 flex justify-center items-center"
+                    @click="enablePopup"
+                >
+                    <the-button 
+                        content="Edit Bio"
+                        type="primary"
+                        size="large"
+                        :disabled="disableBtn"
+                        :key="disableBtn"
+                    />
                 </div>
             </div>
-            <div 
-                class="mr-20 w-1/4 flex justify-center items-center"
-                @click="togglePopup"
-            >
-                <the-button 
-                    content="Edit Bio"
-                    type="primary"
-                    size="large"
-                />
-            </div>
-        </div>
-        <div class="flex justify-center text-xl py-4">
-            <div class="flex flex-col items-center mr-10">
-                <div class="opacity-50">Answers</div>
-                <div>20</div>
-            </div>
-            <div class="flex flex-col items-center mx-10">
-                <div class="opacity-50">Points</div>
-                <div>50</div>
-            </div>
-            <div class="flex flex-col items-center ml-10">
-                <div class="opacity-50">Rank</div>
-                <div>2</div>
+            <div class="flex justify-center text-xl py-4">
+                <div class="flex flex-col items-center mr-10">
+                    <div class="opacity-50">Answers</div>
+                    <div>20</div>
+                </div>
+                <div class="flex flex-col items-center mx-10">
+                    <div class="opacity-50">Points</div>
+                    <div>50</div>
+                </div>
+                <div class="flex flex-col items-center ml-10">
+                    <div class="opacity-50">Rank</div>
+                    <div>2</div>
+                </div>
             </div>
         </div>
     </div>
@@ -90,11 +98,23 @@ export default({
     data() {
         return {
             showPopup: false,
+            disableBtn: false,
+            bioText: "I'm Abdelrahman. I aspire to make the world a better place. I like engaging with others and learning from them."
         }
     },
     methods: {
-        togglePopup(){
-            this.showPopup = !this.showPopup;
+        disablePopup(){
+            this.showPopup = false;
+            this.$refs.profileContainer.classList.remove("blur-sm", "filter")
+            this.disableBtn = false;            
+        },
+        enablePopup(){
+            this.showPopup = true;
+            this.$refs.profileContainer.classList.add("blur-sm", "filter")
+            this.disableBtn = true;
+        },
+        discardChanges(){
+            this.disablePopup();
         },
     }
 })
