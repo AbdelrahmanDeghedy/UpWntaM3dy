@@ -1,5 +1,7 @@
 export const users = [
   {
+    email: "abdelrahman.deghedy@gmail.com",
+    password: "password",
     universityId: 18010917,
     name: "Abdelrahman Deghedy",
     points: 532,
@@ -14,6 +16,8 @@ export const users = [
     },
   },
   {
+    email: "habiba.deghedy@gmail.com",
+    password: "password",
     universityId: 18010918,
     name: "Habiba Deghedy",
     points: 200,

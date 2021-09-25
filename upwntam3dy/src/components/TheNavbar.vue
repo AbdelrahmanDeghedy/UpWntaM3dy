@@ -16,7 +16,7 @@
         Profile
       </div>
     </router-link>
-    <router-link :to="{ name: 'Auth' }" class="flex">
+    <router-link :to="{ name: 'Signin' }" class="flex">
       <div
         class="flex items-center cursor-pointer"
         @click="handlePageRouting('auth')"

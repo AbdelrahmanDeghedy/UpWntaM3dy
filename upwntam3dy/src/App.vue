@@ -62,7 +62,10 @@ export default {
         this.$store.commit("setPageMode", "questionDetails");
       } else if (this.$route.name === "Profile") {
         this.$store.commit("setPageMode", "profile");
+      }else if (this.$route.name === "Signin" || this.$route.name === "Signup" ) {
+        this.$store.commit("setPageMode", "auth");
       }
+      
     },
   },
   mounted(): void {

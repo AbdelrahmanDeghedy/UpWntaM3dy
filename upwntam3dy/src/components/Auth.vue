@@ -61,12 +61,14 @@ export default({
     },
     methods: {
         switchToSignup(){
+            this.$router.push({ name: "Signup" });
             this.authMode = "signup";
             this.authHeader = "Create An Account";
             this.headerText = "Already Have An Account?";
             this.submitBtnContent = "Sign Up";
         },
         switchToSignin(){
+            this.$router.push({ name: "Signin" });
             this.authMode = "signin";
             this.authHeader = "Sign In";
             this.headerText = "Didn’t have an account?";
