@@ -22,7 +22,8 @@ export const mutations = {
   },
 
   createQuestion (state: stateType, payload: questionInterface): void {
-    state.questions.push(payload);
+    // state.questions.push(payload);
+    state.backupQuestions.push(payload);
   },
 
   editQuestionContent (state: stateType, payload : { id: number, title: string, fullQuestionText : string }): void {

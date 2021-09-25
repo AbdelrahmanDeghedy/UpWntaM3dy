@@ -62,6 +62,7 @@ export default {
   },
   updated(){
     // console.log(this.$store.state.questions);
+    // console.log("backup", this.$store.state.backupQuestions);
   },
   data() {
     return {

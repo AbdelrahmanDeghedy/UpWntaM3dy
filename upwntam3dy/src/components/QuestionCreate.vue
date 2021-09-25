@@ -126,7 +126,6 @@ export default {
         fullQuestionText : this.markdown,
       })
 
-      console.log(this.$store.state.questions);
 
       // Route to questions page
       this.$router.push({ name: "Questions" });
@@ -147,7 +146,7 @@ export default {
       // Clear the input field
       this.text = "";
 
-      console.log(this.$store.state.questions);
+      // console.log(this.$store.state.questions);
 
       // Route to questions page
       this.$router.push({ name: "Questions" });
