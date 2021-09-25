@@ -1,5 +1,32 @@
 <template>
-    <div class="bg-yellow-200 m-8 rounded-xl shadow-lg p-6 flex flex-col">
+    <div class="bg-yellow-200 m-8 rounded-xl shadow-lg p-6 flex flex-col relative">
+       
+       <the-popup v-if="showPopup">
+                <div class="w-full h-full flex flex-col justify-between p-4">
+                    <div class="mt-2">
+                        <input 
+                            type="text" 
+                            class=" rounded-lg h-14 w-full p-2 px-4 outline-none border border-black focus:border-2 focus:border-blue-700 shadow-sm"
+                        /> 
+                    </div>
+                            
+                    <div class="flex items-center">
+                        <the-button 
+                            content="Save"
+                            type="ternary"
+                            size="small"
+                        />
+                        <div 
+                            class="ml-4 text-black cursor-pointer text-lg"
+                            @click="togglePopup"
+                        >
+                            Cancel
+                        </div>
+                    </div>
+                </div>
+        </the-popup>     
+            
+
         <div class="flex items-center">
             <div class="w-1/4 ml-20 flex justify-center items-center">
                 <the-button 
@@ -23,7 +50,10 @@
                     I'm Abdelrahman. I aspire to make the world a better place. I like engaging with others and learning from them.
                 </div>
             </div>
-            <div class="mr-20 w-1/4 flex justify-center items-center">
+            <div 
+                class="mr-20 w-1/4 flex justify-center items-center"
+                @click="togglePopup"
+            >
                 <the-button 
                     content="Edit Bio"
                     type="primary"
@@ -50,16 +80,23 @@
 
 <script lang="ts">
 import TheButton from '@/components/TheButton.vue'
+import ThePopup from '@/components/ThePopup.vue'
 
 export default({
     components: {
         TheButton,
+        ThePopup
     },
     data() {
         return {
-            //
+            showPopup: false,
         }
     },
+    methods: {
+        togglePopup(){
+            this.showPopup = !this.showPopup;
+        },
+    }
 })
 </script>
 

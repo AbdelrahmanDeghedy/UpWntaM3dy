@@ -2,7 +2,7 @@
   <button
     ref="btn"
     :class="
-      `flex items-center justify-center UpWntaM3dyButton__btn-${type} UpWntaM3dyButton__${size}-size opacity-80 hover:opacity-100 transition-all`
+      `flex outline-none items-center justify-center UpWntaM3dyButton__btn-${type} UpWntaM3dyButton__${size}-size opacity-80 hover:opacity-100 transition-all`
     "
   >
     {{ content }}
