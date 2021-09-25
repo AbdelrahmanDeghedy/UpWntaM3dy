@@ -3,13 +3,27 @@
     <router-link :to="{ name: 'Questions' }" class="flex">
       <div
         class="flex items-center cursor-pointer"
-        @click="handlePageRouting()"
+        @click="handlePageRouting('questions')"
       >
         UpWntaM3dy
       </div>
     </router-link>
-    <div class="flex items-center">&nbsp;</div>
-    <div class="flex items-center">&nbsp;</div>
+    <router-link :to="{ name: 'Profile' }" class="flex">
+      <div
+        class="flex items-center cursor-pointer"
+        @click="handlePageRouting('profile')"
+      >
+        Profile
+      </div>
+    </router-link>
+    <router-link :to="{ name: 'Auth' }" class="flex">
+      <div
+        class="flex items-center cursor-pointer"
+        @click="handlePageRouting('auth')"
+      >
+        Sign in
+      </div>
+    </router-link>
     <div class="flex items-center">&nbsp;</div>
     <div class="flex items-center">&nbsp;</div>
   </div>
@@ -23,8 +37,8 @@ export default {
     };
   },
   methods: {
-    handlePageRouting() {
-      this.$store.commit("setPageMode", "questions");
+    handlePageRouting(mode) {
+      this.$store.commit("setPageMode", mode);
     },
   },
 };

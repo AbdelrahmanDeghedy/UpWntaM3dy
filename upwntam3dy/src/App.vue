@@ -1,8 +1,12 @@
 <template>
   <div class="bg-yellow-100 min-h-screen">
     <the-navbar />
+    <auth 
+      v-if="$store.state.pageMode ==='auth'"
+      class="pt-10"
+    />
     <user-profile 
-      v-if="$store.state.pageMode ==='profile'"
+      v-else-if="$store.state.pageMode ==='profile'"
       class="pt-10"
     />
     <question-layout v-else class="mt-4" :key="$store.state.pageMode">
@@ -30,6 +34,7 @@ import QuestionCreate from "@/components/QuestionCreate.vue";
 import UserProfile from '@/components/UserProfile.vue';
 
 import { users, answers, questions, courseInfoPerTerm } from "@/_utils/data";
+import Auth from './components/Auth.vue';
 
 export default {
   name: "App",
@@ -40,6 +45,7 @@ export default {
     Questions,
     QuestionCreate,
     UserProfile,
+    Auth,
   },
   data() {
     return {

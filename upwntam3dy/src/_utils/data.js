@@ -5,7 +5,7 @@ export const users = [
     points: 532,
     rank: 2,
     bio: "Let fate be free",
-    picture: "",
+    picture: "https://www.imgonline.com.ua/examples/bee-on-daisy.jpg",
     answers: {
       answerIds: [5, 8, 4],
     },
@@ -19,7 +19,7 @@ export const users = [
     points: 200,
     rank: 5,
     bio: "Be input-driven, not output-driven",
-    picture: "",
+    picture: "https://www.imgonline.com.ua/examples/bee-on-daisy.jpg",
     answers: {
       answerIds: [5, 8, 4],
     },
