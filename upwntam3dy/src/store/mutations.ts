@@ -52,4 +52,8 @@ export const mutations = {
   toggleScrollToAnswer(state: stateType): void {
     state.scrollToAnswer = !state.scrollToAnswer;
   },
+
+  createUser(state: stateType, payload: userInterface): void {
+    state.users.push(payload);
+  }
 };

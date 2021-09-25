@@ -1,4 +1,6 @@
 export interface userInterface {
+    email: string,
+    password: string,
     universityId: number,
     name: string,
     points: number,

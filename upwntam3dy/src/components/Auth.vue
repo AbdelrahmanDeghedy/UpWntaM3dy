@@ -13,18 +13,21 @@
                 class="w-96 p-4 rounded-xl shadow outline-none mb-4"
                 type="text"
                 placeholder="Full Name"
+                v-model="name"
             >
 
             <input 
                 class="w-96 p-4 rounded-xl shadow outline-none mb-4"
                 type="email"
                 placeholder="Email Address"
+                v-model="email"
             >
 
             <input 
                 class="w-96 p-4 rounded-xl shadow outline-none mb-4"
                 type="password"
                 placeholder="Password"
+                v-model="password"
             >
 
             <input 
@@ -32,6 +35,7 @@
                 class="w-96 p-4 rounded-xl shadow outline-none mb-4"
                 type="text"
                 placeholder="University ID"
+                v-model="uniId"
             >
 
             <the-button 
@@ -56,7 +60,11 @@ export default({
             submitBtnContent: "Sign In",
             authHeader: "Sign In",
             headerText: "Didn’t have an account?",
-            alternativeOperation: "Sign Up"
+            alternativeOperation: "Sign Up",
+            name: "",
+            email: "",
+            password: "",
+            uniId: ""
         }
     },
     methods: {
@@ -73,6 +81,31 @@ export default({
             this.authHeader = "Sign In";
             this.headerText = "Didn’t have an account?";
             this.submitBtnContent = "Sign In";  
+        },
+        signin(){
+            this.$store.state.users.forEach((user) => {
+                if (user.email === this.email && user.password === this.password) {
+                    this.$router.push({ name: "Questions" });
+                }
+            })
+        },
+        signup(){
+            this.$store.commit ("createUser", {
+                email: this.email,
+                password: this.password,
+                universityId: this.uniId,
+                name: this.name,
+                points: 0,
+                rank: null,
+                bio: "404, Not found!",
+                picture: "",
+                answers: {
+                    answerIds: [],
+                },
+                bookmarks: {
+                    questionIds: [],
+                },
+            });
         },
     }
 })
