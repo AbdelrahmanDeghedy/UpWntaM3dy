@@ -88,6 +88,7 @@ export default({
             this.$store.state.users.forEach((user) => {
                 if (user.email === this.email && user.password === this.password) {
                     console.log("signed in>>>");
+                    this.$store.commit("setPageMode", "questions");
                     this.$router.push({ name: "Questions", params: { 'user_id': user.universityId } });
                 }
             })

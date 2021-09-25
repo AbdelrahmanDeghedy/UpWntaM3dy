@@ -63,11 +63,13 @@ export default ({
                 this.partitionList();
                 this.initializeInitialPaginatedList();
             }
-        }
+        },
     },
+    
     async mounted(){
+        console.log("testeest");
         await setTimeout(() => {
-            this.$store.state.pageMode !== "Questions" || (this.initializeButtonValues());
+            this.$store.state.pageMode !== "questions" || (this.initializeButtonValues());
         }, 0)
         this.initializeNumberOfPaginationButtons();
         this.partitionList();
