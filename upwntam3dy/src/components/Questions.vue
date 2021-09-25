@@ -60,6 +60,9 @@ export default {
     QuestionCard,
     PaginationButtons,
   },
+  updated(){
+    // console.log(this.$store.state.questions);
+  },
   data() {
     return {
       activeBtn: "Day",

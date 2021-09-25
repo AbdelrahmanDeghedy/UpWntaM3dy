@@ -54,6 +54,17 @@ export default ({
             currentPaginatedList: 0,
         }
     },
+    watch :{
+        // To take care of any filtering happening
+        list :{
+            handler(){
+                this.initializeNumberOfPaginationButtons();
+                this.initializeButtonValues();
+                this.partitionList();
+                this.initializeInitialPaginatedList();
+            }
+        }
+    },
     async mounted(){
         await setTimeout(() => {
             this.initializeButtonValues();
@@ -70,6 +81,7 @@ export default ({
             this.numberOfPagButtons = +Math.ceil(this.list.length / this.partitionSize);
         },
         partitionList(){
+            this.localList = [];
             let partition = [];
             if (this.list.length <= this.partitionSize) {
                 partition = this.list;
@@ -125,6 +137,7 @@ export default ({
             this.$emit("paginatedList", this.localList[this.currentPaginatedList - 1])
         },
         initializeButtonValues () {
+            this.buttonValues = [];
             for (let i = 1; i <= this.numberOfPagButtons; i++) {
                 this.buttonValues.push(i);
             }
