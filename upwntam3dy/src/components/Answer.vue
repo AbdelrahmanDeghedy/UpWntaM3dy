@@ -73,7 +73,7 @@ export default {
       console.log(this.$store.state.questions);
 
       // Route to questions page
-      this.$router.push({ name: "Questions" });
+      this.$router.push({ name: "Questions", params: { 'user_id': 18010917 } });
       this.$store.commit("setPageMode", "questions");
     },
     createQuestion(){
@@ -94,7 +94,7 @@ export default {
       console.log(this.$store.state.questions);
 
       // Route to questions page
-      this.$router.push({ name: "Questions" });
+      this.$router.push({ name: "Questions", params: { 'user_id': 18010917 } });
       this.$store.commit("setPageMode", "questions");
 
     },

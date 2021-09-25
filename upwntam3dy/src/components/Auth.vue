@@ -42,6 +42,7 @@
                 :content="submitBtnContent"
                 type="secondary"
                 size="large"
+                @click="authMode === 'signin' ? signin() : signup()"
             />
         </div>
     </div>
@@ -83,13 +84,16 @@ export default({
             this.submitBtnContent = "Sign In";  
         },
         signin(){
+            console.log("sign in!!!!");
             this.$store.state.users.forEach((user) => {
                 if (user.email === this.email && user.password === this.password) {
-                    this.$router.push({ name: "Questions" });
+                    console.log("signed in>>>");
+                    this.$router.push({ name: "Questions", params: { 'user_id': user.universityId } });
                 }
             })
         },
         signup(){
+            console.log("sign up!!!!");
             this.$store.commit ("createUser", {
                 email: this.email,
                 password: this.password,

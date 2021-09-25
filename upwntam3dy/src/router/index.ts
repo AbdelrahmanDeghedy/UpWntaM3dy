@@ -5,25 +5,25 @@ import App from "@/App.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
-      path: "/user_id/questions",
+      path: "/:user_id/questions",
       name: "Questions",
       component: App,
       meta: { requiresAuth: true }
     },
     {
-      path: "/user_id/questions/ask",
+      path: "/:user_id/questions/ask",
       name: "Ask",
       component: () => import("@/App.vue"),
       meta: { requiresAuth: true }
     },
     {
-      path: "/user_id/questions/:qId",
+      path: "/:user_id/questions/:qId",
       name: "Question",
       component: () => import("@/App.vue"),
       meta: { requiresAuth: true }
     },
     {
-      path: "/user_id/profile",
+      path: "/:user_id/profile",
       name: "Profile",
       component: () => import("@/App.vue"),
       meta: { requiresAuth: true }
@@ -49,13 +49,14 @@ const router = createRouter({
 
 const validateAuthedUser = (to, from, next) => {
   if (!to.meta.requiresAuth) return next();
-
+  console.log(to.params.user_id);
   if (!to.params.user_id) {
     // redirect to sign in page
     router.push({ name: "Signin" });
     store.commit("setPageMode", "auth");
     return next()
   }
+  return next();
 
 }
 

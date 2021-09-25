@@ -9,7 +9,7 @@
       </div>
 
       <div class="w-1/5 ml-6 flex flex-col items-center mt-4">
-        <router-link :to="{ name: 'Ask' }">
+        <router-link :to="{ name: 'Ask', params: { 'user_id': 18010917 } }">
           <the-button
             @click="handlePageRouting()"
             v-if="mode !== 'questionCreate'"

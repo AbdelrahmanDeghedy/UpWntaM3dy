@@ -5,7 +5,7 @@
       <div class="opacity-60">Answers</div>
     </div>
     <div class="py-6 w-4/6">
-      <router-link :to="{ name: 'Question', params: { qId: id } }">
+      <router-link :to="{ name: 'Question', params: { qId: id, 'user_id': 18010917 } }">
         <div
           class="text-2xl font-semibold cursor-pointer"
           :dir="language === 'en' ? 'ltr' : 'rtl'"
@@ -28,7 +28,7 @@
       </div>
     </div>
     <div class="py-6 w-1/6 flex flex-col items-center">
-      <router-link :to="{ name: 'Question', params: { qId: id } }">
+      <router-link :to="{ name: 'Question', params: { qId: id, 'user_id': 18010917 } }">
         <the-button content="Answer" type="secondary" size="small" @click="handleAnswerClick"/>
       </router-link>
       <div
