@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="flex flex-col">
     <!-- Filter By Date Buttons -->
     <div class="flex justify-end">
       <the-button
@@ -31,24 +31,32 @@
       />
     </div>
     <!-- Question cards -->
-    <div class="flex flex-col mt-4 h-screen">
+    <div class="flex flex-col mt-4">
       <question-card
         v-for="question in this.$store.state.questions"
         :key="question"
         :question="question"
       />
     </div>
+
+    <pagination-buttons 
+      :maxRange="10"
+    />
+
   </div>
 </template>
 
 <script>
 import TheButton from "@/components/TheButton.vue";
 import QuestionCard from "@/components/QuestionCard.vue";
+import PaginationButtons from '@/components/PaginationButtons.vue';
+
 
 export default {
   components: {
     TheButton,
     QuestionCard,
+    PaginationButtons,
   },
   data() {
     return {
@@ -75,7 +83,3 @@ export default {
 };
 </script>
 
-<style scoped>
-.clicked {
-}
-</style>
