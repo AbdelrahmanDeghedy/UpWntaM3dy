@@ -16,7 +16,7 @@
                             content="Save"
                             type="ternary"
                             size="small"
-                            @click="disablePopup"
+                            @click="saveChanges"
                         />
                         <div 
                             class="ml-4 text-black cursor-pointer text-lg"
@@ -44,7 +44,7 @@
                     <div class="w-48 h-48 rounded-full overflow-hidden shadow-lg flex justify-center items-center">
                         <img 
                             class="w-48 h-48"
-                            src="https://www.imgonline.com.ua/examples/bee-on-daisy.jpg" 
+                            :src="userImg"
                             alt="profile pic"
                         >
                     </div>
@@ -57,7 +57,7 @@
                 </div>
                 <div 
                     class="mr-20 w-1/4 flex justify-center items-center"
-                    @click="enablePopup"
+                    @click="editBio"
                 >
                     <the-button 
                         content="Edit Bio"
@@ -106,6 +106,7 @@ export default({
             answersCount: 0,
             pointsCount: 0,
             rank: -1,
+            userImg: "",
         }
     },
     mounted(){
@@ -115,10 +116,19 @@ export default({
     methods: {
         initializeValues(){
             this.username = this.getCurrentUser().name;
+            this.userImg = this.getCurrentUser().picture;
             this.bioText = this.getCurrentUser().bio;
             this.rank = this.getCurrentUser().rank;
             this.pointsCount = this.getCurrentUser().points;
             this.answersCount = this.getCurrentUser().answers.answerIds.length;
+        },
+        editBio(){
+            this.currentBio = this.bioText;
+            this.enablePopup();
+        },
+        saveChanges(){
+            this.getCurrentUser().bio = this.bioText;
+            this.disablePopup();
         },
         disablePopup(){
             this.showPopup = false;
@@ -131,6 +141,7 @@ export default({
             this.disableBtn = true;
         },
         discardChanges(){
+            this.bioText = this.getCurrentUser().bio;
             this.disablePopup();
         },
     }
