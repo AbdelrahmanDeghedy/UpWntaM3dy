@@ -49,7 +49,7 @@
                         >
                     </div>
                     <div class="mt-4 text-2xl font-bold">
-                        Abdelrahman Deghedy
+                        {{ username }}
                     </div>
                     <div class="mt-2 w-96 text-center">
                         {{ bioText }}
@@ -71,15 +71,15 @@
             <div class="flex justify-center text-xl py-4">
                 <div class="flex flex-col items-center mr-10">
                     <div class="opacity-50">Answers</div>
-                    <div>20</div>
+                    <div>{{ answersCount }}</div>
                 </div>
                 <div class="flex flex-col items-center mx-10">
                     <div class="opacity-50">Points</div>
-                    <div>50</div>
+                    <div>{{ pointsCount }}</div>
                 </div>
                 <div class="flex flex-col items-center ml-10">
                     <div class="opacity-50">Rank</div>
-                    <div>2</div>
+                    <div>{{ rank }}</div>
                 </div>
             </div>
         </div>
@@ -89,8 +89,10 @@
 <script lang="ts">
 import TheButton from '@/components/TheButton.vue'
 import ThePopup from '@/components/ThePopup.vue'
+import profileInfo from '@/mixins/profileInfo'
 
 export default({
+    mixins: [profileInfo],
     components: {
         TheButton,
         ThePopup
@@ -99,10 +101,25 @@ export default({
         return {
             showPopup: false,
             disableBtn: false,
-            bioText: "I'm Abdelrahman. I aspire to make the world a better place. I like engaging with others and learning from them."
+            bioText: "",
+            username: "",
+            answersCount: 0,
+            pointsCount: 0,
+            rank: -1,
         }
     },
+    mounted(){
+        console.log("test", this.getCurrentUser());
+        this.initializeValues();
+    },
     methods: {
+        initializeValues(){
+            this.username = this.getCurrentUser().name;
+            this.bioText = this.getCurrentUser().bio;
+            this.rank = this.getCurrentUser().rank;
+            this.pointsCount = this.getCurrentUser().points;
+            this.answersCount = this.getCurrentUser().answers.answerIds.length;
+        },
         disablePopup(){
             this.showPopup = false;
             this.$refs.profileContainer.classList.remove("blur-sm", "filter")

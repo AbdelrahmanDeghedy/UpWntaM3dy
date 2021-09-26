@@ -51,6 +51,7 @@
 <script lang="ts">
 import TheButton from '@/components/TheButton.vue';
 
+
 export default({
     components: {
         TheButton

@@ -49,7 +49,7 @@ const router = createRouter({
 
 const validateAuthedUser = (to, from, next) => {
   if (!to.meta.requiresAuth) return next();
-  console.log(to.params.user_id);
+  
   if (!to.params.user_id) {
     // redirect to sign in page
     router.push({ name: "Signin" });

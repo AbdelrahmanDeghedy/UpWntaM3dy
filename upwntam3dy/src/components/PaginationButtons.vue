@@ -67,7 +67,6 @@ export default ({
     },
     
     async mounted(){
-        console.log("testeest");
         await setTimeout(() => {
             this.$store.state.pageMode !== "questions" || (this.initializeButtonValues());
         }, 0)

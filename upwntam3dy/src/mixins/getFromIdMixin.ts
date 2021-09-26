@@ -1,5 +1,11 @@
 export default {
   methods: {
+    getUserFromUniversityId(uid){
+      if (!uid) return null;
+      return this.$store.state.users.filter(user => {
+        return String(user.universityId) === String(uid)
+      })[0];
+    },
     getUsernameFromId(uid){
       if (!uid) return "";
         return this.$store.state.users.filter(user => {

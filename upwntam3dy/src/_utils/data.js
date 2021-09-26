@@ -6,7 +6,7 @@ export const users = [
     name: "Abdelrahman Deghedy",
     points: 532,
     rank: 2,
-    bio: "Let fate be free",
+    bio: "I'm Abdelrahman. I aspire to make the world a better place. I like engaging with others and learning from them.",
     picture: "https://www.imgonline.com.ua/examples/bee-on-daisy.jpg",
     answers: {
       answerIds: [5, 8, 4],
