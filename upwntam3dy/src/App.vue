@@ -1,8 +1,9 @@
 <template>
   <div class="bg-yellow-100 min-h-screen">
-    <the-navbar />
+    <the-navbar v-if="$store.state.pageMode !== 'notfound'" />
+    <not-found v-if="$store.state.pageMode ==='notfound'"/>
     <auth 
-      v-if="$store.state.pageMode ==='auth'"
+      v-else-if="$store.state.pageMode ==='auth'"
       class="pt-10"
     />
     <user-profile 
@@ -35,6 +36,7 @@ import UserProfile from '@/components/UserProfile.vue';
 
 import { users, answers, questions, courseInfoPerTerm } from "@/_utils/data";
 import Auth from './components/Auth.vue';
+import NotFound from './components/NotFound.vue';
 
 export default {
   name: "App",
@@ -46,6 +48,7 @@ export default {
     QuestionCreate,
     UserProfile,
     Auth,
+    NotFound,
   },
   data() {
     return {
@@ -62,8 +65,10 @@ export default {
         this.$store.commit("setPageMode", "questionDetails");
       } else if (this.$route.name === "Profile") {
         this.$store.commit("setPageMode", "profile");
-      }else if (this.$route.name === "Signin" || this.$route.name === "Signup" ) {
+      } else if (this.$route.name === "Signin" || this.$route.name === "Signup" ) {
         this.$store.commit("setPageMode", "auth");
+      } else if (this.$route.name === "NotFound") {
+        this.$store.commit("setPageMode", "notfound");
       }
       
     },

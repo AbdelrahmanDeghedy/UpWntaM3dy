@@ -10,7 +10,7 @@ export interface stateType {
   
   courseInfoPerTerm: [];
   
-  pageMode: "questions" | "questionDetails" | "questionCreate" | "profile" | "auth";
+  pageMode: "questions" | "questionDetails" | "questionCreate" | "profile" | "auth" | "notfound";
 
   likePrimaryColor: string;
   likeSecondaryColor: string;
