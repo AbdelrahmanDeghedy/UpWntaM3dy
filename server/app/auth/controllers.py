@@ -1,29 +1,65 @@
-from flask import Flask
-from flask_restful import Resource, Api, reqparse
+from flask import request, jsonify
+from werkzeug.security import generate_password_hash, check_password_hash
 from models import User
-from models import db
+from models import db, app
+from werkzeug.security import safe_str_cmp
+# from flask_jwt import JWT, jwt_required, current_identity
 
-parser = reqparse.RequestParser()
+# app.config['SECRET_KEY'] = 'super-secret'
 
 
-app = Flask(__name__)
-api = Api(app)
+# def authenticate(email, password):
+#     user = user = User.query.filter_by(email = email).first()
+#     if user and safe_str_cmp(user.password.encode('utf-8'), password.encode('utf-8')):
+#         return user
 
-class Signup(Resource):
-    def post(self):
-        parser.add_argument('email', 'password')
-        args = parser.parse_args()
-        return args , 201
+# def identity(payload):
+#     user_id = payload['identity']
+#     return User.query.filter_by(id = user_id).first()
 
-api.add_resource(Signup, '/api/v1/users/signup')
+# jwt = JWT(app, authenticate, identity)
+
+
+@app.route("/signup", methods = ["POST"])
+def signup_post () :
+    reqData = request.get_json()
+
+    email = reqData["email"]
+    name = reqData["name"]
+    password = reqData["password"]
+    universityId = reqData["universityId"]
+    department = reqData["department"]
+    bio = ""
+    picture = ""
+
+    if (email == None or name == None or password == None or universityId == None or department == None) :
+        return jsonify({ "msg" : "Invalid data!" }), 400
+    # print (email, name, password)
+
+    user = User.query.filter_by(email = email).first()
+
+    if user :
+        return jsonify ({ "msg": "user already existed" }), 400
+    
+    newUser = User(email = email, 
+                    name = name, 
+                    password = generate_password_hash(password, method='sha256'),
+                    universityId = universityId, 
+                    department = department, 
+                    bio = bio,
+                    picture = picture,
+                    rank = -1,
+                    points = 0
+                  )
+
+    db.session.add(newUser)
+    db.session.commit()
+
+    return jsonify({ "msg" : "user created!!" }), 201
+
 
 if __name__ == '__main__':
     app.run(debug=True)
 
 
-
-# admin = User (name = "admin", universityId = 18010917, email = "test@test.com", password = "password", points = 0, rank = -1, bio = "", picture = "", department = "communication")
-
-# db.session.add(admin)
-# db.session.commit()
 
