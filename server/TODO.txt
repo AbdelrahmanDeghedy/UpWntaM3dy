@@ -35,3 +35,21 @@ Models:
 4) Run the following commands by order:
     flask db migrate
     flask db upgrade
+
+---
+
+Setting-up Environment Variables
+
+1. Create .env file.
+
+2. Insert your env varibles.
+
+3. Install python-decouple package
+pip install python-decouple
+
+4. Calling any env variable in your Python code.
+
+from decouple import config
+
+API_USERNAME = config('USER')
+API_KEY = config('KEY')
