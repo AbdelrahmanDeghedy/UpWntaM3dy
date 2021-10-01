@@ -8,6 +8,16 @@ from flask_login import login_user, logout_user, login_required
 db = SQLAlchemy()
 
 
+def get_leaderboard () :
+        users = User.query.filter().all()
+        usersList = [user.serializeUser() for user in users]
+        usersList = sorted(usersList, key = lambda k : k['rank'], reverse=True)
+
+        return {
+            'msg': 'Success',
+            'users': usersList
+        }
+
 def login_post():
     reqData = request.get_json()
 
@@ -70,3 +80,4 @@ def signup_post():
 def logout():
     logout_user()
     return jsonify({ "msg": "logout" })
+
