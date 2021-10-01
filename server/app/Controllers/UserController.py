@@ -3,7 +3,7 @@ import sqlalchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from Models.User import User
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 
 db = SQLAlchemy()
 
@@ -80,4 +80,8 @@ def signup_post():
 def logout():
     logout_user()
     return jsonify({ "msg": "logout" })
+
+@login_required
+def currnetUser():
+    return current_user.serializeUser()
 
