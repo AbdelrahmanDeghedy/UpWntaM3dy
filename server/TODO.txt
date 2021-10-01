@@ -1,3 +1,10 @@
+First time installation
+
+python3 -m venv venv
+. venv/bin/activate
+pip install -r requirements.txt
+
+---
 python app.py => To run the server
 Please git ignore the venv and create one locally and install dependencies :)
 don't use camelCases :))
