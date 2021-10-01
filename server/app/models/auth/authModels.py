@@ -1,15 +1,8 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
 
-app = Flask(__name__)
+from app import db
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://///home/deghedy/Desktop/UpWntaM3dy/test.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-db = SQLAlchemy(app)
-
-
-class User(db.Model):
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(80), nullable=False)
     universityId = db.Column(db.Integer, unique=True, nullable=False)
@@ -23,4 +16,4 @@ class User(db.Model):
 
 
     def __repr__(self):
-        return '<User %r>' % self.name
+        return f'<User {self.name}>' 
