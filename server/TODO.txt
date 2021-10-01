@@ -1,0 +1,37 @@
+python app.py => To run the server
+Please git ignore the venv and create one locally and install dependencies :)
+don't use camelCases :))
+
+import the model in app file ********
+flask db migrate
+flask db upgrade
+flask db downgrade => in case of reseting tables
+don't forget to add table name******
+name of the table is plural small letters
+
+useful-links:
+https://flask-migrate.readthedocs.io/en/latest/
+https://flask.palletsprojects.com/en/2.0.x/api/#flask.Flask.config
+https://silve1ra.medium.com/
+
+
+
+
+**FIRST OF ALL RUN THE FOLLOWING COMMANDS INSIDE THE SERVER/APP DIR : 
+    flask db init
+    flask db migrate
+    flask db upgrade
+
+
+**
+Models:
+1) Create model_name.py file inside models (don't forget to add table name inside the model class)
+2) include these lines :  
+# from flask import Flask
+# from flask_sqlalchemy import SQLAlchemy
+# from .database import db
+
+3) Import all created models inside the app.py file
+4) Run the following commands by order:
+    flask db migrate
+    flask db upgrade

@@ -1,26 +1,12 @@
 from flask import request, jsonify
+import sqlalchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-from models import User
-from models import db, app
-from werkzeug.security import safe_str_cmp
-# from flask_jwt import JWT, jwt_required, current_identity
+from Models.User import User
+from flask_sqlalchemy import SQLAlchemy
 
-# app.config['SECRET_KEY'] = 'super-secret'
+db = SQLAlchemy()
 
 
-# def authenticate(email, password):
-#     user = user = User.query.filter_by(email = email).first()
-#     if user and safe_str_cmp(user.password.encode('utf-8'), password.encode('utf-8')):
-#         return user
-
-# def identity(payload):
-#     user_id = payload['identity']
-#     return User.query.filter_by(id = user_id).first()
-
-# jwt = JWT(app, authenticate, identity)
-
-
-@app.route("/signup", methods = ["POST"])
 def signup_post () :
     reqData = request.get_json()
 
@@ -57,9 +43,6 @@ def signup_post () :
 
     return jsonify({ "msg" : "user created!!" }), 201
 
-
-if __name__ == '__main__':
-    app.run(debug=True)
 
 
 
