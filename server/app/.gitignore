@@ -52,5 +52,5 @@ docs/_build/
 __pycache__
 venv
 migrations
-db.sqlite
+/db.sqlite
 .env

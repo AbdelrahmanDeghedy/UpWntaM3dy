@@ -13,6 +13,8 @@ def get_leaderboard () :
         usersList = [user.serializeUser() for user in users]
         usersList = sorted(usersList, key = lambda k : k['rank'], reverse=True)
 
+        # print(usersList[0])
+
         return {
             'msg': 'Success',
             'users': usersList
@@ -65,7 +67,8 @@ def signup_post():
                     bio = bio,
                     picture = picture,
                     rank = -1,
-                    points = 0
+                    points = 0,
+                    bookmarks = []
                   )
 
     db.session.add(newUser)

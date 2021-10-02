@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import backref
+
 from .database import db
 from flask_login import UserMixin
 from marshmallow import Schema, fields, ValidationError
@@ -19,6 +20,7 @@ UserSchema = Schema.from_dict(
         "bio": fields.Str(), 
         "picture": fields.Str(), 
         "department": fields.Str(), 
+        "bookmarks" : fields
     }
 )
 
@@ -35,6 +37,7 @@ class User(UserMixin, db.Model):
     picture = db.Column(db.String, nullable=False)
     department = db.Column(db.String, nullable=False)
     bookmarks = db.relationship('Question', backref = "owner")
+    # likes
 
     def serializeUser(self) :
         schema = UserSchema(exclude=['password'])
@@ -42,6 +45,6 @@ class User(UserMixin, db.Model):
         return result
     
     def __repr__(self):
-        return f'<User {self.name}>' 
+        return f'User {self.id}' 
 
 
