@@ -49,6 +49,41 @@ def questions_post() :
     }
 
 @login_required
+def questions_edit (qid) :
+    reqData = request.get_json()
+    title = reqData.get("title", None)
+    body = reqData.get("body", None)
+
+
+    editedQuestion = Question.query.filter_by(id = qid).first()
+    editedQuestion.title = title
+    editedQuestion.body = body
+    
+    db.session.close_all()
+    db.session.add(editedQuestion)
+    db.session.commit()
+
+    
+    return {
+        "msg": "success",
+        "Updated Question": editedQuestion.serializeQuestion()
+    }
+
+@login_required
+def questions_delete (qid) :
+    deletedQuestion = Question.query.filter_by(id = qid).first()
+    
+    
+    db.session.close_all()
+    db.session.delete(deletedQuestion)
+    db.session.commit()
+
+    
+    return {
+        "msg": "success",
+    }
+
+@login_required
 def questions_like (qid) :
     if QuestionLike.query.filter_by(likedQid = qid).first() :
         return { 'msg' : 'already liked!' }
