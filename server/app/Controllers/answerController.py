@@ -34,3 +34,45 @@ def create_answer(qid):
         'msg' : 'success',
         'answer': newAnswer.serializeAnswer()
      }
+
+@login_required
+def get_answers (qid) :
+    questionAnswers = Answer.query.filter_by(parentQuestion_id = qid).all()
+    questionAnswers = [answer.serializeAnswer() for answer in questionAnswers]
+
+    return {
+        'msg' : 'success',
+        'length': len(questionAnswers),
+        'Answers' : questionAnswers
+    }
+
+@login_required
+def edit_answer(aid):
+    reqData = request.get_json()
+    body = reqData.get("body", None)
+
+    editedAnswer = Answer.query.filter_by(id = aid).first()
+
+    editedAnswer.body = body
+
+    db.session.close_all()
+    db.session.add(editedAnswer)
+    db.session.commit()
+    
+    return { 
+        'msg' : 'success',
+        'editedAnswer': editedAnswer.serializeAnswer()
+     }
+
+@login_required
+def delete_answer(aid):
+
+    deletedAnswer = Answer.query.filter_by(id = aid).first()
+
+    db.session.close_all()
+    db.session.delete(deletedAnswer)
+    db.session.commit()
+    
+    return { 
+        'msg' : 'success',
+     }
