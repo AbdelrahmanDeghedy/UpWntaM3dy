@@ -4,6 +4,8 @@ from flask import request, jsonify
 from Models.Question import Question
 from Models.Answer import Answer
 from Models.User import User
+from Models.AnswerLikes import AnswerLike
+from Models.AnswerBookmarks import AnswerBookmark
 from flask_sqlalchemy import SQLAlchemy
 
 from flask_login import login_required, current_user
@@ -76,3 +78,67 @@ def delete_answer(aid):
     return { 
         'msg' : 'success',
      }
+
+@login_required
+def like_answer (aid) :
+    if AnswerLike.query.filter_by(likedAid = aid).first() :
+        return { 'msg' : 'already liked!' }
+    likedAnswer = AnswerLike(
+                            likedAid = aid,
+                            owner = current_user
+                        )
+    db.session.close_all()
+    db.session.add(likedAnswer)
+    db.session.commit()
+
+    return { 
+            'msg' : 'success',
+            'likedAnswers' : likedAnswer.serializeAnswerLike()
+           }
+
+@login_required
+def dislike_answer (aid) :
+    if not (AnswerLike.query.filter_by(likedAid = aid).first()) :
+        return { 'msg' : 'already disliked!' }
+
+    likedAnswer = AnswerLike.query.filter_by(likedAid = aid).first()
+    
+    db.session.close_all()
+    db.session.delete(likedAnswer)
+    db.session.commit()
+
+    return { 
+            'msg' : 'success',
+           }
+
+@login_required
+def bookmark_answer (aid) :
+    if AnswerBookmark.query.filter_by(bookmarkedAid = aid).first() :
+        return { 'msg' : 'already bookmarked!' }
+    bookmarkedAnswer = AnswerBookmark(
+                            bookmarkedAid = aid,
+                            owner = current_user
+                        )
+    db.session.close_all()
+    db.session.add(bookmarkedAnswer)
+    db.session.commit()
+
+    return { 
+            'msg' : 'success',
+            'bookmrkedAnswers' : bookmarkedAnswer.serializeAnswerBookmark()
+           }
+
+@login_required
+def removeBookmark_answer (aid) :
+    if not (AnswerBookmark.query.filter_by(bookmarkedAid = aid).first()) :
+        return { 'msg' : 'already not bookmarked!' }
+
+    bookmarkedAnswer = AnswerBookmark.query.filter_by(bookmarkedAid = aid).first()
+    
+    db.session.close_all()
+    db.session.delete(bookmarkedAnswer)
+    db.session.commit()
+
+    return { 
+            'msg' : 'success',
+           }
