@@ -29,16 +29,7 @@ class Question(UserMixin, db.Model):
     bookmarked = db.Column(db.Boolean, default=False, nullable=False)
     
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-
     answerIds = db.relationship('Answer', backref = "parentQuestion")
-
-
-    # user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
-    # user = db.relationship('User',backref=db.backref('questions', lazy=True))
-
-    #Foreign keys
-    #Reports => []
-    #Answers => []
 
     def serializeQuestion(self) :
         schema = QuestionSchema()

@@ -76,6 +76,47 @@ def signup_post():
 
     return jsonify({ "msg" : "user created!!" }), 201
 
+@login_required
+def user_edit():
+    reqData = request.get_json()
+
+    email = reqData.get("email", None)
+    name = reqData.get("name", None)
+    password = reqData.get("password", None)
+    bio = reqData.get("bio", None)
+    picture = reqData.get("picture", None)
+    rank = reqData.get("rank", None)
+    points = reqData.get("points", None)
+
+    user = User.query.filter_by(email = current_user.email).first()
+
+    user.email = email if email != None and not (User.query.filter_by(email = email).first()) else user.email
+    user.password = generate_password_hash(password, method='sha256') if password != None else user.password
+    user.name = name if name != None else user.name
+    user.bio = bio if bio != None else user.bio
+    user.picture = picture if picture != None else user.picture
+    user.rank = rank if rank != None else user.rank
+    user.points = points if points != None else user.points
+
+    db.session.close_all()
+    db.session.add(user)
+    db.session.commit()
+    
+
+    return jsonify({ "msg" : "user updated!!" }), 200
+
+@login_required
+def user_delete():
+    deletedUser = User.query.filter_by(id = current_user.id).first()
+
+    db.session.close_all()
+    db.session.delete(deletedUser)
+    db.session.commit()
+    logout_user()
+    
+
+    return jsonify({ "msg" : "user deleted!!" }), 200
+
 
 @login_required
 def logout():
