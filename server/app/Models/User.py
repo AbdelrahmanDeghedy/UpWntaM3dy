@@ -6,7 +6,6 @@ from .database import db
 from flask_login import UserMixin
 from marshmallow import Schema, fields, ValidationError
 
-# from .Question import Question
 
 UserSchema = Schema.from_dict(
     {
@@ -20,7 +19,6 @@ UserSchema = Schema.from_dict(
         "bio": fields.Str(), 
         "picture": fields.Str(), 
         "department": fields.Str(), 
-        "bookmarks" : fields
     }
 )
 
@@ -36,12 +34,15 @@ class User(UserMixin, db.Model):
     bio = db.Column(db.String(270), nullable=False)
     picture = db.Column(db.String, nullable=False)
     department = db.Column(db.String, nullable=False)
-    bookmarks = db.relationship('Question', backref = "owner")
-    # likes
+    questionIds = db.relationship('Question', backref = "owner")
+    # likes = db.relationship('Question', backref = "owner")
 
     def serializeUser(self) :
         schema = UserSchema(exclude=['password'])
         result = schema.dump(self)
+        questionIds = [question.id for question in list(self.questionIds)]
+        result['questionIds'] = questionIds
+        print (result)
         return result
     
     def __repr__(self):

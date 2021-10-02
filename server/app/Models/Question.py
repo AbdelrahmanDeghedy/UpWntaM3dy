@@ -13,7 +13,6 @@ QuestionSchema = Schema.from_dict(
         "title": fields.Str(), 
         "body": fields.Str(),
         "likes": fields.Integer(),
-        "liked": fields.Boolean(),
         "bookmarked": fields.Boolean(),
         "owner_id": fields.Integer(),
         "owner" : fields.Str()
@@ -27,10 +26,12 @@ class Question(UserMixin, db.Model):
     title = db.Column(db.String(200), nullable=False)
     body = db.Column(db.String(270), nullable=True)
     likes = db.Column(db.Integer, default=0, nullable=False)
-    liked = db.Column(db.Boolean, default=False, nullable=False)
     bookmarked = db.Column(db.Boolean, default=False, nullable=False)
     
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+
+    answerIds = db.relationship('Answer', backref = "parentQuestion")
+
 
     # user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
     # user = db.relationship('User',backref=db.backref('questions', lazy=True))

@@ -13,10 +13,9 @@ def get_leaderboard () :
         usersList = [user.serializeUser() for user in users]
         usersList = sorted(usersList, key = lambda k : k['rank'], reverse=True)
 
-        # print(usersList[0])
-
         return {
             'msg': 'Success',
+            'length' : len(usersList),
             'users': usersList
         }
 
