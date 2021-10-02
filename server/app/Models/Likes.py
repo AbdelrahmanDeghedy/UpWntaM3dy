@@ -1,0 +1,26 @@
+from flask import Flask
+from datetime import datetime
+from flask_sqlalchemy import SQLAlchemy
+from .database import db
+from marshmallow import Schema, fields, ValidationError
+
+LikesSchema = Schema.from_dict(
+    {
+        "likedQid": fields.Integer(),
+        "owner_id" : fields.Str()
+    }
+)
+
+class Like(db.Model):
+    __tablename__ = 'likes'
+    likedQid = id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+
+    parentQuestion_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+
+    def serializeLike(self) :
+        schema = LikesSchema()
+        result = schema.dump(self)
+        return result
+
+    def __repr__(self):
+        return '<Answer %r' % self.id

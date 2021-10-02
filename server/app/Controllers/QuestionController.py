@@ -3,6 +3,7 @@ from flask import request, jsonify
 
 from Models.Question import Question
 from Models.User import User
+from Models.Likes import Like
 from flask_sqlalchemy import SQLAlchemy
 
 from flask_login import login_required, current_user
@@ -46,12 +47,33 @@ def questions_post() :
     }
 
 @login_required
-def questions_bookmark () :
-    # bookmarks = [bookmark.id for bookmark in list(self.bookmarks)]
-    user = User.query.filter().first()
-    print (type(user), user)
-    user.bookmarks = [list(user.bookmarks), "test"]
-    print (user.serializeUser())
-    # db.session.commit()
-    # print (current_user.serializeUser())
-    return { 'msg' : 'success' }
+def questions_like (qid) :
+    if Like.query.filter_by(likedQid = qid).first() :
+        return { 'msg' : 'already liked!' }
+    likedQuestion = Like(
+                            likedQid = qid,
+                            owner = current_user
+                        )
+    db.session.close_all()
+    db.session.add(likedQuestion)
+    db.session.commit()
+
+    return { 
+            'msg' : 'success',
+            'likedQuestions' : likedQuestion.serializeLike()
+           }
+
+@login_required
+def questions_dislike (qid) :
+    if not (Like.query.filter_by(likedQid = qid).first()) :
+        return { 'msg' : 'already disliked!' }
+
+    likedQues = Like.query.filter_by(likedQid = qid).first()
+    
+    db.session.close_all()
+    db.session.delete(likedQues)
+    db.session.commit()
+
+    return { 
+            'msg' : 'success',
+           }

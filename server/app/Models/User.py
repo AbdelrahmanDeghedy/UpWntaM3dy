@@ -36,6 +36,7 @@ class User(UserMixin, db.Model):
     department = db.Column(db.String, nullable=False)
     questionIds = db.relationship('Question', backref = "owner")
     answerIds = db.relationship('Answer', backref = "owner")
+    likes = db.relationship('Like', backref = "owner")
     
     # likes = db.relationship('Question', backref = "owner")
 
@@ -47,6 +48,10 @@ class User(UserMixin, db.Model):
 
         answerIds = [answer.id for answer in list(self.answerIds)]
         result['answerIds'] = answerIds
+        
+        likes = [like.id for like in list(self.likes)]
+        result['likedQuestionIds'] = likes
+
         print (result)
         return result
     
