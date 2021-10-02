@@ -14,6 +14,8 @@ QuestionSchema = Schema.from_dict(
         "body": fields.Str(),
         "likes": fields.Integer(),
         "bookmarked": fields.Boolean(),
+        "department": fields.Str(),
+        "commaSeparatedTags": fields.Str(),
         "owner_id": fields.Integer(),
         "owner" : fields.Str()
     }
@@ -23,10 +25,11 @@ class Question(UserMixin, db.Model):
     __tablename__ = 'questions'
     id  = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
     pub_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    title = db.Column(db.String(200), nullable=False)
-    body = db.Column(db.String(270), nullable=True)
+    title = db.Column(db.String(200), default="", nullable=False)
+    body = db.Column(db.String(270), default="", nullable=True)
     likes = db.Column(db.Integer, default=0, nullable=False)
-    bookmarked = db.Column(db.Boolean, default=False, nullable=False)
+    department = db.Column(db.String(270), nullable=True)
+    commaSeparatedTags = db.Column(db.String(270), default="", nullable=True)
     
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     answerIds = db.relationship('Answer', backref = "parentQuestion")
@@ -36,6 +39,7 @@ class Question(UserMixin, db.Model):
         result = schema.dump(self)
         answerIds = [answer.id for answer in list(self.answerIds)]
         result['answerIds'] = answerIds
+
         return result
 
     def __repr__(self):

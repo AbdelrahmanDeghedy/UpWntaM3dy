@@ -54,10 +54,10 @@ def edit_answer(aid):
     body = reqData.get("body", None)
 
     editedAnswer = Answer.query.filter_by(id = aid).first()
-
-    editedAnswer.body = body
-
     db.session.close_all()
+
+    editedAnswer.body = body if body != None else edit_answer.body
+
     db.session.add(editedAnswer)
     db.session.commit()
     

@@ -3,6 +3,7 @@ from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from .database import db
 from marshmallow import Schema, fields, ValidationError
+from flask_login import UserMixin
 
 AnswerSchema = Schema.from_dict(
     {
@@ -15,7 +16,7 @@ AnswerSchema = Schema.from_dict(
     }
 )
 
-class Answer(db.Model):
+class Answer(UserMixin, db.Model):
     __tablename__ = 'answers'
     id = id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     pub_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -25,10 +26,6 @@ class Answer(db.Model):
     parentQuestion_id = db.Column(db.Integer, db.ForeignKey('questions.id'), nullable=False)
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
-    #Date and Time
-    #Foreign keys
-    #Reports => []
-    #User => one user
 
     def serializeAnswer(self) :
         schema = AnswerSchema()

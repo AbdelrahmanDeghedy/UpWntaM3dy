@@ -30,11 +30,15 @@ def questions_post() :
     reqData = request.get_json()
     title = reqData.get("title", None)
     body = reqData.get("body", None)
+    department = reqData.get("department", None)
+    commaSeparatedTags = reqData.get("commaSeparatedTags", None)
 
 
     newQuestion = Question(
                     title = title,
                     body = body,
+                    department = department,
+                    commaSeparatedTags = commaSeparatedTags,
                     owner = current_user
                 )
     print (newQuestion)
@@ -48,18 +52,29 @@ def questions_post() :
         "Created Question": newQuestion.serializeQuestion()
     }
 
+def find_question_by_id (qid) :
+    return Question.query.filter_by(id = qid).first()
+
 @login_required
 def questions_edit (qid) :
     reqData = request.get_json()
     title = reqData.get("title", None)
     body = reqData.get("body", None)
+    department = reqData.get("department", None)
+    commaSeparatedTags = reqData.get("commaSeparatedTags", None)
 
 
     editedQuestion = Question.query.filter_by(id = qid).first()
-    editedQuestion.title = title
-    editedQuestion.body = body
-    
     db.session.close_all()
+
+    print (type(editedQuestion.title), type(title))
+
+    editedQuestion.title = title if title != None else find_question_by_id(qid).title
+    editedQuestion.body = body if body != None else find_question_by_id(qid).body
+    editedQuestion.department = department if department != None else find_question_by_id(qid).department
+    editedQuestion.commaSeparatedTags = commaSeparatedTags if commaSeparatedTags != None else find_question_by_id(qid).commaSeparatedTags
+    
+    
     db.session.add(editedQuestion)
     db.session.commit()
 

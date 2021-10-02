@@ -89,6 +89,7 @@ def user_edit():
     points = reqData.get("points", None)
 
     user = User.query.filter_by(email = current_user.email).first()
+    db.session.close_all()
 
     user.email = email if email != None and not (User.query.filter_by(email = email).first()) else user.email
     user.password = generate_password_hash(password, method='sha256') if password != None else user.password
@@ -98,7 +99,6 @@ def user_edit():
     user.rank = rank if rank != None else user.rank
     user.points = points if points != None else user.points
 
-    db.session.close_all()
     db.session.add(user)
     db.session.commit()
     
