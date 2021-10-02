@@ -3,7 +3,9 @@ from flask import request, jsonify
 
 from Models.Question import Question
 from Models.User import User
-from Models.Likes import Like
+from Models.QuestionLikes import QuestionLike
+from Models.QuestionBookmarks import QuestionBookmark
+
 from flask_sqlalchemy import SQLAlchemy
 
 from flask_login import login_required, current_user
@@ -48,9 +50,9 @@ def questions_post() :
 
 @login_required
 def questions_like (qid) :
-    if Like.query.filter_by(likedQid = qid).first() :
+    if QuestionLike.query.filter_by(likedQid = qid).first() :
         return { 'msg' : 'already liked!' }
-    likedQuestion = Like(
+    likedQuestion = QuestionLike(
                             likedQid = qid,
                             owner = current_user
                         )
@@ -65,13 +67,45 @@ def questions_like (qid) :
 
 @login_required
 def questions_dislike (qid) :
-    if not (Like.query.filter_by(likedQid = qid).first()) :
+    if not (QuestionLike.query.filter_by(likedQid = qid).first()) :
         return { 'msg' : 'already disliked!' }
 
-    likedQues = Like.query.filter_by(likedQid = qid).first()
+    likedQues = QuestionLike.query.filter_by(likedQid = qid).first()
     
     db.session.close_all()
     db.session.delete(likedQues)
+    db.session.commit()
+
+    return { 
+            'msg' : 'success',
+           }
+
+@login_required
+def questions_bookmark (qid) :
+    if QuestionBookmark.query.filter_by(bookmarkedQid = qid).first() :
+        return { 'msg' : 'already bookmarked!' }
+    bookmarkedQuestion = QuestionBookmark(
+                            bookmarkedQid = qid,
+                            owner = current_user
+                        )
+    db.session.close_all()
+    db.session.add(bookmarkedQuestion)
+    db.session.commit()
+
+    return { 
+            'msg' : 'success',
+            'likedQuestions' : bookmarkedQuestion.serializeQuestionBookmark()
+           }
+
+@login_required
+def questions_removeBookmark (qid) :
+    if not (QuestionBookmark.query.filter_by(bookmarkedQid = qid).first()) :
+        return { 'msg' : 'already not bookmarked!' }
+
+    bookmarkedQuestion = QuestionBookmark.query.filter_by(bookmarkedQid = qid).first()
+    
+    db.session.close_all()
+    db.session.delete(bookmarkedQuestion)
     db.session.commit()
 
     return { 

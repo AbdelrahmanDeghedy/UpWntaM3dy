@@ -3,24 +3,25 @@ from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from .database import db
 from marshmallow import Schema, fields, ValidationError
+from flask_login import UserMixin
 
-LikesSchema = Schema.from_dict(
+QuestionLikesSchema = Schema.from_dict(
     {
         "likedQid": fields.Integer(),
         "owner_id" : fields.Str()
     }
 )
 
-class Like(db.Model):
-    __tablename__ = 'likes'
-    likedQid = id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+class QuestionLike(UserMixin, db.Model):
+    __tablename__ = 'questionLikes'
+    likedQid = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
     parentQuestion_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     def serializeLike(self) :
-        schema = LikesSchema()
+        schema = QuestionLikesSchema()
         result = schema.dump(self)
         return result
 
     def __repr__(self):
-        return '<Answer %r' % self.id
+        return '<liked question %r' % self.likedQid
