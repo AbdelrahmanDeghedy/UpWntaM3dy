@@ -22,7 +22,8 @@ def create_answer(qid):
 
     newAnswer = Answer(
                 body = body,
-                parentQuestion = question
+                parentQuestion = question,
+                owner = current_user
             )
 
     db.session.close_all()

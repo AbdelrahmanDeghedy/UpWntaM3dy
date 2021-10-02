@@ -11,7 +11,7 @@ AnswerSchema = Schema.from_dict(
         "body": fields.Str(),
         "likes": fields.Integer(),
         "parentQuestion_id": fields.Integer(),
-        "parentQuestion" : fields.Str()
+        "owner_id" : fields.Str()
     }
 )
 
@@ -23,6 +23,7 @@ class Answer(db.Model):
     likes = db.Column(db.Integer, default=0, nullable=False)
 
     parentQuestion_id = db.Column(db.Integer, db.ForeignKey('questions.id'), nullable=False)
+    owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     #Date and Time
     #Foreign keys

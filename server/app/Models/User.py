@@ -35,6 +35,8 @@ class User(UserMixin, db.Model):
     picture = db.Column(db.String, nullable=False)
     department = db.Column(db.String, nullable=False)
     questionIds = db.relationship('Question', backref = "owner")
+    answerIds = db.relationship('Answer', backref = "owner")
+    
     # likes = db.relationship('Question', backref = "owner")
 
     def serializeUser(self) :
@@ -42,6 +44,9 @@ class User(UserMixin, db.Model):
         result = schema.dump(self)
         questionIds = [question.id for question in list(self.questionIds)]
         result['questionIds'] = questionIds
+
+        answerIds = [answer.id for answer in list(self.answerIds)]
+        result['answerIds'] = answerIds
         print (result)
         return result
     
