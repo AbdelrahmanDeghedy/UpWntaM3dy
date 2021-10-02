@@ -10,9 +10,8 @@ AnswerSchema = Schema.from_dict(
         "pub_date": fields.Date(),
         "body": fields.Str(),
         "likes": fields.Integer(),
-        "bookmarked": fields.Boolean(),
-        "owner_id": fields.Integer(),
-        "owner" : fields.Str()
+        "parentQuestion_id": fields.Integer(),
+        "parentQuestion" : fields.Str()
     }
 )
 
@@ -30,6 +29,10 @@ class Answer(db.Model):
     #Reports => []
     #User => one user
 
+    def serializeAnswer(self) :
+        schema = AnswerSchema()
+        result = schema.dump(self)
+        return result
+
     def __repr__(self):
-        #self.question
         return '<Answer %r' % self.id

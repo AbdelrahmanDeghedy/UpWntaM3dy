@@ -67,7 +67,6 @@ def signup_post():
                     picture = picture,
                     rank = -1,
                     points = 0,
-                    bookmarks = []
                   )
 
     db.session.add(newUser)

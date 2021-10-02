@@ -10,6 +10,7 @@ from Models.Answer import Answer
 
 #Import Routes BluePrints
 from Routes.question_bp import question_bp
+from Routes.answer_bp import answer_bp
 from Routes.user_bp import user_bp
 from Routes.report_bp import report_bp
 
@@ -23,6 +24,7 @@ db.init_app(app)
 migrate = Migrate(app, db)
 
 app.register_blueprint(question_bp, url_prefix='/questions')
+app.register_blueprint(answer_bp, url_prefix='/answers')
 app.register_blueprint(user_bp, url_prefix='/users')
 app.register_blueprint(report_bp, url_prefix='/reports')
 

@@ -43,6 +43,8 @@ class Question(UserMixin, db.Model):
     def serializeQuestion(self) :
         schema = QuestionSchema()
         result = schema.dump(self)
+        answerIds = [answer.id for answer in list(self.answerIds)]
+        result['answerIds'] = answerIds
         return result
 
     def __repr__(self):
