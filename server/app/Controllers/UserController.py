@@ -1,9 +1,11 @@
 from flask import request, jsonify
+from flask_jwt_extended.utils import get_current_user
 import sqlalchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from Models.User import User
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import login_user, logout_user, login_required, current_user
+
+from flask_jwt_extended import get_jwt_identity, create_access_token, jwt_required
 
 db = SQLAlchemy()
 
@@ -30,9 +32,15 @@ def login_post():
     if not user or not check_password_hash(user.password, password):
         return jsonify({ 'msg' : 'Invalid Credentials' })
 
-    login_user(user, remember=True)
 
-    return jsonify({ "msg": "Logged in!" })
+    access_token = create_access_token(identity=user.universityId)
+
+    
+    return jsonify({
+        'msg' : 'success',
+        'user' : user.serializeUser(),
+        'token': access_token
+    })
 
 def signup_post():
     reqData = request.get_json()
@@ -72,11 +80,15 @@ def signup_post():
     db.session.add(newUser)
     db.session.commit()
     
-    login_user(newUser, remember=True)
+    access_token = create_access_token(identity=newUser.universityId)
 
-    return jsonify({ "msg" : "user created!!" }), 201
+    return jsonify({ 
+        'msg' : 'success',
+        'user' : newUser.serializeUser(),
+        'token': access_token
+     }), 201
 
-@login_required
+@jwt_required()
 def user_edit():
     reqData = request.get_json()
 
@@ -88,7 +100,8 @@ def user_edit():
     rank = reqData.get("rank", None)
     points = reqData.get("points", None)
 
-    user = User.query.filter_by(email = current_user.email).first()
+
+    user = User.query.filter_by(universityId = getCurrnetUser().universityId).first()
     db.session.close_all()
 
     user.email = email if email != None and not (User.query.filter_by(email = email).first()) else user.email
@@ -105,25 +118,30 @@ def user_edit():
 
     return jsonify({ "msg" : "user updated!!" }), 200
 
-@login_required
-def user_delete():
-    deletedUser = User.query.filter_by(id = current_user.id).first()
+@jwt_required()
+def user_delete(uid):
+    deletedUser = User.query.filter_by(universityId = uid).first()
 
     db.session.close_all()
     db.session.delete(deletedUser)
-    db.session.commit()
-    logout_user()
-    
+    db.session.commit()    
 
     return jsonify({ "msg" : "user deleted!!" }), 200
 
 
-@login_required
-def logout():
-    logout_user()
-    return jsonify({ "msg": "logout" })
+# @jwt_required()
+# def logout():
+#     logout_user()
+#     return jsonify({ "msg": "logout" })
 
-@login_required
+@jwt_required()
 def currnetUser():
-    return current_user.serializeUser()
+    currentUser = get_jwt_identity()
+    return jsonify(logged_in_as=currentUser), 200
+
+
+def getCurrnetUser():
+    currentUserId = get_jwt_identity()
+    currentUser = User.query.filter_by (universityId = currentUserId).first()
+    return currentUser
 

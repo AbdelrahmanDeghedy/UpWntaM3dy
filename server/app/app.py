@@ -28,24 +28,8 @@ app.register_blueprint(answer_bp, url_prefix='/answers')
 app.register_blueprint(user_bp, url_prefix='/users')
 app.register_blueprint(report_bp, url_prefix='/reports')
 
-
-# Auth configurations
-from flask_login import LoginManager
-from flask import jsonify
-
-
-login_manager = LoginManager()
-login_manager.login_view = 'login_post'
-login_manager.init_app(app)
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.filter_by(id=user_id).first()
-
-@login_manager.unauthorized_handler
-def unauth_handler():
-    return jsonify(message='You are not authorized to access this page'), 401
-
+from flask_jwt_extended import JWTManager
+jwt = JWTManager(app)
 
 
 
