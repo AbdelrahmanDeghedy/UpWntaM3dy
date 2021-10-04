@@ -60,12 +60,6 @@ export default {
   components: {
     TheButton,
   },
-  async mounted(){
-    await this.initializeValues();
-    this.handleLanguage();
-    // console.log(this.findQuestionById(this.id));
-    // console.log(this.$store.state.questions);
-  },
   data(): any {
     return {
       language: "en",
@@ -80,6 +74,12 @@ export default {
       currentBookmarkColor: this.findQuestionById(this.id).bookmarked ? this.$store.state.bookmarkPrimaryColor : this.$store.state.bookmarkSecondaryColor,
     };
   },
+      async mounted(){
+        await this.initializeValues();
+        this.handleLanguage();
+        // console.log(this.findQuestionById(this.id));
+        // console.log(this.$store.state.questions);
+      },
   methods: {
     handleLanguage(){
       if (isArabic(this.text)) {
@@ -94,10 +94,10 @@ export default {
       // console.log(this.$store.state.scrollToAnswer);
     },
     initializeValues(){
-      this.answersNumber = this.question.answersIds.length;
+      this.answersNumber = this.question.answerIds.length;
       this.text = this.question.title;
       this.owner =  this.getUsernameFromId(this.question.ownerId);
-      this.time = this.question.time;
+      this.time = this.question.pub_date;
       this.likes = this.question.likes;
       this.id = this.question.id;
       this.currentLikeColor = this.findQuestionById(this.id).liked ? this.$store.state.likePrimaryColor : this.$store.state.likeSecondaryColor;
