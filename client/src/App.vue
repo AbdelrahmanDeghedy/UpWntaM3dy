@@ -39,10 +39,11 @@ import Auth from './components/Auth.vue';
 import NotFound from './components/NotFound.vue';
 
 import authMixin from '@/mixins/authMixin';
+import currentuserDataMixin from '@/mixins/currentuserDataMixin';
 
 export default {
   name: "App",
-  mixins: [authMixin],
+  mixins: [authMixin, currentuserDataMixin],
   components: {
     TheNavbar,
     QuestionLayout,
@@ -80,10 +81,17 @@ export default {
     this.loadData();
     console.log("router mode", this.$store.state.pageMode);
 
-    // await this.login({ email : "test@test.com", password : "password" });
-    const user = await this.getCurrentUser ();
+    await this.login({ email : "test@test.com", password : "password" });
+    // await this.createQuestion({ title: "test question", body: "from client", department: "comm", commaSeparatedTags: "" })
+    // console.log(await this.getAllQuestions());
+    
+    // console.log(await this.getAllQuestions());
+    // const user = await this.getCurrentUser()
+    // console.log(user);
+
+    console.log(await this.getLeaderboard());
     // this.logout();
-    console.log(user);
+    
   },
 
   methods: {
