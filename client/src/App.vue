@@ -38,8 +38,11 @@ import { users, answers, questions, courseInfoPerTerm } from "@/_utils/data";
 import Auth from './components/Auth.vue';
 import NotFound from './components/NotFound.vue';
 
+import authMixin from '@/mixins/authMixin';
+
 export default {
   name: "App",
+  mixins: [authMixin],
   components: {
     TheNavbar,
     QuestionLayout,
@@ -73,9 +76,14 @@ export default {
       
     },
   },
-  mounted(): void {
+  async mounted() {
     this.loadData();
     console.log("router mode", this.$store.state.pageMode);
+
+    // await this.login({ email : "test@test.com", password : "password" });
+    const user = await this.getCurrentUser ();
+    // this.logout();
+    console.log(user);
   },
 
   methods: {

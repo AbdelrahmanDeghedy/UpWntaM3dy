@@ -55,5 +55,13 @@ export const mutations = {
 
   createUser(state: stateType, payload: userInterface): void {
     state.users.push(payload);
+  },
+
+  setToken (state: stateType, payload: string) : void {
+    state.token = payload;
+  },
+
+  setCurrentUser (state: stateType, payload: userInterface) : void {
+    state.currentUser = payload;
   }
 };

@@ -19,4 +19,9 @@ export interface stateType {
 
   scrollToAnswer: boolean;
 
+  currentUser : userInterface;
+  
+  token : string;
+
+  baseUrl : string;
 }

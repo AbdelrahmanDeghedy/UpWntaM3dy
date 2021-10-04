@@ -19,6 +19,9 @@ export const store = createStore({
       bookmarkPrimaryColor: "#d4267a",
       bookmarkSecondaryColor: "#b5a1b2",
       scrollToAnswer: false,
+      currentUser : null,
+      token : null,
+      baseUrl : "http://localhost:5000",
     };
   },
   mutations,
