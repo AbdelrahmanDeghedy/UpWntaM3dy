@@ -64,10 +64,10 @@ class User(UserMixin, db.Model):
         answerBookmarks = [bookmark.bookmarkedAid for bookmark in list(self.answerBookmarks)]
         result['bookmarkedAnswerIds'] = answerBookmarks
 
-        print (result)
+        # print (result)
         return result
     
     def __repr__(self):
-        return f'User {self.id}' 
+        return f'{self.universityId}' 
 
 

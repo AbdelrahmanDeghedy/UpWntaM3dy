@@ -22,7 +22,7 @@ def create_answer(qid):
     body = reqData.get("body", None)
 
     question = Question.query.filter_by(id = qid).first()
-    print (question)
+    # print (question)
 
     newAnswer = Answer(
                 body = body,

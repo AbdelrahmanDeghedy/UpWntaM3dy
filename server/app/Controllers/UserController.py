@@ -145,14 +145,16 @@ def user_delete(uid):
 @cross_origin()
 def currnetUser():
     currentUser = get_jwt_identity()
-    return jsonify(logged_in_as=currentUser), 200
+    return { 'currentUserId' : currentUser }, 200
+
+import json
 
 @jwt_required()
 @cross_origin()
 def getCurrnetUser():
     currentUserId = get_jwt_identity()
     currentUser = User.query.filter_by (universityId = currentUserId).first()
-    return currentUser
+    return json.dumps(currentUser.serializeUser())
 
 
 @cross_origin()

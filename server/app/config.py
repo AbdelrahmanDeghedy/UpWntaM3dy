@@ -1,5 +1,7 @@
 import os
 from decouple import config
+from datetime import timedelta
+
 
 SECRET_KEY = config('SECRET_KEY')
 JWT_SECRET_KEY = config('SECRET_KEY')
@@ -15,3 +17,4 @@ SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir,'db.sqlite')
 supports_credentials=True
 CORS_SUPPORTS_CREDENTIALS=True
 
+JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=30)

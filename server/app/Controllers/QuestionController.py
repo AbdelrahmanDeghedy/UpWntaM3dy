@@ -5,7 +5,7 @@ from Models.Question import Question
 from Models.User import User
 from Models.QuestionLikes import QuestionLike
 from Models.QuestionBookmarks import QuestionBookmark
-from Controllers.UserController import getCurrnetUser
+from Controllers.UserController import getCurrnetUser, currnetUser
 from flask_sqlalchemy import SQLAlchemy
 
 from flask_jwt_extended import jwt_required
@@ -26,6 +26,7 @@ def questions_get():
         'length' : len(questionsList),
         'questions': questionsList
      }
+import json
 
 @jwt_required()
 @cross_origin()
@@ -35,16 +36,17 @@ def questions_post() :
     body = reqData.get("body", None)
     department = reqData.get("department", None)
     commaSeparatedTags = reqData.get("commaSeparatedTags", None)
-
+    
+    currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
 
     newQuestion = Question(
                     title = title,
                     body = body,
                     department = department,
                     commaSeparatedTags = commaSeparatedTags,
-                    owner = getCurrnetUser()
+                    owner = currentUserObject
                 )
-    print (newQuestion)
+    
     db.session.close_all()
     db.session.add(newQuestion)
     db.session.commit()
@@ -71,7 +73,6 @@ def questions_edit (qid) :
     editedQuestion = Question.query.filter_by(id = qid).first()
     db.session.close_all()
 
-    print (type(editedQuestion.title), type(title))
 
     editedQuestion.title = title if title != None else find_question_by_id(qid).title
     editedQuestion.body = body if body != None else find_question_by_id(qid).body
@@ -83,10 +84,10 @@ def questions_edit (qid) :
     db.session.commit()
 
     
-    return {
+    return jsonify ({
         "msg": "success",
         "Updated Question": editedQuestion.serializeQuestion()
-    }
+    })
 
 @jwt_required()
 @cross_origin()
