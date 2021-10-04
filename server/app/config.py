@@ -12,5 +12,6 @@ SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir,'db.sqlite')
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir,'db.sqlite')
-
+supports_credentials=True
+CORS_SUPPORTS_CREDENTIALS=True
 

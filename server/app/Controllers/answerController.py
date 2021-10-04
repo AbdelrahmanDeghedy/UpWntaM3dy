@@ -11,10 +11,12 @@ from Controllers.UserController import getCurrnetUser
 
 from flask_jwt_extended import jwt_required
 
+from flask_cors import cross_origin
 
 db = SQLAlchemy()
 
 @jwt_required()
+@cross_origin()
 def create_answer(qid):
     reqData = request.get_json()
     body = reqData.get("body", None)
@@ -38,6 +40,7 @@ def create_answer(qid):
      }
 
 @jwt_required()
+@cross_origin()
 def get_answers (qid) :
     questionAnswers = Answer.query.filter_by(parentQuestion_id = qid).all()
     questionAnswers = [answer.serializeAnswer() for answer in questionAnswers]
@@ -49,6 +52,7 @@ def get_answers (qid) :
     }
 
 @jwt_required()
+@cross_origin()
 def edit_answer(aid):
     reqData = request.get_json()
     body = reqData.get("body", None)
@@ -67,6 +71,7 @@ def edit_answer(aid):
      }
 
 @jwt_required()
+@cross_origin()
 def delete_answer(aid):
 
     deletedAnswer = Answer.query.filter_by(id = aid).first()
@@ -80,6 +85,7 @@ def delete_answer(aid):
      }
 
 @jwt_required()
+@cross_origin()
 def like_answer (aid) :
     if AnswerLike.query.filter_by(likedAid = aid).first() :
         return { 'msg' : 'already liked!' }
@@ -97,6 +103,7 @@ def like_answer (aid) :
            }
 
 @jwt_required()
+@cross_origin()
 def dislike_answer (aid) :
     if not (AnswerLike.query.filter_by(likedAid = aid).first()) :
         return { 'msg' : 'already disliked!' }
@@ -112,6 +119,7 @@ def dislike_answer (aid) :
            }
 
 @jwt_required()
+@cross_origin()
 def bookmark_answer (aid) :
     if AnswerBookmark.query.filter_by(bookmarkedAid = aid).first() :
         return { 'msg' : 'already bookmarked!' }
@@ -129,6 +137,7 @@ def bookmark_answer (aid) :
            }
 
 @jwt_required()
+@cross_origin()
 def removeBookmark_answer (aid) :
     if not (AnswerBookmark.query.filter_by(bookmarkedAid = aid).first()) :
         return { 'msg' : 'already not bookmarked!' }

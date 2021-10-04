@@ -7,9 +7,12 @@ from flask_sqlalchemy import SQLAlchemy
 
 from flask_jwt_extended import get_jwt_identity, create_access_token, jwt_required
 
+from flask_cors import cross_origin
+
 db = SQLAlchemy()
 
-
+@jwt_required()
+@cross_origin()
 def get_leaderboard () :
         users = User.query.filter().all()
         usersList = [user.serializeUser() for user in users]
@@ -20,7 +23,7 @@ def get_leaderboard () :
             'length' : len(usersList),
             'users': usersList
         }
-
+@cross_origin()
 def login_post():
     reqData = request.get_json()
 
@@ -42,6 +45,7 @@ def login_post():
         'token': access_token
     })
 
+@cross_origin()
 def signup_post():
     reqData = request.get_json()
 
@@ -88,7 +92,9 @@ def signup_post():
         'token': access_token
      }), 201
 
+
 @jwt_required()
+@cross_origin()
 def user_edit():
     reqData = request.get_json()
 
@@ -119,6 +125,7 @@ def user_edit():
     return jsonify({ "msg" : "user updated!!" }), 200
 
 @jwt_required()
+@cross_origin()
 def user_delete(uid):
     deletedUser = User.query.filter_by(universityId = uid).first()
 
@@ -135,13 +142,19 @@ def user_delete(uid):
 #     return jsonify({ "msg": "logout" })
 
 @jwt_required()
+@cross_origin()
 def currnetUser():
     currentUser = get_jwt_identity()
     return jsonify(logged_in_as=currentUser), 200
 
 @jwt_required()
+@cross_origin()
 def getCurrnetUser():
     currentUserId = get_jwt_identity()
     currentUser = User.query.filter_by (universityId = currentUserId).first()
     return currentUser
 
+
+@cross_origin()
+def optionsHanlder() :
+    return "OK", 200

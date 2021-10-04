@@ -10,10 +10,13 @@ from flask_sqlalchemy import SQLAlchemy
 
 from flask_jwt_extended import jwt_required
 
+from flask_cors import cross_origin
+
 
 db = SQLAlchemy()
 
 @jwt_required()
+@cross_origin()
 def questions_get():
     questions = Question.query.filter().all()
     questionsList = [question.serializeQuestion() for question in questions]
@@ -25,6 +28,7 @@ def questions_get():
      }
 
 @jwt_required()
+@cross_origin()
 def questions_post() :
     reqData = request.get_json()
     title = reqData.get("title", None)
@@ -55,6 +59,7 @@ def find_question_by_id (qid) :
     return Question.query.filter_by(id = qid).first()
 
 @jwt_required()
+@cross_origin()
 def questions_edit (qid) :
     reqData = request.get_json()
     title = reqData.get("title", None)
@@ -84,6 +89,7 @@ def questions_edit (qid) :
     }
 
 @jwt_required()
+@cross_origin()
 def questions_delete (qid) :
     deletedQuestion = Question.query.filter_by(id = qid).first()
     
@@ -98,6 +104,7 @@ def questions_delete (qid) :
     }
 
 @jwt_required()
+@cross_origin()
 def questions_like (qid) :
     if QuestionLike.query.filter_by(likedQid = qid).first() :
         return { 'msg' : 'already liked!' }
@@ -115,6 +122,7 @@ def questions_like (qid) :
            }
 
 @jwt_required()
+@cross_origin()
 def questions_dislike (qid) :
     if not (QuestionLike.query.filter_by(likedQid = qid).first()) :
         return { 'msg' : 'already disliked!' }
@@ -130,6 +138,7 @@ def questions_dislike (qid) :
            }
 
 @jwt_required()
+@cross_origin()
 def questions_bookmark (qid) :
     if QuestionBookmark.query.filter_by(bookmarkedQid = qid).first() :
         return { 'msg' : 'already bookmarked!' }
@@ -147,6 +156,7 @@ def questions_bookmark (qid) :
            }
 
 @jwt_required()
+@cross_origin()
 def questions_removeBookmark (qid) :
     if not (QuestionBookmark.query.filter_by(bookmarkedQid = qid).first()) :
         return { 'msg' : 'already not bookmarked!' }

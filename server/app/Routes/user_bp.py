@@ -1,11 +1,11 @@
 
 from flask import Blueprint
 
-from Controllers.UserController import  login_post, get_leaderboard, currnetUser, signup_post, user_edit, user_delete
+from Controllers.UserController import  login_post, get_leaderboard, currnetUser, signup_post, user_edit, user_delete, optionsHanlder
 
 user_bp = Blueprint('user_bp',__name__)
 
-
+user_bp.route('/', methods=['OPTIONS'])(optionsHanlder)
 user_bp.route('/signup', methods=['POST'])(signup_post)
 user_bp.route('/login', methods=['POST'])(login_post)
 user_bp.route('/edit', methods=['PUT'])(user_edit)
