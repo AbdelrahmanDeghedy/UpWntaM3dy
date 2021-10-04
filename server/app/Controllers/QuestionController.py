@@ -10,11 +10,12 @@ from flask_sqlalchemy import SQLAlchemy
 
 from flask_login import login_required, current_user
 
+from flask_jwt_extended import jwt_required
 
 
 db = SQLAlchemy()
 
-@login_required
+@jwt_required()
 def questions_get():
     questions = Question.query.filter().all()
     questionsList = [question.serializeQuestion() for question in questions]
@@ -25,7 +26,7 @@ def questions_get():
         'questions': questionsList
      }
 
-@login_required
+@jwt_required()
 def questions_post() :
     reqData = request.get_json()
     title = reqData.get("title", None)
@@ -55,7 +56,7 @@ def questions_post() :
 def find_question_by_id (qid) :
     return Question.query.filter_by(id = qid).first()
 
-@login_required
+@jwt_required()
 def questions_edit (qid) :
     reqData = request.get_json()
     title = reqData.get("title", None)
@@ -84,7 +85,7 @@ def questions_edit (qid) :
         "Updated Question": editedQuestion.serializeQuestion()
     }
 
-@login_required
+@jwt_required()
 def questions_delete (qid) :
     deletedQuestion = Question.query.filter_by(id = qid).first()
     
@@ -98,7 +99,7 @@ def questions_delete (qid) :
         "msg": "success",
     }
 
-@login_required
+@jwt_required()
 def questions_like (qid) :
     if QuestionLike.query.filter_by(likedQid = qid).first() :
         return { 'msg' : 'already liked!' }
@@ -115,7 +116,7 @@ def questions_like (qid) :
             'likedQuestions' : likedQuestion.serializeLike()
            }
 
-@login_required
+@jwt_required()
 def questions_dislike (qid) :
     if not (QuestionLike.query.filter_by(likedQid = qid).first()) :
         return { 'msg' : 'already disliked!' }
@@ -130,7 +131,7 @@ def questions_dislike (qid) :
             'msg' : 'success',
            }
 
-@login_required
+@jwt_required()
 def questions_bookmark (qid) :
     if QuestionBookmark.query.filter_by(bookmarkedQid = qid).first() :
         return { 'msg' : 'already bookmarked!' }
@@ -147,7 +148,7 @@ def questions_bookmark (qid) :
             'likedQuestions' : bookmarkedQuestion.serializeQuestionBookmark()
            }
 
-@login_required
+@jwt_required()
 def questions_removeBookmark (qid) :
     if not (QuestionBookmark.query.filter_by(bookmarkedQid = qid).first()) :
         return { 'msg' : 'already not bookmarked!' }

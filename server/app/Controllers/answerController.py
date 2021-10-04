@@ -10,11 +10,12 @@ from flask_sqlalchemy import SQLAlchemy
 
 from flask_login import login_required, current_user
 
+from flask_jwt_extended import jwt_required
 
 
 db = SQLAlchemy()
 
-@login_required
+@jwt_required()
 def create_answer(qid):
     reqData = request.get_json()
     body = reqData.get("body", None)
@@ -37,7 +38,7 @@ def create_answer(qid):
         'answer': newAnswer.serializeAnswer()
      }
 
-@login_required
+@jwt_required()
 def get_answers (qid) :
     questionAnswers = Answer.query.filter_by(parentQuestion_id = qid).all()
     questionAnswers = [answer.serializeAnswer() for answer in questionAnswers]
@@ -48,7 +49,7 @@ def get_answers (qid) :
         'Answers' : questionAnswers
     }
 
-@login_required
+@jwt_required()
 def edit_answer(aid):
     reqData = request.get_json()
     body = reqData.get("body", None)
@@ -66,7 +67,7 @@ def edit_answer(aid):
         'editedAnswer': editedAnswer.serializeAnswer()
      }
 
-@login_required
+@jwt_required()
 def delete_answer(aid):
 
     deletedAnswer = Answer.query.filter_by(id = aid).first()
@@ -79,7 +80,7 @@ def delete_answer(aid):
         'msg' : 'success',
      }
 
-@login_required
+@jwt_required()
 def like_answer (aid) :
     if AnswerLike.query.filter_by(likedAid = aid).first() :
         return { 'msg' : 'already liked!' }
@@ -96,7 +97,7 @@ def like_answer (aid) :
             'likedAnswers' : likedAnswer.serializeAnswerLike()
            }
 
-@login_required
+@jwt_required()
 def dislike_answer (aid) :
     if not (AnswerLike.query.filter_by(likedAid = aid).first()) :
         return { 'msg' : 'already disliked!' }
@@ -111,7 +112,7 @@ def dislike_answer (aid) :
             'msg' : 'success',
            }
 
-@login_required
+@jwt_required()
 def bookmark_answer (aid) :
     if AnswerBookmark.query.filter_by(bookmarkedAid = aid).first() :
         return { 'msg' : 'already bookmarked!' }
@@ -128,7 +129,7 @@ def bookmark_answer (aid) :
             'bookmrkedAnswers' : bookmarkedAnswer.serializeAnswerBookmark()
            }
 
-@login_required
+@jwt_required()
 def removeBookmark_answer (aid) :
     if not (AnswerBookmark.query.filter_by(bookmarkedAid = aid).first()) :
         return { 'msg' : 'already not bookmarked!' }

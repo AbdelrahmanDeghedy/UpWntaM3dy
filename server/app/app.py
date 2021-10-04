@@ -31,7 +31,9 @@ app.register_blueprint(report_bp, url_prefix='/reports')
 from flask_jwt_extended import JWTManager
 jwt = JWTManager(app)
 
+from flask_cors import CORS
 
+CORS(app)
 
 @app.route('/')
 def index():
