@@ -5,10 +5,8 @@ from Models.Question import Question
 from Models.User import User
 from Models.QuestionLikes import QuestionLike
 from Models.QuestionBookmarks import QuestionBookmark
-
+from Controllers.UserController import getCurrnetUser
 from flask_sqlalchemy import SQLAlchemy
-
-from flask_login import login_required, current_user
 
 from flask_jwt_extended import jwt_required
 
@@ -40,7 +38,7 @@ def questions_post() :
                     body = body,
                     department = department,
                     commaSeparatedTags = commaSeparatedTags,
-                    owner = current_user
+                    owner = getCurrnetUser()
                 )
     print (newQuestion)
     db.session.close_all()
@@ -105,7 +103,7 @@ def questions_like (qid) :
         return { 'msg' : 'already liked!' }
     likedQuestion = QuestionLike(
                             likedQid = qid,
-                            owner = current_user
+                            owner = getCurrnetUser()
                         )
     db.session.close_all()
     db.session.add(likedQuestion)
@@ -137,7 +135,7 @@ def questions_bookmark (qid) :
         return { 'msg' : 'already bookmarked!' }
     bookmarkedQuestion = QuestionBookmark(
                             bookmarkedQid = qid,
-                            owner = current_user
+                            owner = getCurrnetUser()
                         )
     db.session.close_all()
     db.session.add(bookmarkedQuestion)

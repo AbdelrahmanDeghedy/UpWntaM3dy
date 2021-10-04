@@ -7,8 +7,7 @@ from Models.User import User
 from Models.AnswerLikes import AnswerLike
 from Models.AnswerBookmarks import AnswerBookmark
 from flask_sqlalchemy import SQLAlchemy
-
-from flask_login import login_required, current_user
+from Controllers.UserController import getCurrnetUser
 
 from flask_jwt_extended import jwt_required
 
@@ -26,7 +25,7 @@ def create_answer(qid):
     newAnswer = Answer(
                 body = body,
                 parentQuestion = question,
-                owner = current_user
+                owner = getCurrnetUser()
             )
 
     db.session.close_all()
@@ -86,7 +85,7 @@ def like_answer (aid) :
         return { 'msg' : 'already liked!' }
     likedAnswer = AnswerLike(
                             likedAid = aid,
-                            owner = current_user
+                            owner = getCurrnetUser()
                         )
     db.session.close_all()
     db.session.add(likedAnswer)
@@ -118,7 +117,7 @@ def bookmark_answer (aid) :
         return { 'msg' : 'already bookmarked!' }
     bookmarkedAnswer = AnswerBookmark(
                             bookmarkedAid = aid,
-                            owner = current_user
+                            owner = getCurrnetUser()
                         )
     db.session.close_all()
     db.session.add(bookmarkedAnswer)

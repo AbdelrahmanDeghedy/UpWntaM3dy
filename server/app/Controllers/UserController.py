@@ -139,7 +139,7 @@ def currnetUser():
     currentUser = get_jwt_identity()
     return jsonify(logged_in_as=currentUser), 200
 
-
+@jwt_required()
 def getCurrnetUser():
     currentUserId = get_jwt_identity()
     currentUser = User.query.filter_by (universityId = currentUserId).first()
