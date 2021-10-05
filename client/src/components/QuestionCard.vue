@@ -45,12 +45,14 @@
 import TheButton from "./TheButton.vue";
 
 import getFromIdMixin from '@/mixins/getFromIdMixin';
+import authMixin from '@/mixins/authMixin';
+import currentuserDataMixin from '@/mixins/currentuserDataMixin';
 // import { questions } from '@/_utils/data';
 import { getDayDifference } from "@/_utils/helper";
 import { isArabic } from '@/_utils/helper';
 
 export default {
-  mixins: [ getFromIdMixin ],
+  mixins: [ getFromIdMixin, authMixin, currentuserDataMixin ],
   props: {
     question: {
       type: Object,
@@ -91,28 +93,44 @@ export default {
       this.$store.commit("toggleScrollToAnswer");
       // console.log(this.$store.state.scrollToAnswer);
     },
-    initializeValues(){
+    async initializeValues(){
       this.answersNumber = this.question.answerIds.length;
       this.text = this.question.title;
       this.owner =  this.getUsernameFromUniversityId(this.question.owner);
       this.time = this.question.pub_date;
       this.likes = this.question.likes;
       this.id = this.question.id;
-      this.currentLikeColor = this.findQuestionById(this.id).liked ? this.$store.state.likePrimaryColor : this.$store.state.likeSecondaryColor;
-      this.currentBookmarkColor = this.findQuestionById(this.id).bookmarked ? this.$store.state.bookmarkPrimaryColor : this.$store.state.bookmarkSecondaryColor;
+
+      const currentUserId = await this.getCurrentUser();
+      const currentUser = this.getUserFromUniversityId(currentUserId.currentUserId);
+      
+      if (currentUser.likedQuestionIds.includes (this.id)) {
+        this.currentLikeColor = this.$store.state.likePrimaryColor;
+      } else {
+        this.currentLikeColor = this.$store.state.likeSecondaryColor;
+      }
+
+      
+      if (currentUser.bookmarkedQuestionIds.includes (this.id)) {
+        this.currentBookmarkColor = this.$store.state.bookmarkPrimaryColor;
+      } else {
+        this.currentBookmarkColor = this.$store.state.bookmarkSecondaryColor;
+      }
 
     },
-    toggleBookmark(){      
-      this.findQuestionById(this.id).bookmarked = !this.findQuestionById(this.id).bookmarked;
-      this.initializeValues();
+    async toggleBookmark(){
+        if (this.currentBookmarkColor !== this.$store.state.bookmarkPrimaryColor) {
+          await this.bookmarkQuestion(this.id);
+        } else {
+          await this.removeBookmarkQuestion(this.id);
+        }
     },
-    toggleLike(){
-      // optimistic updates
-      
-      this.findQuestionById(this.id).liked = !this.findQuestionById(this.id).liked;
-      this.findQuestionById(this.id).likes = this.findQuestionById(this.id).liked ? this.findQuestionById(this.id).likes + 1 : this.findQuestionById(this.id).likes - 1; 
-      
-      this.initializeValues();
+    async toggleLike(){
+        if (this.currentLikeColor !== this.$store.state.likePrimaryColor) {
+          await this.likeQuestion(this.id);
+        } else {
+          await this.dislikeQuestion(this.id);
+        }
     },
     handlePageRouting(): void {
       this.$store.commit("setPageMode", "questionDetails");
