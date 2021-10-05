@@ -1,7 +1,20 @@
+import currentuserDataMixin from '@/mixins/currentuserDataMixin';
+import authMixin from '@/mixins/authMixin'
+
 export default {
+  mixins: [currentuserDataMixin, authMixin],
   methods: {
-    getUserFromUniversityId(uid){
+    async currentUser(){
+      const currentUser = await this.getCurrentUser();
+      return (await this.getUserFromUniversityId(currentUser.currentUserId));
+    },
+    async loadUsers(){
+      this.users =  await this.getLeaderboard();
+      this.$store.commit("loadUsers", this.users.users);
+    },
+    async getUserFromUniversityId(uid){
       if (!uid) return null;
+      await this.loadUsers()
       return this.$store.state.users.filter(user => {
         return String(user.universityId) === String(uid)
       })[0];

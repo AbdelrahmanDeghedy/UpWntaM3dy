@@ -89,8 +89,7 @@ export default {
       const users =  await this.getLeaderboard();
       this.$store.commit("loadUsers", users.users);
       
-      const currentUserId = await this.getCurrentUser();
-      const currentUser = this.getUserFromUniversityId(currentUserId.currentUserId);
+      const currentUser = await this.currentUser();
       // console.log(this.answer.id);
       console.log(currentUser, currentUser.likedAnswerIds, this.id);
       if (currentUser.likedAnswerIds.includes (this.answer.id)) {

@@ -106,8 +106,9 @@ def user_edit():
     rank = reqData.get("rank", None)
     points = reqData.get("points", None)
 
+    user = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
 
-    user = User.query.filter_by(universityId = getCurrnetUser().universityId).first()
+
     db.session.close_all()
 
     user.email = email if email != None and not (User.query.filter_by(email = email).first()) else user.email

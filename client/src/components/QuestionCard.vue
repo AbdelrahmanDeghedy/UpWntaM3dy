@@ -101,8 +101,7 @@ export default {
       this.likes = this.question.likes;
       this.id = this.question.id;
 
-      const currentUserId = await this.getCurrentUser();
-      const currentUser = this.getUserFromUniversityId(currentUserId.currentUserId);
+      const currentUser = await this.currentUser();
       
       if (currentUser.likedQuestionIds.includes (this.id)) {
         this.currentLikeColor = this.$store.state.likePrimaryColor;

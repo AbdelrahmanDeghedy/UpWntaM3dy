@@ -41,10 +41,11 @@
                     />
                 </div>
                 <div class=" w-2/4 flex flex-col items-center py-8">
-                    <div class="w-48 h-48 rounded-full overflow-hidden shadow-lg flex justify-center items-center">
+                    <div  class="w-48 h-48 rounded-full overflow-hidden shadow-lg flex justify-center items-center">
+                        <input type="file" @change="onFileChanged" class="z-50 bg-gray-200 w-48 absolute h-32 rounded-full opacity-0 cursor-pointer">
                         <img 
-                            class="w-48 h-48"
-                            :src="userImg"
+                            class="w-48 h-48 relative"
+                            :src="userImg || alternativeImg"
                             alt="profile pic"
                         >
                     </div>
@@ -90,9 +91,11 @@
 import TheButton from '@/components/TheButton.vue'
 import ThePopup from '@/components/ThePopup.vue'
 import profileInfo from '@/mixins/profileInfo'
+import authMixin from '@/mixins/authMixin'
+import getFromIdMixin from '@/mixins/getFromIdMixin'
 
 export default({
-    mixins: [profileInfo],
+    mixins: [authMixin, getFromIdMixin],
     components: {
         TheButton,
         ThePopup
@@ -106,21 +109,32 @@ export default({
             answersCount: 0,
             pointsCount: 0,
             rank: -1,
+            alternativeImg: 'https://media.istockphoto.com/vectors/male-profile-flat-blue-simple-icon-with-long-shadow-vector-id522855255?k=20&m=522855255&s=612x612&w=0&h=fLLvwEbgOmSzk1_jQ0MgDATEVcVOh_kqEe0rqi7aM5A=',
             userImg: "",
+
         }
     },
-    mounted(){
-        console.log("test", this.getCurrentUser());
+    async mounted(){
+        const currentUser = await this.currentUser();
+        console.log(currentUser);
         this.initializeValues();
     },
     methods: {
-        initializeValues(){
-            this.username = this.getCurrentUser().name;
-            this.userImg = this.getCurrentUser().picture;
-            this.bioText = this.getCurrentUser().bio;
-            this.rank = this.getCurrentUser().rank;
-            this.pointsCount = this.getCurrentUser().points;
-            this.answersCount = this.getCurrentUser().answers.answerIds.length;
+        async onFileChanged(e){
+            const uploadedImg = URL.createObjectURL(e.target.files[0]);
+            this.userImg = uploadedImg;
+            await this.editCurrentUser({ picture: uploadedImg })
+        },
+        async initializeValues(){
+            const currentUser = await this.currentUser();
+
+
+            this.username = currentUser.name;
+            this.userImg = currentUser.picture;
+            this.bioText = currentUser.bio;
+            this.rank = currentUser.rank;
+            this.pointsCount = currentUser.points;
+            this.answersCount = currentUser.questionIds.length;
         },
         editBio(){
             this.currentBio = this.bioText;
