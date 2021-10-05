@@ -13,6 +13,8 @@ from flask_jwt_extended import jwt_required
 
 from flask_cors import cross_origin
 
+import json
+
 db = SQLAlchemy()
 
 @jwt_required()
@@ -23,11 +25,13 @@ def create_answer(qid):
 
     question = Question.query.filter_by(id = qid).first()
     # print (question)
+    currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
+
 
     newAnswer = Answer(
                 body = body,
                 parentQuestion = question,
-                owner = getCurrnetUser()
+                owner = currentUserObject
             )
 
     db.session.close_all()
@@ -151,3 +155,7 @@ def removeBookmark_answer (aid) :
     return { 
             'msg' : 'success',
            }
+
+@cross_origin()
+def optionsHanlder() :
+    return "OK", 200

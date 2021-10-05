@@ -1,10 +1,11 @@
 from flask import Blueprint
 
-from Controllers.QuestionController import questions_get, questions_post, questions_like, questions_dislike, questions_bookmark, questions_removeBookmark, questions_edit, questions_delete
+from Controllers.QuestionController import questions_get, questions_post, questions_like, questions_dislike, questions_bookmark, questions_removeBookmark, questions_edit, questions_delete, optionsHanlder
 
 question_bp = Blueprint('question_bp',__name__)
 
 question_bp.route('/', methods=['Get'])(questions_get)
+question_bp.route('/', methods=['OPTIONS'])(optionsHanlder)
 question_bp.route('/create', methods=['POST'])(questions_post)
 question_bp.route('<qid>/edit', methods=['PUT'])(questions_edit)
 question_bp.route('<qid>/delete', methods=['DELETE'])(questions_delete)

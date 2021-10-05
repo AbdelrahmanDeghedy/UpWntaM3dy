@@ -171,3 +171,7 @@ def questions_removeBookmark (qid) :
     return { 
             'msg' : 'success',
            }
+
+@cross_origin()
+def optionsHanlder() :
+    return "OK", 200
