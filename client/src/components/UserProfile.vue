@@ -128,7 +128,6 @@ export default({
         async initializeValues(){
             const currentUser = await this.currentUser();
 
-
             this.username = currentUser.name;
             this.userImg = currentUser.picture;
             this.bioText = currentUser.bio;
@@ -140,8 +139,9 @@ export default({
             this.currentBio = this.bioText;
             this.enablePopup();
         },
-        saveChanges(){
+        async saveChanges(){
             this.getCurrentUser().bio = this.bioText;
+            await this.editCurrentUser({ bio: this.bioText })
             this.disablePopup();
         },
         disablePopup(){
@@ -154,8 +154,8 @@ export default({
             this.$refs.profileContainer.classList.add("blur-sm", "filter")
             this.disableBtn = true;
         },
-        discardChanges(){
-            this.bioText = this.getCurrentUser().bio;
+        async discardChanges(){
+            this.bioText = (await this.currentUser()).bio;
             this.disablePopup();
         },
     }
