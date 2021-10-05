@@ -93,10 +93,23 @@ def delete_answer(aid):
 def like_answer (aid) :
     if AnswerLike.query.filter_by(likedAid = aid).first() :
         return { 'msg' : 'already liked!' }
+
+    currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
+
+    editedAnswer = Answer.query.filter_by(id = aid).first()
+
+    print (editedAnswer.likes)
+
+    editedAnswer.likes += 1
+    db.session.close_all()
+    db.session.add(editedAnswer)
+    db.session.commit()
+
     likedAnswer = AnswerLike(
                             likedAid = aid,
-                            owner = getCurrnetUser()
+                            owner = currentUserObject
                         )
+    
     db.session.close_all()
     db.session.add(likedAnswer)
     db.session.commit()
@@ -114,7 +127,11 @@ def dislike_answer (aid) :
 
     likedAnswer = AnswerLike.query.filter_by(likedAid = aid).first()
     
+    editedAnswer = Answer.query.filter_by(id = aid).first()
+    editedAnswer.likes -= 1
+
     db.session.close_all()
+    db.session.add(editedAnswer)
     db.session.delete(likedAnswer)
     db.session.commit()
 
@@ -127,9 +144,12 @@ def dislike_answer (aid) :
 def bookmark_answer (aid) :
     if AnswerBookmark.query.filter_by(bookmarkedAid = aid).first() :
         return { 'msg' : 'already bookmarked!' }
+    
+    currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
+
     bookmarkedAnswer = AnswerBookmark(
                             bookmarkedAid = aid,
-                            owner = getCurrnetUser()
+                            owner = currentUserObject
                         )
     db.session.close_all()
     db.session.add(bookmarkedAnswer)

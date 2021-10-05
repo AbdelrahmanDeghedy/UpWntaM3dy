@@ -13,7 +13,7 @@ DEBUG = True
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir,'db.sqlite')
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir,'db.sqlite')
+SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir,'db.sqlite') + '?check_same_thread=False'
 
 supports_credentials=True
 CORS_SUPPORTS_CREDENTIALS=True
