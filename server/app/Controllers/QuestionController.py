@@ -109,9 +109,19 @@ def questions_delete (qid) :
 def questions_like (qid) :
     if QuestionLike.query.filter_by(likedQid = qid).first() :
         return { 'msg' : 'already liked!' }
+
+    currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
+
+    editedQuestion = Question.query.filter_by(id = qid).first()
+    editedQuestion.likes += 1
+    
+    db.session.close_all()
+    db.session.add(editedQuestion)
+    db.session.commit()
+
     likedQuestion = QuestionLike(
                             likedQid = qid,
-                            owner = getCurrnetUser()
+                            owner = currentUserObject
                         )
     db.session.close_all()
     db.session.add(likedQuestion)
@@ -130,9 +140,16 @@ def questions_dislike (qid) :
 
     likedQues = QuestionLike.query.filter_by(likedQid = qid).first()
     
+    editedQuestion = Question.query.filter_by(id = qid).first()
+    editedQuestion.likes -= 1
+    
     db.session.close_all()
+    db.session.add(editedQuestion)
+    db.session.commit()
+
     db.session.delete(likedQues)
     db.session.commit()
+    db.session.close_all()
 
     return { 
             'msg' : 'success',
@@ -143,9 +160,12 @@ def questions_dislike (qid) :
 def questions_bookmark (qid) :
     if QuestionBookmark.query.filter_by(bookmarkedQid = qid).first() :
         return { 'msg' : 'already bookmarked!' }
+
+    currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
+
     bookmarkedQuestion = QuestionBookmark(
                             bookmarkedQid = qid,
-                            owner = getCurrnetUser()
+                            owner = currentUserObject
                         )
     db.session.close_all()
     db.session.add(bookmarkedQuestion)
@@ -171,6 +191,8 @@ def questions_removeBookmark (qid) :
     return { 
             'msg' : 'success',
            }
+
+
 
 @cross_origin()
 def optionsHanlder() :
