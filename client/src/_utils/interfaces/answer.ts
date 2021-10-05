@@ -1,9 +1,8 @@
 export interface answerInterface {
     id: number,
-    ownerId: number,
+    owner_id: number,
     questionOfAnswerId: number,
-    text: string,
-    time: Date,
+    body: string,
+    pub_date: Date,
     likes: number,
-    liked: boolean,
 }

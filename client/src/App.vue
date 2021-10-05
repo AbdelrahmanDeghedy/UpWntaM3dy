@@ -58,6 +58,7 @@ export default {
     return {
       // mode: "questions", // questions, questionDetails, or questionCreate
       questions : {},
+      users: {},
     };
   },
   watch: {
@@ -86,6 +87,8 @@ export default {
     // console.log(await this.getAllQuestions());
     
     this.questions =  await this.getAllQuestions();
+    this.users =  await this.getLeaderboard();
+    console.log(this.users.users);
     // const user = await this.getCurrentUser()
     // console.log(user);
 
@@ -97,10 +100,10 @@ export default {
 
   methods: {
     loadData(): void {
-      // this.$store.commit("loadUsers", users);
+      this.$store.commit("loadUsers", this.users.users);
       // this.$store.commit("loadAnswers", answers);
       this.$store.commit("loadQuestions", this.questions.questions);
-      this.$store.commit("loadBackupQuestions", this.questions);
+      this.$store.commit("loadBackupQuestions", this.questions.questions);
       // this.$store.commit("loadCourseInfoPerTerm", courseInfoPerTerm);
       // console.log("done", this.$store.state.courseInfoPerTerm);
     },

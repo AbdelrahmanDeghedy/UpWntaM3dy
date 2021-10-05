@@ -121,7 +121,7 @@ export default {
 
 
         async getQuestionAnswers(qid: string){
-          const res = await fetch(`${this.$store.state.baseUrl}/answers/${qid}`, {
+          const res = await fetch(`${this.$store.state.baseUrl}/answers/${qid}/`, {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",

@@ -1,6 +1,6 @@
 export interface questionInterface {
     id: number,
-    ownerId: number,
+    owner: number,
     title: string,
     body : string,
     pub_date: Date,

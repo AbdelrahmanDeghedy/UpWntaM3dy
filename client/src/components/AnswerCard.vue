@@ -2,8 +2,8 @@
   <div class="bg-white rounded-xl overflow-hidden">
     <div class="w-4/6">
       <div class="flex ml-2 my-2">
-        <div class="text-blue-800 font-bold">{{ getUsernameFromId(answer.ownerId) }}</div>
-        <div class="opacity-80 ml-2">{{ answerTime }} days ago</div>
+        <div class="text-blue-800 font-bold">{{ getUsernameFromId(answer.owner_id) }} </div>
+        <div class="opacity-80 ml-2">{{ answerTime }} </div>
       </div>
     </div>
 
@@ -13,7 +13,7 @@
       <div 
           class="flex items-center ml-4 mr-4 w-10/12 flex-wrap"
           :class="{ 'order-last' : language === 'en' ? false : true }" 
-          v-html="answer.text"
+          v-html="answer.body"
           :dir="language === 'en' ? 'ltr' : 'rtl'"
       >
       </div>
@@ -59,7 +59,7 @@ export default {
   data() {
     return {
       language: "en",
-      answerTime: getDayDifference(this.answer.time),
+      answerTime: this.answer.pub_date,
       currentLikeColor : "",
       answerLocal: this.answer,
     };

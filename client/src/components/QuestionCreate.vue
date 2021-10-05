@@ -32,12 +32,16 @@ import { randomIdGenerator } from '@/_utils/helper'
 import { HTMLToText } from '@/_utils/helper'
 import { isArabic } from '@/_utils/helper';
 
+import currentuserDataMixin from '@/mixins/currentuserDataMixin';
+
+
 // import { DateFormatter } from '@/_utils/dateFormatter';
 
 export default {
   components: {
     TheButton,
   },
+  mixins: [currentuserDataMixin],
   props: {
     answerMode :{
       type: Boolean,
@@ -49,14 +53,16 @@ export default {
       required: false,
       default : undefined
     },
-    id: {
+    qid: {
       type: String,
       required: false
     },
   },
+
   data() {
     return {
       markdown: "",
+      // text: "",
       text: this.editMode ? HTMLToText(this.editMode.editText) : "",
       language: "en",
       createConfig : {
@@ -80,7 +86,8 @@ export default {
     // console.log(this.markdown, HTMLToText(this.markdown).split("\n"));
   },
   mounted(){
-    //
+      // console.log("test", this.editMode)
+    
   },
   methods : {
     handleLanguage(){
@@ -92,11 +99,11 @@ export default {
     },
     handleClickingMode(){
       if (this.editMode) {
-        this.editQuestion();
+        this.editTheQuestion();
       } else if (this.answerMode) {
         this.answerQuestion();
       } else {
-        this.createQuestion();
+        this.createNewQuestion();
       }
     },
     parseDate(date) {
@@ -105,48 +112,41 @@ export default {
     syncInput(){
       this.markdown = marked(this.text);
     },
-    answerQuestion(){
-      this.$store.commit("createAnswer", {
-        id: randomIdGenerator(),
-        ownerId: 18010917,  // current user id
-        questionOfAnswerId: this.id,
-        text: this.markdown,
-        time: this.parseDate(Date.now()),
-        likes: 0,
-        liked: false,
-      });
+    async answerQuestion(){
+      const body = this.markdown;
+      await this.createQuestionAnswer(this.qid, { body })
+
+      const answers = await this.getQuestionAnswers (this.qid);
+      this.$store.commit("loadAnswers", answers.Answers);
+      console.log("test", this.$store.state.answers);
+
       this.text = "";
 
     },
-    editQuestion(){
+    async editTheQuestion(){
       this.syncInput();
-      this.$store.commit("editQuestionContent",{
-        id : this.id,
-        title : HTMLToText(this.markdown).split("\n")[0].replaceAll("&#39;", "'") + '..',
-        fullQuestionText : this.markdown,
-      })
+      const title = HTMLToText(this.markdown).split("\n")[0].replaceAll("&#39;", "'") + '..';
+      const body = this.markdown;
+      
+      await this.editQuestion (this.qid, { title, body })
 
+      this.questions =  await this.getAllQuestions();
+      this.$store.commit("loadQuestions", this.questions.questions);
 
       // Route to questions page
       this.$router.push({ name: "Questions", params: { 'user_id': 18010917 } });
       this.$store.commit("setPageMode", "questions");
     },
-    createQuestion(){
-      this.$store.commit("createQuestion", {
-        id: randomIdGenerator(),
-        ownerId: 18010917,  // current user id
-        title: HTMLToText(this.markdown).split("\n")[0] + '..',
-        fullQuestionText: this.markdown,
-        time: this.parseDate(Date.now()),
-        likes: 0,
-        liked: false,
-        answersIds: [],
-      });
+    async createNewQuestion(){
+      const title = HTMLToText(this.markdown).split("\n")[0] + '..';
+      const body = this.markdown;
+      await this.createQuestion({ title, body, department: "COMM", commaSeparatedTags: "chapter1"  })
+      
+      this.questions =  await this.getAllQuestions();
+      this.$store.commit("loadQuestions", this.questions.questions);
 
       // Clear the input field
       this.text = "";
-
-      // console.log(this.$store.state.questions);
 
       // Route to questions page
       this.$router.push({ name: "Questions", params: { 'user_id': 18010917 } });

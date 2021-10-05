@@ -16,7 +16,7 @@
       </router-link>
       <div class="flex ml-2 my-2">
         <div class="text-blue-800 font-bold">{{ owner }}</div>
-        <div class="opacity-80 ml-2">{{ time }} days ago</div>
+        <div class="opacity-80 ml-2">{{ time }} </div>
       </div>
       <div class="ml-4">
         <div class="flex">
@@ -77,8 +77,6 @@ export default {
       async mounted(){
         await this.initializeValues();
         this.handleLanguage();
-        // console.log(this.findQuestionById(this.id));
-        // console.log(this.$store.state.questions);
       },
   methods: {
     handleLanguage(){
@@ -96,16 +94,13 @@ export default {
     initializeValues(){
       this.answersNumber = this.question.answerIds.length;
       this.text = this.question.title;
-      this.owner =  this.getUsernameFromId(this.question.ownerId);
+      this.owner =  this.getUsernameFromUniversityId(this.question.owner);
       this.time = this.question.pub_date;
       this.likes = this.question.likes;
       this.id = this.question.id;
       this.currentLikeColor = this.findQuestionById(this.id).liked ? this.$store.state.likePrimaryColor : this.$store.state.likeSecondaryColor;
       this.currentBookmarkColor = this.findQuestionById(this.id).bookmarked ? this.$store.state.bookmarkPrimaryColor : this.$store.state.bookmarkSecondaryColor;
 
-    },
-    parseDate(date) {
-      return getDayDifference(date);
     },
     toggleBookmark(){      
       this.findQuestionById(this.id).bookmarked = !this.findQuestionById(this.id).bookmarked;

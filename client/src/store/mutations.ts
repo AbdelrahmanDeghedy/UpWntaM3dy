@@ -22,18 +22,17 @@ export const mutations = {
   },
 
   createQuestion (state: stateType, payload: questionInterface): void {
-    // state.questions.push(payload);
     state.backupQuestions.push(payload);
   },
 
-  editQuestionContent (state: stateType, payload : { id: number, title: string, fullQuestionText : string }): void {
-    const modifiedQuestionId = state.questions.findIndex((question) => {
-      return String(question.id) === String(payload.id);
-    });
+  // editQuestionContent (state: stateType, payload : { id: number, title: string, fullQuestionText : string }): void {
+  //   const modifiedQuestionId = state.questions.findIndex((question) => {
+  //     return String(question.id) === String(payload.id);
+  //   });
     
-    state.questions[modifiedQuestionId].title = payload.title;
-    state.questions[modifiedQuestionId].fullQuestionText = payload.fullQuestionText;
-  },
+  //   state.questions[modifiedQuestionId].title = payload.title;
+  //   state.questions[modifiedQuestionId].fullQuestionText = payload.fullQuestionText;
+  // },
 
   filterQuestions (state: stateType, filterText : string): void {
     state.questions = state.backupQuestions.filter((question) => {
