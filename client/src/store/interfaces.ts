@@ -24,4 +24,6 @@ export interface stateType {
   token : string;
 
   baseUrl : string;
+
+  alternativeImg : string;
 }

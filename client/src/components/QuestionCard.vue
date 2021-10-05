@@ -15,7 +15,17 @@
         </div>
       </router-link>
       <div class="flex ml-2 my-2">
-        <div class="text-blue-800 font-bold">{{ owner }}</div>
+        <div class="flex">
+            <div class="w-6 h-6 mr-2 rounded-full overflow-hidden shadow-lg flex justify-center items-center">
+                <img 
+                    class="w-6 h-6"
+                    :src="userImg || $store.state?.alternativeImg"
+                    alt="profile pic"
+                >
+            </div>
+
+            <div class="text-blue-800 font-bold">{{ owner }}</div>
+        </div>
         <div class="opacity-80 ml-2">{{ time }} </div>
       </div>
       <div class="ml-4">
@@ -71,6 +81,7 @@ export default {
       time: 0,
       likes: 0,
       id: 0,
+      userImg: "",
 
       currentLikeColor: this.findQuestionById(this.id).liked ? this.$store.state.likePrimaryColor : this.$store.state.likeSecondaryColor,
       currentBookmarkColor: this.findQuestionById(this.id).bookmarked ? this.$store.state.bookmarkPrimaryColor : this.$store.state.bookmarkSecondaryColor,
@@ -100,8 +111,10 @@ export default {
       this.time = this.question.pub_date;
       this.likes = this.question.likes;
       this.id = this.question.id;
+      
 
       const currentUser = await this.currentUser();
+      this.userImg = currentUser.picture;
       
       if (currentUser.likedQuestionIds.includes (this.id)) {
         this.currentLikeColor = this.$store.state.likePrimaryColor;

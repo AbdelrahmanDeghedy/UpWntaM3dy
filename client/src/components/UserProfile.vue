@@ -45,7 +45,7 @@
                         <input type="file" @change="onFileChanged" class="z-50 bg-gray-200 w-48 absolute h-32 rounded-full opacity-0 cursor-pointer">
                         <img 
                             class="w-48 h-48 relative"
-                            :src="userImg || alternativeImg"
+                            :src="userImg || $store.state?.alternativeImg"
                             alt="profile pic"
                         >
                     </div>
@@ -109,7 +109,6 @@ export default({
             answersCount: 0,
             pointsCount: 0,
             rank: -1,
-            alternativeImg: 'https://media.istockphoto.com/vectors/male-profile-flat-blue-simple-icon-with-long-shadow-vector-id522855255?k=20&m=522855255&s=612x612&w=0&h=fLLvwEbgOmSzk1_jQ0MgDATEVcVOh_kqEe0rqi7aM5A=',
             userImg: "",
 
         }
@@ -118,6 +117,7 @@ export default({
         const currentUser = await this.currentUser();
         console.log(currentUser);
         this.initializeValues();
+        // console.log(this.$store.state.alternativeImg);
     },
     methods: {
         async onFileChanged(e){

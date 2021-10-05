@@ -2,6 +2,13 @@
   <div class="bg-white rounded-xl overflow-hidden">
     <div class="w-4/6">
       <div class="flex ml-2 my-2">
+        <div class="w-6 h-6 mr-2 rounded-full overflow-hidden shadow-lg flex justify-center items-center">
+            <img 
+                class="w-6 h-6"
+                :src="userImg || $store.state?.alternativeImg"
+                alt="profile pic"
+            />
+        </div>
         <div class="text-blue-800 font-bold">{{ getUsernameFromId(answer.owner_id) }} </div>
         <div class="opacity-80 ml-2">{{ answerTime }} </div>
       </div>
@@ -70,6 +77,7 @@ export default {
       currentLikeColor : "",
       currentBookmarkColor: "",
       answerLocal: this.answer,
+      userImg: "",
     };
   },
   async mounted(){
@@ -85,13 +93,9 @@ export default {
       }
     },
     async initializeValues(){
-      // this.currentLikeColor = this.answer.liked ? this.$store.state.likePrimaryColor : this.$store.state.likeSecondaryColor;
-      const users =  await this.getLeaderboard();
-      this.$store.commit("loadUsers", users.users);
-      
       const currentUser = await this.currentUser();
-      // console.log(this.answer.id);
-      console.log(currentUser, currentUser.likedAnswerIds, this.id);
+      this.userImg = currentUser.picture;
+
       if (currentUser.likedAnswerIds.includes (this.answer.id)) {
         this.currentLikeColor = this.$store.state.likePrimaryColor;
       } else {
