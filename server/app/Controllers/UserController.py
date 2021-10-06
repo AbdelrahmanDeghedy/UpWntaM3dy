@@ -30,7 +30,10 @@ def get_leaderboard () :
 @cross_origin()
 def login_post():
     reqData = request.get_json()
-    login_schema = {'require_all': True}
+    login_schema = {
+         'email':{'required':True,'type':'string', 'check_with': check_email},
+         'password':{'required':True},
+         }
     reqData = request.get_json()
     validated = Validator(login_schema).validate(reqData)
     if validated:
