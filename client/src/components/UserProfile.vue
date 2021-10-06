@@ -41,10 +41,11 @@
                     />
                 </div>
                 <div class=" w-2/4 flex flex-col items-center py-8">
-                    <div class="w-48 h-48 rounded-full overflow-hidden shadow-lg flex justify-center items-center">
+                    <div  class="w-48 h-48 rounded-full overflow-hidden shadow-lg flex justify-center items-center">
+                        <input type="file" @change="onFileChanged" class="z-50 bg-gray-200 w-48 absolute h-32 rounded-full opacity-0 cursor-pointer">
                         <img 
-                            class="w-48 h-48"
-                            :src="userImg"
+                            class="w-48 h-48 relative"
+                            :src="userImg || $store.state?.alternativeImg"
                             alt="profile pic"
                         >
                     </div>
@@ -90,9 +91,11 @@
 import TheButton from '@/components/TheButton.vue'
 import ThePopup from '@/components/ThePopup.vue'
 import profileInfo from '@/mixins/profileInfo'
+import authMixin from '@/mixins/authMixin'
+import getFromIdMixin from '@/mixins/getFromIdMixin'
 
 export default({
-    mixins: [profileInfo],
+    mixins: [authMixin, getFromIdMixin],
     components: {
         TheButton,
         ThePopup
@@ -107,27 +110,38 @@ export default({
             pointsCount: 0,
             rank: -1,
             userImg: "",
+
         }
     },
-    mounted(){
-        console.log("test", this.getCurrentUser());
+    async mounted(){
+        const currentUser = await this.currentUser();
+        console.log(currentUser);
         this.initializeValues();
+        // console.log(this.$store.state.alternativeImg);
     },
     methods: {
-        initializeValues(){
-            this.username = this.getCurrentUser().name;
-            this.userImg = this.getCurrentUser().picture;
-            this.bioText = this.getCurrentUser().bio;
-            this.rank = this.getCurrentUser().rank;
-            this.pointsCount = this.getCurrentUser().points;
-            this.answersCount = this.getCurrentUser().answers.answerIds.length;
+        async onFileChanged(e){
+            const uploadedImg = URL.createObjectURL(e.target.files[0]);
+            this.userImg = uploadedImg;
+            await this.editCurrentUser({ picture: uploadedImg })
+        },
+        async initializeValues(){
+            const currentUser = await this.currentUser();
+
+            this.username = currentUser.name;
+            this.userImg = currentUser.picture;
+            this.bioText = currentUser.bio;
+            this.rank = currentUser.rank;
+            this.pointsCount = currentUser.points;
+            this.answersCount = currentUser.questionIds.length;
         },
         editBio(){
             this.currentBio = this.bioText;
             this.enablePopup();
         },
-        saveChanges(){
+        async saveChanges(){
             this.getCurrentUser().bio = this.bioText;
+            await this.editCurrentUser({ bio: this.bioText })
             this.disablePopup();
         },
         disablePopup(){
@@ -140,8 +154,8 @@ export default({
             this.$refs.profileContainer.classList.add("blur-sm", "filter")
             this.disableBtn = true;
         },
-        discardChanges(){
-            this.bioText = this.getCurrentUser().bio;
+        async discardChanges(){
+            this.bioText = (await this.currentUser()).bio;
             this.disablePopup();
         },
     }

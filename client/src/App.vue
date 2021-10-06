@@ -34,12 +34,16 @@ import Questions from "@/components/Questions.vue";
 import QuestionCreate from "@/components/QuestionCreate.vue";
 import UserProfile from '@/components/UserProfile.vue';
 
-import { users, answers, questions, courseInfoPerTerm } from "@/_utils/data";
+// import { users, answers, questions, courseInfoPerTerm } from "@/_utils/data";
 import Auth from './components/Auth.vue';
 import NotFound from './components/NotFound.vue';
 
+import authMixin from '@/mixins/authMixin';
+import currentuserDataMixin from '@/mixins/currentuserDataMixin';
+
 export default {
   name: "App",
+  mixins: [authMixin, currentuserDataMixin],
   components: {
     TheNavbar,
     QuestionLayout,
@@ -53,6 +57,8 @@ export default {
   data() {
     return {
       // mode: "questions", // questions, questionDetails, or questionCreate
+      questions : {},
+      users: {},
     };
   },
   watch: {
@@ -73,19 +79,33 @@ export default {
       
     },
   },
-  mounted(): void {
-    this.loadData();
+  async mounted() {
     console.log("router mode", this.$store.state.pageMode);
+
+    await this.login({ email : "test@test.com", password : "password" });
+    // await this.createQuestion({ title: "test question", body: "from client", department: "comm", commaSeparatedTags: "" })
+    // console.log(await this.getAllQuestions());
+    
+    this.questions =  await this.getAllQuestions();
+    this.users =  await this.getLeaderboard();
+    console.log(this.users.users);
+    // const user = await this.getCurrentUser()
+    // console.log(user);
+
+    console.log(this.questions.questions);
+    // this.logout();
+    
+    this.loadData();
   },
 
   methods: {
     loadData(): void {
-      this.$store.commit("loadUsers", users);
-      this.$store.commit("loadAnswers", answers);
-      this.$store.commit("loadQuestions", questions);
-      this.$store.commit("loadBackupQuestions", questions);
-      this.$store.commit("loadCourseInfoPerTerm", courseInfoPerTerm);
-      console.log("done", this.$store.state.courseInfoPerTerm);
+      this.$store.commit("loadUsers", this.users.users);
+      // this.$store.commit("loadAnswers", answers);
+      this.$store.commit("loadQuestions", this.questions.questions);
+      this.$store.commit("loadBackupQuestions", this.questions.questions);
+      // this.$store.commit("loadCourseInfoPerTerm", courseInfoPerTerm);
+      // console.log("done", this.$store.state.courseInfoPerTerm);
     },
   },
 };

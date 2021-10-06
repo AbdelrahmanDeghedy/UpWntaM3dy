@@ -1,10 +1,11 @@
 export interface questionInterface {
     id: number,
-    ownerId: number,
+    owner: number,
     title: string,
-    fullQuestionText : string,
-    time: Date,
+    body : string,
+    pub_date: Date,
     likes: number,
-    liked: false,
-    answersIds: number[],
+    answerIds: number[],
+    commaSeparatedTags: string,
+    department: string,
 }

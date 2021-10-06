@@ -15,8 +15,18 @@
         </div>
       </router-link>
       <div class="flex ml-2 my-2">
-        <div class="text-blue-800 font-bold">{{ owner }}</div>
-        <div class="opacity-80 ml-2">{{ time }} days ago</div>
+        <div class="flex">
+            <div class="w-6 h-6 mr-2 rounded-full overflow-hidden shadow-lg flex justify-center items-center">
+                <img 
+                    class="w-6 h-6"
+                    :src="userImg || $store.state?.alternativeImg"
+                    alt="profile pic"
+                >
+            </div>
+
+            <div class="text-blue-800 font-bold">{{ owner }}</div>
+        </div>
+        <div class="opacity-80 ml-2">{{ time }} </div>
       </div>
       <div class="ml-4">
         <div class="flex">
@@ -45,12 +55,14 @@
 import TheButton from "./TheButton.vue";
 
 import getFromIdMixin from '@/mixins/getFromIdMixin';
+import authMixin from '@/mixins/authMixin';
+import currentuserDataMixin from '@/mixins/currentuserDataMixin';
 // import { questions } from '@/_utils/data';
 import { getDayDifference } from "@/_utils/helper";
 import { isArabic } from '@/_utils/helper';
 
 export default {
-  mixins: [ getFromIdMixin ],
+  mixins: [ getFromIdMixin, authMixin, currentuserDataMixin ],
   props: {
     question: {
       type: Object,
@@ -59,12 +71,6 @@ export default {
   },
   components: {
     TheButton,
-  },
-  async mounted(){
-    await this.initializeValues();
-    this.handleLanguage();
-    // console.log(this.findQuestionById(this.id));
-    // console.log(this.$store.state.questions);
   },
   data(): any {
     return {
@@ -75,11 +81,16 @@ export default {
       time: 0,
       likes: 0,
       id: 0,
+      userImg: "",
 
       currentLikeColor: this.findQuestionById(this.id).liked ? this.$store.state.likePrimaryColor : this.$store.state.likeSecondaryColor,
       currentBookmarkColor: this.findQuestionById(this.id).bookmarked ? this.$store.state.bookmarkPrimaryColor : this.$store.state.bookmarkSecondaryColor,
     };
   },
+      async mounted(){
+        await this.initializeValues();
+        this.handleLanguage();
+      },
   methods: {
     handleLanguage(){
       if (isArabic(this.text)) {
@@ -93,31 +104,45 @@ export default {
       this.$store.commit("toggleScrollToAnswer");
       // console.log(this.$store.state.scrollToAnswer);
     },
-    initializeValues(){
-      this.answersNumber = this.question.answersIds.length;
+    async initializeValues(){
+      this.answersNumber = this.question.answerIds.length;
       this.text = this.question.title;
-      this.owner =  this.getUsernameFromId(this.question.ownerId);
-      this.time = this.question.time;
+      this.owner =  this.getUsernameFromUniversityId(this.question.owner);
+      this.time = this.question.pub_date;
       this.likes = this.question.likes;
       this.id = this.question.id;
-      this.currentLikeColor = this.findQuestionById(this.id).liked ? this.$store.state.likePrimaryColor : this.$store.state.likeSecondaryColor;
-      this.currentBookmarkColor = this.findQuestionById(this.id).bookmarked ? this.$store.state.bookmarkPrimaryColor : this.$store.state.bookmarkSecondaryColor;
+      
+
+      const currentUser = await this.currentUser();
+      this.userImg = currentUser.picture;
+      
+      if (currentUser.likedQuestionIds.includes (this.id)) {
+        this.currentLikeColor = this.$store.state.likePrimaryColor;
+      } else {
+        this.currentLikeColor = this.$store.state.likeSecondaryColor;
+      }
+
+      
+      if (currentUser.bookmarkedQuestionIds.includes (this.id)) {
+        this.currentBookmarkColor = this.$store.state.bookmarkPrimaryColor;
+      } else {
+        this.currentBookmarkColor = this.$store.state.bookmarkSecondaryColor;
+      }
 
     },
-    parseDate(date) {
-      return getDayDifference(date);
+    async toggleBookmark(){
+        if (this.currentBookmarkColor !== this.$store.state.bookmarkPrimaryColor) {
+          await this.bookmarkQuestion(this.id);
+        } else {
+          await this.removeBookmarkQuestion(this.id);
+        }
     },
-    toggleBookmark(){      
-      this.findQuestionById(this.id).bookmarked = !this.findQuestionById(this.id).bookmarked;
-      this.initializeValues();
-    },
-    toggleLike(){
-      // optimistic updates
-      
-      this.findQuestionById(this.id).liked = !this.findQuestionById(this.id).liked;
-      this.findQuestionById(this.id).likes = this.findQuestionById(this.id).liked ? this.findQuestionById(this.id).likes + 1 : this.findQuestionById(this.id).likes - 1; 
-      
-      this.initializeValues();
+    async toggleLike(){
+        if (this.currentLikeColor !== this.$store.state.likePrimaryColor) {
+          await this.likeQuestion(this.id);
+        } else {
+          await this.dislikeQuestion(this.id);
+        }
     },
     handlePageRouting(): void {
       this.$store.commit("setPageMode", "questionDetails");

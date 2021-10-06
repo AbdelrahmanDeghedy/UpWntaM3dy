@@ -63,8 +63,8 @@
         <hr class="mx-2" />
 
         <!-- Answers -->
-        <div class="ml-4">
-          <div v-for="answer in getAnswersOfQuestion($route.params.qId)" :key='answer'>
+        <div class="ml-4" :key="$store.state.answers.length">
+          <div v-for="answer in answers" :key='answer'>
             <answer-card :answer="answer" @syncAnswersLikeState="syncAnswersLikeState" />
             <hr class="mx-2" />
           </div>
@@ -73,7 +73,7 @@
         <div class="mt-4 mx-auto mb-4" ref="answerComment">
             <question-create 
               :answerMode="true"
-              :id="$route.params.qId"
+              :qid="$route.params.qId"
             />
         </div>
 
@@ -84,7 +84,7 @@
   <div v-else-if="questionMode === 'edit'">
     <question-create 
       :editMode = "{ editText : fullQuestionText }"
-      :id="$route.params.qId"
+      :qid="$route.params.qId"
     />
   </div>
 </template>
@@ -93,6 +93,8 @@
 import AnswerCard from "@/components/AnswerCard";
 import TheButton from "@/components/TheButton";
 import QuestionCreate from '@/components/QuestionCreate.vue'
+
+import currentuserDataMixin from '@/mixins/currentuserDataMixin';
 
 import getFromIdMixin from '@/mixins/getFromIdMixin';
 // import { getDayDifference } from '@/_utils/helper.ts'
@@ -106,7 +108,7 @@ export default {
     TheButton,
     QuestionCreate,
   },
-  mixins: [ getFromIdMixin ],
+  mixins: [ getFromIdMixin, currentuserDataMixin ],
   data() {
     return {
       language: "en",
@@ -119,6 +121,7 @@ export default {
       currentLikeColor : "",
       currentBookmarkColor: "",
       questionMode: "details",  // "details" or "edit"
+      answers : [],
     };
   },
   updated(){
@@ -138,6 +141,10 @@ export default {
     //
   },
   methods :{
+    async getAnswersOfQuestion(){
+      const answers = await this.getQuestionAnswers(this.$route.params.qId);
+      this.answers = answers.Answers;
+    },
     handleLanguage(){
       if (isArabic(this.text)) {
         this.language = "ar";
@@ -157,12 +164,14 @@ export default {
      this.questionMode = "edit";
     },
    initializeValues(){
+    //  console.log("??", this.findQuestionById(this.$route.params.qId)?.title);
+
       this.likes = this.findQuestionById(this.$route.params.qId)?.likes;
       this.answersNumber = this.getAnswersOfQuestion(this.$route.params.qId)?.length;
       this.text = this.findQuestionById(this.$route.params.qId)?.title;
       this.owner = this.getUsernameFromId(this.findQuestionById(this.$route.params.qId)?.ownerId);
-      this.fullQuestionText = this.findQuestionById(this.$route.params.qId)?.fullQuestionText;
-      this.time = this.findQuestionById(this.$route.params.qId)?.time;
+      this.fullQuestionText = this.findQuestionById(this.$route.params.qId)?.body;
+      this.time = this.findQuestionById(this.$route.params.qId)?.pub_date;
 
       this.currentLikeColor = this.findQuestionById(this.$route.params.qId)?.liked ? this.$store.state?.likePrimaryColor : this.$store.state?.likeSecondaryColor;
       this.currentBookmarkColor = this.findQuestionById(this.$route.params.qId)?.bookmarked ? this.$store.state?.bookmarkPrimaryColor : this.$store.state?.bookmarkSecondaryColor;

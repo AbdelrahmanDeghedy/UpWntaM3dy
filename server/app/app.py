@@ -10,6 +10,7 @@ from Models.Answer import Answer
 
 #Import Routes BluePrints
 from Routes.question_bp import question_bp
+from Routes.answer_bp import answer_bp
 from Routes.user_bp import user_bp
 from Routes.report_bp import report_bp
 
@@ -18,31 +19,22 @@ import os
 
 
 app = Flask(__name__)
+from flask_cors import CORS
+
+CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+
 app.config.from_object('config')
 db.init_app(app)
 migrate = Migrate(app, db)
 
 app.register_blueprint(question_bp, url_prefix='/questions')
+app.register_blueprint(answer_bp, url_prefix='/answers')
 app.register_blueprint(user_bp, url_prefix='/users')
 app.register_blueprint(report_bp, url_prefix='/reports')
 
-
-# Auth configurations
-from flask_login import LoginManager
-from flask import jsonify
-
-
-login_manager = LoginManager()
-login_manager.login_view = 'login_post'
-login_manager.init_app(app)
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.filter_by(id=user_id).first()
-
-@login_manager.unauthorized_handler
-def unauth_handler():
-    return jsonify(message='You are not authorized to access this page'), 401
+from flask_jwt_extended import JWTManager
+jwt = JWTManager(app)
 
 
 
