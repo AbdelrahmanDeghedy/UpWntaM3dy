@@ -14,6 +14,9 @@ from cerberus import Validator
 from flask_jwt_extended import jwt_required
 from flask_cors import cross_origin
 
+from sqlalchemy import desc
+
+
 
 db = SQLAlchemy()
 
@@ -214,3 +217,17 @@ def questions_removeBookmark (qid) :
 @cross_origin()
 def optionsHanlder() :
     return "OK", 200
+
+@cross_origin()
+def sort_by_likes():
+    #query = session.query(SpreadsheetCells).order_by(SpreadsheetCells.y_index)
+    questions = Question.query.filter().order_by(desc(Question.likes))
+    questionsList = [question.serializeQuestion() for question in questions]
+    
+    return { 
+        'msg' : 'success',
+        'length' : len(questionsList),
+        'questions': questionsList
+     }
+
+
