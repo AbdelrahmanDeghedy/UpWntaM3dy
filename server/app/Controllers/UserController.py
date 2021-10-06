@@ -3,7 +3,14 @@ import sqlalchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from Models.User import User
 from flask_sqlalchemy import SQLAlchemy
+<<<<<<< Updated upstream
 from flask_login import login_user, logout_user, login_required
+=======
+from flask_jwt_extended import get_jwt_identity, create_access_token, jwt_required
+from flask_cors import cross_origin
+>>>>>>> Stashed changes
+
+from server.app.validators.validation import *
 
 db = SQLAlchemy()
 
@@ -24,6 +31,11 @@ def login_post():
     return jsonify({ "msg": "Logged in!" })
 
 def signup_post():
+    signup_schema = {'require_all': True,
+        'email':{'type':'string', 'check_with': check_email},
+        'name':{'type':'string'},
+        'password':{'type':'str'}
+    }
     reqData = request.get_json()
 
     email = reqData.get("email", None)
@@ -34,6 +46,7 @@ def signup_post():
     bio = ""
     picture = ""
 
+    #To be modified....
     if (email == None or name == None or password == None or universityId == None or department == None) :
         return jsonify({ "msg" : "Invalid data" }), 400
 
