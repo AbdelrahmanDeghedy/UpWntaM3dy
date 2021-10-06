@@ -31,10 +31,10 @@
       />
     </div>
     <!-- Question cards -->
-    <div class="flex flex-col mt-4" :key="change">
+    <div class="flex flex-col mt-4">
       <question-card
-        v-for="(question, index) in renderedQuestions"
-        :key="index"
+        v-for="(question) in renderedQuestions"
+        :key="question"
         :question="question"
       />
     </div>
@@ -54,9 +54,11 @@
 import TheButton from "@/components/TheButton.vue";
 import QuestionCard from "@/components/QuestionCard.vue";
 import PaginationButtons from '@/components/PaginationButtons.vue';
+import currentuserDataMixin from '@/mixins/currentuserDataMixin';
 
 
 export default {
+  mixins: [currentuserDataMixin],
   components: {
     TheButton,
     QuestionCard,
@@ -84,22 +86,23 @@ export default {
     handleFilter(type) {
       this.activeBtn = type;
     },
-    handleActiveBtns(val) {
+    async handleActiveBtns(val) {
       this.btnStates.forEach((btnState, index) => {
         this.btnStates[val] = false;
         index !== val && (this.btnStates[index] = true);
       })
 
-      if (val === 0) {
-        this.$store.commit ("sortQuestions", "answerIds");
-        // this.syncCurrentList(this.$store.state.questions)
-      } else if (val === 1) {
-        this.$store.commit ("sortQuestions", "likes");
-        // this.syncCurrentList(this.$store.state.questions)
-      } else if (val === 2) {
-        this.$store.commit ("sortQuestions", "pub_date");
-        // this.syncCurrentList(this.$store.state.questions)
-      }
+      // if (val === 0) {
+      //   const questions = await this.getAllQuestionsSortedByLikes();
+      //   console.log(questions);
+      //   this.$store.commit ("loadQuestions", questions);
+      // } else if (val === 1) {
+      //   this.$store.commit ("sortQuestions", "likes");
+      //   // this.syncCurrentList(this.$store.state.questions)
+      // } else if (val === 2) {
+      //   this.$store.commit ("sortQuestions", "pub_date");
+      //   // this.syncCurrentList(this.$store.state.questions)
+      // }
         this.change = Math.random();
     },
   },

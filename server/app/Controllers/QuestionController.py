@@ -217,10 +217,8 @@ def questions_removeBookmark (qid) :
 
 
 
-@cross_origin()
-def optionsHanlder() :
-    return "OK", 200
 
+@jwt_required()
 @cross_origin()
 def sort_by_likes():
     #query = session.query(SpreadsheetCells).order_by(SpreadsheetCells.y_index)
@@ -233,4 +231,21 @@ def sort_by_likes():
         'questions': questionsList
      }
 
+@jwt_required()
+@cross_origin()
+def sort_by_answersCount () :
+    questions = Question.query.filter().all()
+    questionsList = [question.serializeQuestion() for question in questions]
+    questionsList = sorted(questionsList, key = lambda k : len(k['answerIds']), reverse=True)
+
+    
+    return { 
+        'msg' : 'success',
+        'length' : len(questionsList),
+        'questions': questionsList
+     }
+
+@cross_origin()
+def optionsHanlder() :
+    return "OK", 200
 

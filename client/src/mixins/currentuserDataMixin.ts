@@ -21,6 +21,30 @@ export default {
               const data = await res.json();
               return data;
         },
+        async getAllQuestionsSortedByLikes(){
+          const res = await fetch(`${this.$store.state.baseUrl}/questions/sortedByLikes`, {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization" : `Bearer ${this.$store.state.token}`
+              },
+            });
+      
+            const data = await res.json();
+            return data;
+      },
+      async getAllQuestionsSortedByAnswers(){
+        const res = await fetch(`${this.$store.state.baseUrl}/questions/sortedByAnswersCount/`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization" : `Bearer ${this.$store.state.token}`
+            },
+          });
+    
+          const data = await res.json();
+          return data;
+      },
         async createQuestion(questionBody: { title: string, body: string, department: string, commaSeparatedTags: string }){
             const res = await fetch(`${this.$store.state.baseUrl}/questions/create`, {
                 method: "POST",

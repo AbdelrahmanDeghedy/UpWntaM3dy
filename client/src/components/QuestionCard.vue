@@ -83,8 +83,8 @@ export default {
       id: 0,
       userImg: "",
 
-      currentLikeColor: this.findQuestionById(this.id).liked ? this.$store.state.likePrimaryColor : this.$store.state.likeSecondaryColor,
-      currentBookmarkColor: this.findQuestionById(this.id).bookmarked ? this.$store.state.bookmarkPrimaryColor : this.$store.state.bookmarkSecondaryColor,
+      currentLikeColor: "",
+      currentBookmarkColor: "",
     };
   },
       async mounted(){

@@ -32,7 +32,7 @@
           </div>
 
           <div class="ml-2">
-            {{ answer.likes }} Likes
+            {{ localAnswerLikes }} Likes
           </div>
         </div>
 
@@ -78,6 +78,7 @@ export default {
       currentBookmarkColor: "",
       answerLocal: this.answer,
       userImg: "",
+      localAnswerLikes: 0,
     };
   },
   async mounted(){
@@ -95,6 +96,7 @@ export default {
     async initializeValues(){
       const currentUser = await this.currentUser();
       this.userImg = currentUser.picture;
+      this.localAnswerLikes = this.answer.likes;
 
       if (currentUser.likedAnswerIds.includes (this.answer.id)) {
         this.currentLikeColor = this.$store.state.likePrimaryColor;
@@ -111,17 +113,22 @@ export default {
     async toggleBookmark(){
           if (this.currentBookmarkColor !== this.$store.state.bookmarkPrimaryColor) {
             await this.bookmarkAnswer(this.answer.id);
+            this.currentBookmarkColor = this.$store.state.bookmarkPrimaryColor;
         } else {
           await this.removeBookmarkAnswer(this.answer.id);
+          this.currentBookmarkColor = this.$store.state.bookmarkSecondaryColor;
         }
     },
     async toggleLike(){
       if (this.currentLikeColor !== this.$store.state.likePrimaryColor) {
-        await this.likeAnswer(this.answer.id);
+          await this.likeAnswer(this.answer.id);
+          this.currentLikeColor = this.$store.state.likePrimaryColor;
+          this.localAnswerLikes += 1;
         } else {
           await this.dislikeAnswer(this.answer.id);
+          this.currentLikeColor = this.$store.state.likeSecondaryColor;
+          this.localAnswerLikes -= 1;
         }
-          // this.$emit("syncAnswersLikeState", this.answerLocal);
     },
   }
 };
