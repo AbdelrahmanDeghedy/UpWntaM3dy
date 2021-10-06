@@ -37,6 +37,7 @@ export default {
               });
         
               const data = await res.json();
+              return data;
               console.log(data);
         },
         async editQuestion(qid: string, questionBody: { title ?: string, body ?: string, department ?: string, commaSeparatedTags ?: string }){
@@ -79,7 +80,7 @@ export default {
               });
         
               const data = await res.json();
-              console.log(data);
+              return data;
         },
         async dislikeQuestion(qid: string){
             const res = await fetch(`${this.$store.state.baseUrl}/questions/${qid}/dislike`, {
@@ -91,7 +92,7 @@ export default {
               });
         
               const data = await res.json();
-              console.log(data);
+              return data;
         },
         async bookmarkQuestion(qid: string){
             const res = await fetch(`${this.$store.state.baseUrl}/questions/${qid}/bookmark`, {
@@ -103,7 +104,7 @@ export default {
               });
         
               const data = await res.json();
-              console.log(data);
+              return data;
         },
         async removeBookmarkQuestion(qid: string){
             const res = await fetch(`${this.$store.state.baseUrl}/questions/${qid}/removeBookmark`, {
@@ -115,7 +116,7 @@ export default {
               });
         
               const data = await res.json();
-              console.log(data);
+              return data;
         },
 
 

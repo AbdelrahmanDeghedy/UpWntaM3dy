@@ -7,13 +7,14 @@
                 {{ alternativeOperation }}
             </span>
         </div>
-        <div class="signup-form flex flex-col items-center mt-4">
+        <form class="signup-form flex flex-col items-center mt-4">
             <input 
                 v-if="authMode === 'signup'"
                 class="w-96 p-4 rounded-xl shadow outline-none mb-4"
                 type="text"
                 placeholder="Full Name"
                 v-model="name"
+                required
             >
 
             <input 
@@ -21,6 +22,7 @@
                 type="email"
                 placeholder="Email Address"
                 v-model="email"
+                required
             >
 
             <input 
@@ -28,6 +30,7 @@
                 type="password"
                 placeholder="Password"
                 v-model="password"
+                required
             >
 
             <input 
@@ -36,25 +39,50 @@
                 type="text"
                 placeholder="University ID"
                 v-model="uniId"
+                required
             >
+            
+            
+            <input 
+                v-if="authMode === 'signup'"
+                class="w-96 p-4 rounded-xl shadow outline-none mb-4"
+                type="text"
+                placeholder="Bio (optional)"
+                v-model="bio"
+            >
+            <the-selector 
+                v-if="authMode === 'signup'"
+                :values="['Communication', 'CompCommunication']"
+                :label="'Department'"
+                class="w-full -mt-1"
+                :defaultChoice="'Communication'"
+                @currentValueChange="syncDepartment"
+            />
+
+            <div>
+                {{ authResponse }}
+            </div>
 
             <the-button 
                 :content="submitBtnContent"
-                type="secondary"
                 size="large"
-                @click="authMode === 'signin' ? signin() : signup()"
+                type="primary"
+                @click.prevent="authMode === 'signin' ? signin() : createAccount()"
             />
-        </div>
+        </form>
     </div>
 </template>
 
 <script lang="ts">
 import TheButton from '@/components/TheButton.vue';
-
+import authMixin from '@/mixins/authMixin';
+import TheSelector from '@/components/TheSelector.vue';
 
 export default({
+    mixins: [authMixin],
     components: {
-        TheButton
+        TheButton,
+        TheSelector
     },
     data() {
         return {
@@ -66,52 +94,57 @@ export default({
             name: "",
             email: "",
             password: "",
-            uniId: ""
+            uniId: "",
+            bio: "",
+            department: "Communication",
+            authResponse: ""
         }
     },
     methods: {
+        syncDepartment(department){
+            this.department = department;
+        },
         switchToSignup(){
             this.$router.push({ name: "Signup" });
             this.authMode = "signup";
             this.authHeader = "Create An Account";
             this.headerText = "Already Have An Account?";
             this.submitBtnContent = "Sign Up";
+            this.alternativeOperation = "Sign in";
         },
         switchToSignin(){
             this.$router.push({ name: "Signin" });
             this.authMode = "signin";
             this.authHeader = "Sign In";
             this.headerText = "Didn’t have an account?";
-            this.submitBtnContent = "Sign In";  
+            this.submitBtnContent = "Sign In";
+            this.alternativeOperation = "Sign up";
         },
-        signin(){
-            console.log("sign in!!!!");
-            this.$store.state.users.forEach((user) => {
-                if (user.email === this.email && user.password === this.password) {
-                    console.log("signed in>>>");
-                    this.$store.commit("setPageMode", "questions");
-                    this.$router.push({ name: "Questions", params: { 'user_id': user.universityId } });
-                }
-            })
+        async signin(){
+            if (!this.email || !this.password)  return;
+            const res = await this.login ({ email: this.email, password: this.password })
+            console.log(res);
+            if (res.msg === 'success') {
+                this.$store.commit("setPageMode", "questions");
+                this.$router.push({ name: "Questions", params: { 'user_id': res.user.universityId } });
+
+            } else {
+                this.authResponse = res.msg;
+            }
         },
-        signup(){
-            console.log("sign up!!!!");
-            this.$store.commit ("createUser", {
-                email: this.email,
-                password: this.password,
-                universityId: this.uniId,
-                name: this.name,
-                points: 0,
-                rank: null,
-                bio: "404, Not found!",
-                picture: "",
-                answers: {
-                    answerIds: [],
-                },
-                bookmarks: {
-                    questionIds: [],
-                },
-            });
+                
+        async createAccount(){
+            if (!this.email || !this.password || !this.name || !this.uniId)  return;
+            const res = await this.signup ({ email: this.email, password: this.password, name: this.name, universityId: this.uniId, department: this.department, bio: this.bio });
+            console.log(res);
+            if (res.msg === 'success') {
+                this.$store.commit("setPageMode", "questions");
+                this.$router.push({ name: "Questions", params: { 'user_id': res.user.universityId } });
+
+            } else {
+                this.authResponse = res.msg;
+            }
+            
         },
     }
 })

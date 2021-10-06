@@ -66,6 +66,7 @@ def signup_post():
          'picture':{'required':True,'type':'string'},
          }
     reqData = request.get_json()
+    
     v = Validator(signup_schema)
     validated = v.validate(reqData)
     if validated:
@@ -74,7 +75,7 @@ def signup_post():
         password = reqData.get("password", None)
         universityId = reqData.get("universityId", None)
         department = reqData.get("department", None)
-        bio = ""
+        bio = reqData.get("bio", "")
         picture = ""
     else:
         return jsonify({ "msg" : v.errors }), 400
@@ -95,7 +96,7 @@ def signup_post():
                     department = department, 
                     bio = bio,
                     picture = picture,
-                    rank = -1,
+                    rank = User.query.count() + 1,
                     points = 0,
                   )
 

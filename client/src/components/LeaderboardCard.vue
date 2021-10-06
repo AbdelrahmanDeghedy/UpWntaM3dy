@@ -50,7 +50,6 @@ export default {
   methods: {
     async initializeValues(){
         this.users = (await this.getLeaderboard()).users;
-        console.log("usesssss", this.users);
     },
   }
 };

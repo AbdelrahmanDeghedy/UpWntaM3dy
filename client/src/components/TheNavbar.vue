@@ -24,19 +24,33 @@
         Sign in
       </div>
     </router-link>
-    <div class="flex items-center">&nbsp;</div>
+    <router-link :to="{ name: 'Signin' }" class="flex">
+      <div
+        class="flex items-center cursor-pointer"
+        @click="signOut"
+      >
+        Sign out
+      </div>
+    </router-link>
     <div class="flex items-center">&nbsp;</div>
   </div>
 </template>
 
-<script lang="ts">
+<script>
+import authMixin from '@/mixins/authMixin';
+
 export default {
+  mixins: [authMixin],
   data() {
     return {
       //
     };
   },
   methods: {
+    signOut(){
+        this.logout();
+        this.$store.commit("setPageMode", "auth");
+    },
     handlePageRouting(mode) {
       this.$store.commit("setPageMode", mode);
     },

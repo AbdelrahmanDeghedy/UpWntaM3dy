@@ -6,7 +6,7 @@
         @click="handleActiveBtns(0)"
         :disabled="btnStates[0]"
         class="mr-4"
-        content="Month"
+        content="Answers"
         :key="change"
         type="ternary"
         size="small"
@@ -16,7 +16,7 @@
         :disabled="btnStates[1]"
         class="mr-4"
         :key="change"
-        content="Week"
+        content="Likes"
         type="ternary"
         size="small"
       />
@@ -25,25 +25,27 @@
         class="mr-4"
         :disabled="btnStates[2]"
         :key="change"
-        content="Day"
+        content="Date"
         type="ternary"
         size="small"
       />
     </div>
     <!-- Question cards -->
-    <div class="flex flex-col mt-4">
+    <div class="flex flex-col mt-4" :key="change">
       <question-card
-        v-for="question in renderedQuestions"
-        :key="question"
+        v-for="(question, index) in renderedQuestions"
+        :key="index"
         :question="question"
       />
     </div>
 
-    <pagination-buttons 
-      class="mb-10"
-      :list="this.$store.state.questions"
-      @paginatedList="syncCurrentList"
-    />
+  <!-- <div :key="change"> -->
+      <pagination-buttons 
+        class="mb-10"
+        :list="$store.state.questions"
+        @paginatedList="syncCurrentList"
+      />
+  <!-- </div> -->
 
   </div>
 </template>
@@ -87,7 +89,18 @@ export default {
         this.btnStates[val] = false;
         index !== val && (this.btnStates[index] = true);
       })
-      this.change = Math.random();
+
+      if (val === 0) {
+        this.$store.commit ("sortQuestions", "answerIds");
+        // this.syncCurrentList(this.$store.state.questions)
+      } else if (val === 1) {
+        this.$store.commit ("sortQuestions", "likes");
+        // this.syncCurrentList(this.$store.state.questions)
+      } else if (val === 2) {
+        this.$store.commit ("sortQuestions", "pub_date");
+        // this.syncCurrentList(this.$store.state.questions)
+      }
+        this.change = Math.random();
     },
   },
 };
