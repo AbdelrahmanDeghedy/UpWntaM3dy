@@ -7,10 +7,3 @@ def check_email(email):
     else:   
         print("Invalid Email")   
       
-
-# from server.app.validators.validation import *
-#     signup_schema = {'require_all': True,
-#         'email':{'type':'string', 'check_with': check_email},
-#         'name':{'type':'string'},
-#         'password':{'type':'str'}
-#     }
