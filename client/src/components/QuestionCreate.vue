@@ -130,9 +130,12 @@ export default {
     },
     syncInput(){
       this.markdown = marked(this.text);
+      console.log(this.markdown);
     },
     async answerQuestion(){
       const body = this.markdown;
+      if (!this.text) return;
+      
       await this.createQuestionAnswer(this.qid, { body })
 
       const answers = await this.getQuestionAnswers (this.qid);
@@ -158,6 +161,7 @@ export default {
     },
     async createNewQuestion(){
       if (!this.text || !this.spaceSeparatedTags) return;
+      this.syncInput();
       
       const currentUser = await this.currentUser();
       console.log(currentUser);
@@ -165,7 +169,8 @@ export default {
 
       const title = HTMLToText(this.markdown).split("\n")[0] + '..';
       const body = this.markdown;
-      await this.createQuestion({ title, body, department: currentUser.department, commaSeparatedTags: this.listedTags  })
+      const res = await this.createQuestion({ title, body, department: currentUser.department, commaSeparatedTags: this.listedTags  })
+      console.log(res);
       
       this.questions =  await this.getAllQuestions();
       this.$store.commit("loadQuestions", this.questions.questions);

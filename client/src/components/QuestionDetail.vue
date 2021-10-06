@@ -42,7 +42,7 @@
           </div>
         </div>
 
-        <div class="flex items-center mr-8">
+        <div class="flex items-center mr-8" v-if="String(ownerId) === String($route.params.user_id)">
           <the-button content="Edit" type="secondary" size="small" @click="handleEdit" />
         </div>
       </div>
@@ -116,6 +116,7 @@ export default {
       answersNumber : 0,
       text : "",
       owner : "",
+      ownerId: "",
       fullQuestionText : "",
       time: 0,
       currentLikeColor : "",
@@ -155,10 +156,10 @@ export default {
     async scrollToAnswer(){
       if (!this.$store.state.scrollToAnswer) return;
       
-      this.$refs.answerComment.scrollIntoView({behavior: 'smooth'});
       await setTimeout(() => {
+        this.$refs.answerComment.scrollIntoView({behavior: 'smooth'});
         this.$store.commit("toggleScrollToAnswer");
-      }, 0); 
+      }, 800); 
     },
     handleEdit(){
      this.questionMode = "edit";
@@ -170,8 +171,10 @@ export default {
       this.answersNumber = this.getAnswersOfQuestion(this.$route.params.qId)?.length;
       this.text = this.findQuestionById(this.$route.params.qId)?.title;
       this.owner = this.getUsernameFromId(this.findQuestionById(this.$route.params.qId)?.ownerId);
+      this.ownerId = this.findQuestionById(this.$route.params.qId).owner;
       this.fullQuestionText = this.findQuestionById(this.$route.params.qId)?.body;
       this.time = this.findQuestionById(this.$route.params.qId)?.pub_date;
+
 
       this.currentLikeColor = this.findQuestionById(this.$route.params.qId)?.liked ? this.$store.state?.likePrimaryColor : this.$store.state?.likeSecondaryColor;
       this.currentBookmarkColor = this.findQuestionById(this.$route.params.qId)?.bookmarked ? this.$store.state?.bookmarkPrimaryColor : this.$store.state?.bookmarkSecondaryColor;

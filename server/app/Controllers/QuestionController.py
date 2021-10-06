@@ -20,6 +20,9 @@ db = SQLAlchemy()
 def questions_get():
     questions = Question.query.filter().all()
     questionsList = [question.serializeQuestion() for question in questions]
+    questionsList.reverse()
+    # questionsList = sorted(questionsList, key = lambda k : k['pub_date'], reverse=True)
+
     
     return { 
         'msg' : 'success',

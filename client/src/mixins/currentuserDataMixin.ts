@@ -37,6 +37,7 @@ export default {
               });
         
               const data = await res.json();
+              return data;
               console.log(data);
         },
         async editQuestion(qid: string, questionBody: { title ?: string, body ?: string, department ?: string, commaSeparatedTags ?: string }){

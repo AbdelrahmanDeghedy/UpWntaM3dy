@@ -40,6 +40,14 @@ export const mutations = {
     })
   },
 
+  sortQuestions (state: stateType, field : string): void {
+    if (field === 'answerIds') {
+      state.questions.sort((a, b) => (a[field].length > b[field].length) ? 1 : -1).reverse();
+    } else {
+      state.questions.sort((a, b) => (a[field] > b[field]) ? 1 : -1).reverse();
+    }
+  },
+
   createAnswer (state: stateType, payload: answerInterface): void {
     state.answers.push(payload);
   },
