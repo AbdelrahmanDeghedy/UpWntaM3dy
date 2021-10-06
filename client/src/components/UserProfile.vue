@@ -121,13 +121,15 @@ export default({
     },
     methods: {
         async onFileChanged(e){
-            const uploadedImg = URL.createObjectURL(e.target.files[0]);
-            this.userImg = uploadedImg;
-            await this.editCurrentUser({ picture: uploadedImg })
+            const FR = new FileReader();
+            FR.addEventListener("load", async (ev) => {
+                await this.editCurrentUser({ picture: ev.target.result })
+            }); 
+            
+            FR.readAsDataURL( e.target.files[0] );
         },
         async initializeValues(){
             const currentUser = await this.currentUser();
-
             this.username = currentUser.name;
             this.userImg = currentUser.picture;
             this.bioText = currentUser.bio;

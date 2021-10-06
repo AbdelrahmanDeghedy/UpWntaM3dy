@@ -39,11 +39,13 @@
       />
     </div>
 
-    <pagination-buttons 
-      class="mb-10"
-      :list="$store.state.questions"
-      @paginatedList="syncCurrentList"
-    />
+  <!-- <div :key="change"> -->
+      <pagination-buttons 
+        class="mb-10"
+        :list="$store.state.questions"
+        @paginatedList="syncCurrentList"
+      />
+  <!-- </div> -->
 
   </div>
 </template>
@@ -89,16 +91,14 @@ export default {
       })
 
       if (val === 0) {
-        console.log("sorted!!");
         this.$store.commit ("sortQuestions", "answerIds");
-        this.syncCurrentList(this.$store.state.questions)
+        // this.syncCurrentList(this.$store.state.questions)
       } else if (val === 1) {
         this.$store.commit ("sortQuestions", "likes");
-        this.syncCurrentList(this.$store.state.questions)
+        // this.syncCurrentList(this.$store.state.questions)
       } else if (val === 2) {
         this.$store.commit ("sortQuestions", "pub_date");
-        this.syncCurrentList(this.$store.state.questions)
-
+        // this.syncCurrentList(this.$store.state.questions)
       }
         this.change = Math.random();
     },

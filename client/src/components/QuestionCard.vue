@@ -133,15 +133,25 @@ export default {
     async toggleBookmark(){
         if (this.currentBookmarkColor !== this.$store.state.bookmarkPrimaryColor) {
           await this.bookmarkQuestion(this.id);
+          // optimistic updates
+          this.currentBookmarkColor = this.$store.state.bookmarkPrimaryColor;
         } else {
           await this.removeBookmarkQuestion(this.id);
+          // optimistic updates
+          this.currentBookmarkColor = this.$store.state.bookmarkSecondaryColor;
         }
     },
     async toggleLike(){
         if (this.currentLikeColor !== this.$store.state.likePrimaryColor) {
           await this.likeQuestion(this.id);
+          // optimistic updates
+          this.currentLikeColor = this.$store.state.likePrimaryColor;
+          this.likes += 1;
         } else {
           await this.dislikeQuestion(this.id);
+          // optimistic updates
+          this.currentLikeColor = this.$store.state.likeSecondaryColor;
+          this.likes -= 1;
         }
     },
     handlePageRouting(): void {

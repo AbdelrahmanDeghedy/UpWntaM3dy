@@ -80,7 +80,7 @@ export default {
               });
         
               const data = await res.json();
-              console.log(data);
+              return data;
         },
         async dislikeQuestion(qid: string){
             const res = await fetch(`${this.$store.state.baseUrl}/questions/${qid}/dislike`, {
@@ -92,7 +92,7 @@ export default {
               });
         
               const data = await res.json();
-              console.log(data);
+              return data;
         },
         async bookmarkQuestion(qid: string){
             const res = await fetch(`${this.$store.state.baseUrl}/questions/${qid}/bookmark`, {
@@ -104,7 +104,7 @@ export default {
               });
         
               const data = await res.json();
-              console.log(data);
+              return data;
         },
         async removeBookmarkQuestion(qid: string){
             const res = await fetch(`${this.$store.state.baseUrl}/questions/${qid}/removeBookmark`, {
@@ -116,7 +116,7 @@ export default {
               });
         
               const data = await res.json();
-              console.log(data);
+              return data;
         },
 
 

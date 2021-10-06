@@ -164,9 +164,7 @@ export default {
     handleEdit(){
      this.questionMode = "edit";
     },
-   initializeValues(){
-    //  console.log("??", this.findQuestionById(this.$route.params.qId)?.title);
-
+   async initializeValues(){
       this.likes = this.findQuestionById(this.$route.params.qId)?.likes;
       this.answersNumber = this.getAnswersOfQuestion(this.$route.params.qId)?.length;
       this.text = this.findQuestionById(this.$route.params.qId)?.title;
@@ -175,25 +173,46 @@ export default {
       this.fullQuestionText = this.findQuestionById(this.$route.params.qId)?.body;
       this.time = this.findQuestionById(this.$route.params.qId)?.pub_date;
 
+      const currentUser = await this.currentUser();
 
-      this.currentLikeColor = this.findQuestionById(this.$route.params.qId)?.liked ? this.$store.state?.likePrimaryColor : this.$store.state?.likeSecondaryColor;
-      this.currentBookmarkColor = this.findQuestionById(this.$route.params.qId)?.bookmarked ? this.$store.state?.bookmarkPrimaryColor : this.$store.state?.bookmarkSecondaryColor;
+      console.log(currentUser);
+      if (currentUser.likedQuestionIds.includes (+this.$route.params.qId)) {
+        this.currentLikeColor = this.$store.state.likePrimaryColor;
+      } else {
+        this.currentLikeColor = this.$store.state.likeSecondaryColor;
+      }
+
+      
+      if (currentUser.bookmarkedQuestionIds.includes (+this.$route.params.qId)) {
+        this.currentBookmarkColor = this.$store.state.bookmarkPrimaryColor;
+      } else {
+        this.currentBookmarkColor = this.$store.state.bookmarkSecondaryColor;
+      }
    },
 
-    toggleBookmark(){
-      this.currentBookmarkColor = this.$store.state.bookmarkSecondaryColor;
-      this.currentBookmarkColor = this.findQuestionById(this.$route.params.qId).bookmarked ? this.$store.state.bookmarkSecondaryColor : this.$store.state.bookmarkPrimaryColor,
-      
-      this.findQuestionById(this.$route.params.qId).bookmarked = !this.findQuestionById(this.$route.params.qId)?.bookmarked;
+    async toggleBookmark(){
+        if (this.currentBookmarkColor !== this.$store.state.bookmarkPrimaryColor) {
+          await this.bookmarkQuestion(+this.$route.params.qId);
+          // optimistic updates
+          this.currentBookmarkColor = this.$store.state.bookmarkPrimaryColor;
+        } else {
+          await this.removeBookmarkQuestion(+this.$route.params.qId);
+          // optimistic updates
+          this.currentBookmarkColor = this.$store.state.bookmarkSecondaryColor;
+        }
     },
-    toggleLike(){
-      // optimistic updates
-      this.currentLikeColor = this.findQuestionById(this.$route.params.qId).liked ? this.$store.state.likeSecondaryColor : this.$store.state.likePrimaryColor,
-      
-      this.findQuestionById(this.$route.params.qId).liked = !this.findQuestionById(this.$route.params.qId)?.liked;
-      this.findQuestionById(this.$route.params.qId).likes = this.findQuestionById(this.$route.params.qId)?.liked ? this.findQuestionById(this.$route.params.qId).likes + 1 : this.findQuestionById(this.$route.params.qId).likes - 1; 
-      
-      this.initializeValues();
+    async toggleLike(){
+        if (this.currentLikeColor !== this.$store.state.likePrimaryColor) {
+          await this.likeQuestion(+this.$route.params.qId);
+          // optimistic updates
+          this.currentLikeColor = this.$store.state.likePrimaryColor;
+          this.likes += 1;
+        } else {
+          await this.dislikeQuestion(+this.$route.params.qId);
+          // optimistic updates
+          this.currentLikeColor = this.$store.state.likeSecondaryColor;
+          this.likes -= 1;
+        }
     },
     syncAnswersLikeState(answer){
       this.$store.state.answers.filter(ans => {
