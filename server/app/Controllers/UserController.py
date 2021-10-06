@@ -13,9 +13,14 @@ db = SQLAlchemy()
 
 def login_post():
     reqData = request.get_json()
-
-    email = reqData.get("email", None)
-    password = reqData.get("password", None)
+    login_schema = {'require_all': True}
+    reqData = request.get_json()
+    validated = Validator(login_schema).validate(reqData)
+    if validated:
+        email = reqData.get("email", None)
+        password = reqData.get("password", None)
+    else:
+        return jsonify({ "msg": "Please fill out the fields!" })
 
     user = User.query.filter_by(email=email).first()
 
