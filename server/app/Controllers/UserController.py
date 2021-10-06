@@ -7,10 +7,11 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, logout_user, login_required
 from flask_jwt_extended import get_jwt_identity, create_access_token, jwt_required
 from flask_cors import cross_origin
-from server.app.validators.validation import *
+from validators.validation import *
 from cerberus import Validator
 from flask_jwt_extended import get_jwt_identity, create_access_token, jwt_required
 from flask_cors import cross_origin
+
 db = SQLAlchemy()
 
 @jwt_required()
@@ -55,14 +56,18 @@ def login_post():
 
 @cross_origin()
 def signup_post():
-    signup_schema = {'require_all': True,
-        'email':{'type':'string', 'check_with': check_email},
-        'name':{'type':'string'},
-        'universityId':{'type':'string'},
-        }
+    signup_schema = {
+         'email':{'required':True,'type':'string', 'check_with': check_email},
+         'name':{'required':True,'type':'string'},
+         'password':{'required':True},
+         'universityId':{'required':True,'type':'string'},
+         'bio':{'required':True,'type':'string'},
+         'department':{'required':True,'type':'string'},
+         'picture':{'required':True,'type':'string'},
+         }
     reqData = request.get_json()
-    validator = Validator(signup_schema)
-    validated = validator.validate(reqData)
+    v = Validator(signup_schema)
+    validated = v.validate(reqData)
     if validated:
         email = reqData.get("email", None)
         name = reqData.get("name", None)
@@ -72,7 +77,8 @@ def signup_post():
         bio = ""
         picture = ""
     else:
-        return jsonify({ "msg" : validator.errors }), 400
+        return jsonify({ "msg" : v.errors }), 400
+
         
     user = User.query.filter_by(email = email).first()
     uid = User.query.filter_by(universityId = universityId).first()
