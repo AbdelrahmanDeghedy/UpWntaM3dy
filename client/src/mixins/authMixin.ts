@@ -25,6 +25,7 @@ export default {
               window.localStorage.setItem("token", data.token);
               this.$store.commit ("setToken", data.token);
               this.$store.commit ("setCurrentUser", data.user);
+              return data;
         },
         async signup(userInfo : { email: string, password: string, name: string, universityId: number, department: string }){
             const res = await fetch(`${this.$store.state.baseUrl}/users/signup`, {
@@ -44,7 +45,7 @@ export default {
             window.localStorage.setItem("token", data.token);
             this.$store.commit ("setToken", data.token);
             this.$store.commit ("setCurrentUser", data.user);
-
+            return data;
         },
         async editCurrentUser(userInfo : { email ?: string, password ?: string, name ?: string, universityId ?: number, department ?: string, bio ?: string, rank ?: string, points ?: number, picture ?: string }){
             const res = await fetch(`${this.$store.state.baseUrl}/users/edit`, {
