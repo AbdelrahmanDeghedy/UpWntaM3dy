@@ -22,11 +22,11 @@ db = SQLAlchemy()
 def create_answer(qid):
     reqData = request.get_json()
     body = reqData.get("body", None)
+    if body==None:
+        return jsonify({ "msg" : "Please enter a valid answer!"}), 400
 
     question = Question.query.filter_by(id = qid).first()
-    # print (question)
     currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
-
 
     newAnswer = Answer(
                 body = body,
