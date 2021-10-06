@@ -4,11 +4,13 @@ import sqlalchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from Models.User import User
 from flask_sqlalchemy import SQLAlchemy
-
+from flask_login import login_user, logout_user, login_required
 from flask_jwt_extended import get_jwt_identity, create_access_token, jwt_required
-
 from flask_cors import cross_origin
-
+from server.app.validators.validation import *
+from cerberus import Validator
+from flask_jwt_extended import get_jwt_identity, create_access_token, jwt_required
+from flask_cors import cross_origin
 db = SQLAlchemy()
 
 @jwt_required()
@@ -26,9 +28,14 @@ def get_leaderboard () :
 @cross_origin()
 def login_post():
     reqData = request.get_json()
-
-    email = reqData.get("email", None)
-    password = reqData.get("password", None)
+    login_schema = {'require_all': True}
+    reqData = request.get_json()
+    validated = Validator(login_schema).validate(reqData)
+    if validated:
+        email = reqData.get("email", None)
+        password = reqData.get("password", None)
+    else:
+        return jsonify({ "msg": "Please fill out the fields!" })
 
     user = User.query.filter_by(email=email).first()
 
@@ -47,21 +54,25 @@ def login_post():
 
 @cross_origin()
 def signup_post():
+    signup_schema = {'require_all': True,
+        'email':{'type':'string', 'check_with': check_email},
+        'name':{'type':'string'},
+        'universityId':{'type':'string'},
+        }
     reqData = request.get_json()
-
-    email = reqData.get("email", None)
-    name = reqData.get("name", None)
-    password = reqData.get("password", None)
-    universityId = reqData.get("universityId", None)
-    department = reqData.get("department", None)
-    bio = ""
-    picture = ""
-
-    if (email == None or name == None or password == None or universityId == None or department == None) :
+    validator = Validator(signup_schema)
+    validated = validator.validate(reqData)
+    if validated:
+        email = reqData.get("email", None)
+        name = reqData.get("name", None)
+        password = reqData.get("password", None)
+        universityId = reqData.get("universityId", None)
+        department = reqData.get("department", None)
+        bio = ""
+        picture = ""
+    else:
         return jsonify({ "msg" : "Invalid data" }), 400
-
-    # print (email, name, password, universityId, department)
-
+        
     user = User.query.filter_by(email = email).first()
     uid = User.query.filter_by(universityId = universityId).first()
 
