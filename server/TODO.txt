@@ -60,3 +60,5 @@ from decouple import config
 
 API_USERNAME = config('USER')
 API_KEY = config('KEY')
+
+https://docs.python-cerberus.org/en/stable/customize.html
