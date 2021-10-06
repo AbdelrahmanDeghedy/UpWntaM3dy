@@ -6,9 +6,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, logout_user, login_required
 from flask_jwt_extended import get_jwt_identity, create_access_token, jwt_required
 from flask_cors import cross_origin
-
 from server.app.validators.validation import *
-
+from cerberus import Validator
 db = SQLAlchemy()
 
 
@@ -31,24 +30,22 @@ def signup_post():
     signup_schema = {'require_all': True,
         'email':{'type':'string', 'check_with': check_email},
         'name':{'type':'string'},
-        'password':{'type':'str'}
-    }
+        'universityId':{'type':'string'},
+        }
     reqData = request.get_json()
-
-    email = reqData.get("email", None)
-    name = reqData.get("name", None)
-    password = reqData.get("password", None)
-    universityId = reqData.get("universityId", None)
-    department = reqData.get("department", None)
-    bio = ""
-    picture = ""
-
-    #To be modified....
-    if (email == None or name == None or password == None or universityId == None or department == None) :
+    validator = Validator(signup_schema)
+    validated = validator.validate(reqData)
+    if validated:
+        email = reqData.get("email", None)
+        name = reqData.get("name", None)
+        password = reqData.get("password", None)
+        universityId = reqData.get("universityId", None)
+        department = reqData.get("department", None)
+        bio = ""
+        picture = ""
+    else:
         return jsonify({ "msg" : "Invalid data" }), 400
-
-    # print (email, name, password, universityId, department)
-
+        
     user = User.query.filter_by(email = email).first()
     uid = User.query.filter_by(universityId = universityId).first()
 
