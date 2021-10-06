@@ -3,12 +3,9 @@ import sqlalchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from Models.User import User
 from flask_sqlalchemy import SQLAlchemy
-<<<<<<< Updated upstream
 from flask_login import login_user, logout_user, login_required
-=======
 from flask_jwt_extended import get_jwt_identity, create_access_token, jwt_required
 from flask_cors import cross_origin
->>>>>>> Stashed changes
 
 from server.app.validators.validation import *
 
