@@ -54,7 +54,7 @@ def signup_post():
     password = reqData.get("password", None)
     universityId = reqData.get("universityId", None)
     department = reqData.get("department", None)
-    bio = reqData.get("bio", None)
+    bio = reqData.get("bio", "")
     picture = ""
 
     if (email == None or name == None or password == None or universityId == None or department == None) :
@@ -77,7 +77,7 @@ def signup_post():
                     department = department, 
                     bio = bio,
                     picture = picture,
-                    rank = -1,
+                    rank = User.query.count() + 1,
                     points = 0,
                   )
 
