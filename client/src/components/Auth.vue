@@ -41,7 +41,8 @@
                 v-model="uniId"
                 required
             >
-
+            
+            
             <input 
                 v-if="authMode === 'signup'"
                 class="w-96 p-4 rounded-xl shadow outline-none mb-4"
@@ -49,6 +50,14 @@
                 placeholder="Bio (optional)"
                 v-model="bio"
             >
+            <the-selector 
+                v-if="authMode === 'signup'"
+                :values="['Communication', 'CompCommunication']"
+                :label="'Department'"
+                class="w-full -mt-1"
+                :defaultChoice="'Communication'"
+                @currentValueChange="syncDepartment"
+            />
 
             <div>
                 {{ authResponse }}
@@ -67,12 +76,13 @@
 <script lang="ts">
 import TheButton from '@/components/TheButton.vue';
 import authMixin from '@/mixins/authMixin';
-
+import TheSelector from '@/components/TheSelector.vue';
 
 export default({
     mixins: [authMixin],
     components: {
-        TheButton
+        TheButton,
+        TheSelector
     },
     data() {
         return {
@@ -86,10 +96,14 @@ export default({
             password: "",
             uniId: "",
             bio: "",
+            department: "Communication",
             authResponse: ""
         }
     },
     methods: {
+        syncDepartment(department){
+            this.department = department;
+        },
         switchToSignup(){
             this.$router.push({ name: "Signup" });
             this.authMode = "signup";
@@ -121,7 +135,7 @@ export default({
                 
         async createAccount(){
             if (!this.email || !this.password || !this.name || !this.uniId)  return;
-            const res = await this.signup ({ email: this.email, password: this.password, name: this.name, universityId: this.uniId, department: "Comm", bio: this.bio });
+            const res = await this.signup ({ email: this.email, password: this.password, name: this.name, universityId: this.uniId, department: this.department, bio: this.bio });
             console.log(res);
             if (res.msg === 'success') {
                 this.$store.commit("setPageMode", "questions");

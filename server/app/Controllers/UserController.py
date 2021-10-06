@@ -54,7 +54,7 @@ def signup_post():
     password = reqData.get("password", None)
     universityId = reqData.get("universityId", None)
     department = reqData.get("department", None)
-    bio = ""
+    bio = reqData.get("bio", None)
     picture = ""
 
     if (email == None or name == None or password == None or universityId == None or department == None) :

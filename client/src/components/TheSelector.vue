@@ -6,7 +6,7 @@
       v-model="currentValue"
       :name="label"
       :id="label"
-      class="cursor-pointer w-60 rounded-lg p-2 outline-none bg-gray-200"
+      class="cursor-pointer rounded-lg p-2 outline-none bg-gray-200"
     >
       <option :key="value" v-for="value in values" :value="value">{{
         value
