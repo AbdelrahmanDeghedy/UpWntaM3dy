@@ -1,9 +1,11 @@
 import re   
-regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'  
-  
-def check_email(email):   
-    if(re.search(regex,email)):   
-        print("Valid Email")   
-    else:   
-        print("Invalid Email")   
+
+def check_email(field, value, error):   
+    regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'  
+    if(not re.search(regex,value)):   
+        error(field, "Valid Email")
       
+def check_tags(field, value, error):
+    regex = '\w+(\s*,\s*\w+)*'
+    if(not re.search(regex,value)):   
+        error(field, "Valid Tags")

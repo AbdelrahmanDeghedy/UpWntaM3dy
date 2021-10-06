@@ -25,6 +25,7 @@ def get_leaderboard () :
             'length' : len(usersList),
             'users': usersList
         }
+        
 @cross_origin()
 def login_post():
     reqData = request.get_json()
@@ -71,7 +72,7 @@ def signup_post():
         bio = ""
         picture = ""
     else:
-        return jsonify({ "msg" : "Invalid data" }), 400
+        return jsonify({ "msg" : validator.errors }), 400
         
     user = User.query.filter_by(email = email).first()
     uid = User.query.filter_by(universityId = universityId).first()
