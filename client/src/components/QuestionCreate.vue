@@ -1,6 +1,6 @@
 <template>
   <!-- <div class="bg-white rounded-3xl p-6 flex flex-col shadow-md"> -->
-  <div :class="answerMode ? answerConfig.containerClass: createConfig.containerClass">
+  <form :class="answerMode ? answerConfig.containerClass: createConfig.containerClass">
     <textarea
       :class="answerMode ? answerConfig.textareaClass : createConfig.textareaClass"
       v-model="text"
@@ -9,18 +9,31 @@
       type="text"
       :placeholder="answerMode ? answerConfig.textareaPlaceholder : createConfig.textareaPlaceholder"
       :dir="language === 'en' ? 'ltr' : 'rtl'"
+      required
     />
+    <input 
+        v-if="!answerMode"
+        class="border p-4 rounded-xl shadow outline-none mb-4"
+        type="text"
+        placeholder="Space Separated Tags"
+        v-model="spaceSeparatedTags"
+        @input="constructListedTags"
+        required
+    >
+    <div v-if="!answerMode" class="ml-8">
+      {{ listedTags }}
+    </div>
     <div class="flex justify-end">
       <the-button 
         class="mt-4"
         :size="answerMode ? answerConfig.buttonSize : createConfig.buttonSize"
         :content="answerMode ? answerConfig.buttonContent : createConfig.buttonContent"
         type="secondary"
-        @click="handleClickingMode" 
+        @click.prevent="handleClickingMode" 
       />
     </div>
     <div class="hidden" ref="markdown-content" :dir="language === 'en' ? 'ltr' : 'rtl'" v-html="markdown"></div>
-  </div>
+  </form>
 </template>
 
 <script lang="ts">
@@ -33,6 +46,7 @@ import { HTMLToText } from '@/_utils/helper'
 import { isArabic } from '@/_utils/helper';
 
 import currentuserDataMixin from '@/mixins/currentuserDataMixin';
+import getFromIdMixin from '@/mixins/getFromIdMixin';
 
 
 // import { DateFormatter } from '@/_utils/dateFormatter';
@@ -41,7 +55,7 @@ export default {
   components: {
     TheButton,
   },
-  mixins: [currentuserDataMixin],
+  mixins: [currentuserDataMixin, getFromIdMixin],
   props: {
     answerMode :{
       type: Boolean,
@@ -62,12 +76,13 @@ export default {
   data() {
     return {
       markdown: "",
-      // text: "",
+      spaceSeparatedTags: "",
+      listedTags: "",
       text: this.editMode ? HTMLToText(this.editMode.editText) : "",
       language: "en",
       createConfig : {
         containerClass: "bg-white rounded-3xl p-6 flex flex-col shadow-md",
-        textareaClass: "outline-none text-2xl question-text",
+        textareaClass: "outline-none text-2xl question-text shadow border rounded-lg p-4 mb-4",
         textareaPlaceholder : "What's in Your Mind?",
         buttonSize: "large",
         buttonContent: this.editMode ? 'Save' : 'Ask'
@@ -85,11 +100,15 @@ export default {
     // console.log(this.markdown);
     // console.log(this.markdown, HTMLToText(this.markdown).split("\n"));
   },
-  mounted(){
+  async mounted(){
       // console.log("test", this.editMode)
-    
+      
   },
   methods : {
+    constructListedTags(){
+      const tags = this.spaceSeparatedTags.split(" ");
+      this.listedTags = tags.join(",");
+    },
     handleLanguage(){
       if (isArabic(this.text)) {
         this.language = "ar";
@@ -138,9 +157,15 @@ export default {
       this.$store.commit("setPageMode", "questions");
     },
     async createNewQuestion(){
+      if (!this.text || !this.spaceSeparatedTags) return;
+      
+      const currentUser = await this.currentUser();
+      console.log(currentUser);
+
+
       const title = HTMLToText(this.markdown).split("\n")[0] + '..';
       const body = this.markdown;
-      await this.createQuestion({ title, body, department: "COMM", commaSeparatedTags: "chapter1"  })
+      await this.createQuestion({ title, body, department: currentUser.department, commaSeparatedTags: this.listedTags  })
       
       this.questions =  await this.getAllQuestions();
       this.$store.commit("loadQuestions", this.questions.questions);
@@ -148,8 +173,8 @@ export default {
       // Clear the input field
       this.text = "";
 
-      // Route to questions page
-      this.$router.push({ name: "Questions", params: { 'user_id': 18010917 } });
+      // // Route to questions page
+      this.$router.push({ name: "Questions", params: { 'user_id': currentUser.universityId } });
       this.$store.commit("setPageMode", "questions");
 
     },
