@@ -8,7 +8,7 @@ from Models.QuestionBookmarks import QuestionBookmark
 from Controllers.UserController import getCurrnetUser, currnetUser
 from flask_sqlalchemy import SQLAlchemy
 
-from server.app.validators.validation import *
+from validators.validation import *
 from cerberus import Validator
 
 from flask_jwt_extended import jwt_required
@@ -17,8 +17,9 @@ from flask_cors import cross_origin
 
 db = SQLAlchemy()
 
-@jwt_required()
-@cross_origin()
+#No need for authentication
+# @jwt_required()
+# @cross_origin()
 def questions_get():
     questions = Question.query.filter().all()
     questionsList = [question.serializeQuestion() for question in questions]
@@ -33,7 +34,6 @@ import json
 @jwt_required()
 @cross_origin()
 def questions_post():
-
     departments = ['CCE', 'EME', 'CAE', 'CSE'] #Add all departments
     reqData = request.get_json()
     questions_schema = {
