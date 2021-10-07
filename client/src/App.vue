@@ -82,7 +82,7 @@ export default {
   async mounted() {
     console.log("router mode", this.$store.state.pageMode);
 
-    await this.login({ email : "test@test.com", password : "password" });
+    // await this.login({ email : "test@test.com", password : "password" });
     // await this.createQuestion({ title: "test question", body: "from client", department: "comm", commaSeparatedTags: "" })
     // console.log(await this.getAllQuestions());
     

@@ -40,12 +40,13 @@ import json
 @jwt_required()
 @cross_origin()
 def questions_post():
-    departments = ['CCE', 'EME', 'CAE', 'CSE'] #Add all departments
+    # departments = ['CCE', 'EME', 'CAE', 'CSE'] #Add all departments
     reqData = request.get_json()
     questions_schema = {
     'title':{'required':True,'type':'string', 'maxlength':140},
     'body':{'type':'string','nullable':True},
-    'department':{'type':'string', 'required':True, 'allowed':departments},
+    # 'department':{'type':'string', 'required':True, 'allowed':departments},
+    'department':{'type':'string', 'required':True},
     'commaSeparatedTags': {'type':'string', 'check_with':check_tags}
     }
     reqData = request.get_json()
@@ -130,10 +131,11 @@ def questions_delete (qid) :
 @jwt_required()
 @cross_origin()
 def questions_like (qid) :
-    if QuestionLike.query.filter_by(likedQid = qid).first() :
-        return { 'msg' : 'already liked!' }
 
     currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
+
+    if int(qid) in list(currentUserObject.serializeUser()['likedQuestionIds']) :
+        return { 'msg' : 'already liked!' }
 
     editedQuestion = Question.query.filter_by(id = qid).first()
     editedQuestion.likes += 1

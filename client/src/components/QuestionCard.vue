@@ -5,7 +5,7 @@
       <div class="opacity-60">Answers</div>
     </div>
     <div class="py-6 w-4/6">
-      <router-link :to="{ name: 'Question', params: { qId: id, 'user_id': 18010917 } }">
+      <router-link :to="{ name: 'Question', params: { qId: id, 'user_id': currentUserId } }">
         <div
           class="text-2xl font-semibold cursor-pointer"
           :dir="language === 'en' ? 'ltr' : 'rtl'"
@@ -24,7 +24,16 @@
                 >
             </div>
 
-            <div class="text-blue-800 font-bold">{{ owner }}</div>
+
+
+
+            <router-link :to="{ name: 'Profile', params: { 'user_id': (owner.universityId || 0) } }" class="flex">
+              <div class="text-blue-800 font-bold cursor-pointer">{{ owner.name }}</div>
+            </router-link>
+
+
+
+
         </div>
         <div class="opacity-80 ml-2">{{ time }} </div>
       </div>
@@ -38,7 +47,7 @@
       </div>
     </div>
     <div class="py-6 w-1/6 flex flex-col items-center">
-      <router-link :to="{ name: 'Question', params: { qId: id, 'user_id': 18010917 } }">
+      <router-link :to="{ name: 'Question', params: { qId: id, 'user_id': currentUserId } }">
         <the-button content="Answer" type="secondary" size="small" @click="handleAnswerClick"/>
       </router-link>
       <div
@@ -82,16 +91,21 @@ export default {
       likes: 0,
       id: 0,
       userImg: "",
+      currentUserId: 0,
 
       currentLikeColor: "",
       currentBookmarkColor: "",
     };
   },
-      async mounted(){
-        await this.initializeValues();
-        this.handleLanguage();
-      },
+  async mounted(){
+    await this.initializeValues();
+    this.handleLanguage();
+    this.setCurrentUser();
+  },
   methods: {
+    async setCurrentUser(){
+      this.currentUserId = (await this.getCurrentUser()).currentUserId;
+    },
     handleLanguage(){
       if (isArabic(this.text)) {
         this.language = "ar";
@@ -107,14 +121,14 @@ export default {
     async initializeValues(){
       this.answersNumber = this.question.answerIds.length;
       this.text = this.question.title;
-      this.owner =  this.getUsernameFromUniversityId(this.question.owner);
+      this.owner =  await this.getUserFromUniversityId(this.question.owner);
       this.time = this.question.pub_date;
       this.likes = this.question.likes;
       this.id = this.question.id;
       
+      this.userImg = (await this.getUserFromUniversityId(this.question.owner)).picture;
 
       const currentUser = await this.currentUser();
-      this.userImg = currentUser.picture;
       
       if (currentUser.likedQuestionIds.includes (this.id)) {
         this.currentLikeColor = this.$store.state.likePrimaryColor;

@@ -33,6 +33,7 @@
             <div class="flex items-center">
                 <div class="w-1/4 ml-20 flex justify-center items-center">
                     <the-button 
+                        v-if="String(this.$route.params.user_id) === String(currentUserId.currentUserId)"
                         content="Saved Answers"
                         type="primary"
                         size="large"
@@ -61,6 +62,7 @@
                     @click="editBio"
                 >
                     <the-button 
+                        v-if="String(this.$route.params.user_id) === String(currentUserId.currentUserId)"
                         content="Edit Bio"
                         type="primary"
                         size="large"
@@ -110,13 +112,13 @@ export default({
             pointsCount: 0,
             rank: -1,
             userImg: "",
+            currentUserId: "",
 
         }
     },
     async mounted(){
-        const currentUser = await this.currentUser();
-        console.log(currentUser);
         this.initializeValues();
+        
         // console.log(this.$store.state.alternativeImg);
     },
     methods: {
@@ -129,13 +131,16 @@ export default({
             FR.readAsDataURL( e.target.files[0] );
         },
         async initializeValues(){
-            const currentUser = await this.currentUser();
-            this.username = currentUser.name;
-            this.userImg = currentUser.picture;
-            this.bioText = currentUser.bio;
-            this.rank = currentUser.rank;
-            this.pointsCount = currentUser.points;
-            this.answersCount = currentUser.questionIds.length;
+            this.currentUserId = await this.getCurrentUser();
+
+            const profile =  await this.getUserFromUniversityId(this.$route.params.user_id);
+            
+            this.username = profile.name;
+            this.userImg = profile.picture;
+            this.bioText = profile.bio;
+            this.rank = profile.rank;
+            this.pointsCount = profile.points;
+            this.answersCount = profile.questionIds.length;
         },
         editBio(){
             this.currentBio = this.bioText;

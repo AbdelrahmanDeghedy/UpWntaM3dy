@@ -1,6 +1,6 @@
 <template>
   <div class="h-20 bg-gray-200 flex justify-around rounded-bl-lg rounded-br-lg">
-    <router-link :to="{ name: 'Questions', params: { 'user_id': 18010917 } }" class="flex">
+    <router-link :to="{ name: 'Questions', params: { 'user_id': currentUserId } }" class="flex">
       <div
         class="flex items-center cursor-pointer"
         @click="handlePageRouting('questions')"
@@ -8,7 +8,7 @@
         UpWntaM3dy
       </div>
     </router-link>
-    <router-link :to="{ name: 'Profile', params: { 'user_id': 18010917 } }" class="flex">
+    <router-link :to="{ name: 'Profile', params: { 'user_id': currentUserId } }" class="flex">
       <div
         class="flex items-center cursor-pointer"
         @click="handlePageRouting('profile')"
@@ -43,10 +43,16 @@ export default {
   mixins: [authMixin],
   data() {
     return {
-      //
+      currentUserId: 0,
     };
   },
+  mounted(){
+    this.setCurrentUser();
+  },
   methods: {
+    async setCurrentUser(){
+      this.currentUserId = (await this.getCurrentUser()).currentUserId;
+    },
     signOut(){
         this.logout();
         this.$store.commit("setPageMode", "auth");
