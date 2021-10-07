@@ -46,12 +46,23 @@ export default {
       currentUserId: 0,
     };
   },
+  computed :{
+    watchToken(){
+      return this.$store.state.token;
+    }
+  },
+  watch :{
+    watchToken(){
+      this.setCurrentUser()
+    }
+  },
   mounted(){
     this.setCurrentUser();
   },
   methods: {
     async setCurrentUser(){
       this.currentUserId = (await this.getCurrentUser()).currentUserId || 0;
+      // console.log("this.currentUserId", this.currentUserId);
     },
     signOut(){
         this.logout();
