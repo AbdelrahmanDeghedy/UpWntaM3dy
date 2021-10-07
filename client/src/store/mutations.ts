@@ -45,7 +45,6 @@ export const mutations = {
       let matcher = false;
       question.commaSeparatedTags.split(",").forEach(questionTag => {
         if (questionTag === tag) {
-          console.log("tyyyy");
           matcher = true
         }
       })

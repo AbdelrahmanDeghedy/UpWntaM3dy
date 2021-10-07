@@ -251,7 +251,13 @@ def sort_by_answersCount () :
 @cross_origin()
 def get_tags () :
     questions = Question.query.filter().all()
-    tags = list(set([question.serializeQuestion()['commaSeparatedTags'] for question in questions if question.serializeQuestion()['commaSeparatedTags'] != ""]))
+    tags = []
+    for question in questions:
+        if question.serializeQuestion()['commaSeparatedTags'] != "":
+            for tag in question.serializeQuestion()['commaSeparatedTags'].split(",") :
+                tags.append(tag)
+    tags = list(set(tags))
+                
     
     return { 
         'msg' : 'success',
