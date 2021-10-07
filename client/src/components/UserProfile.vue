@@ -42,7 +42,7 @@
                     />
                 </div>
                 <div class=" w-2/4 flex flex-col items-center py-8">
-                    <div  class="w-48 h-48 rounded-full overflow-hidden shadow-lg flex justify-center items-center">
+                    <div class="w-48 h-48 rounded-full overflow-hidden shadow-lg flex justify-center items-center">
                         <input type="file" @change="onFileChanged" class="z-50 bg-gray-200 w-48 absolute h-32 rounded-full opacity-0 cursor-pointer">
                         <img 
                             class="w-48 h-48 relative"
@@ -113,22 +113,21 @@ export default({
             rank: -1,
             userImg: "",
             currentUserId: "",
-
         }
     },
     async mounted(){
         this.initializeValues();
-        
-        // console.log(this.$store.state.alternativeImg);
     },
     methods: {
         async onFileChanged(e){
             const FR = new FileReader();
             FR.addEventListener("load", async (ev) => {
                 await this.editCurrentUser({ picture: ev.target.result })
+                this.userImg = ev.target.result;
             }); 
             
             FR.readAsDataURL( e.target.files[0] );
+
         },
         async initializeValues(){
             this.currentUserId = await this.getCurrentUser();

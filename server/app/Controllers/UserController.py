@@ -19,7 +19,7 @@ db = SQLAlchemy()
 def get_leaderboard () :
         users = User.query.filter().all()
         usersList = [user.serializeUser() for user in users]
-        usersList = sorted(usersList, key = lambda k : k['rank'], reverse=True)
+        usersList = sorted(usersList, key = lambda k : k['rank'], reverse=False)
 
         return {
             'msg': 'Success',
@@ -66,7 +66,7 @@ def signup_post():
          'universityId':{'required':True,'type':'string'},
          'bio':{'required':True,'type':'string'},
          'department':{'required':True,'type':'string'},
-         'picture':{'required':True,'type':'string'},
+         'picture':{'required':False,'type':'string'},
          }
     reqData = request.get_json()
     
