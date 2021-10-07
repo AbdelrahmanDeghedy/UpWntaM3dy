@@ -57,8 +57,6 @@ export default {
   },
   mounted() {
     this.loadTags();
-    
-    console.log(this.$store.state.questions);
   },
   methods: {
     async loadTags(){

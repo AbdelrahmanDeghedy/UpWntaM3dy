@@ -34,6 +34,7 @@
                 <div class="w-1/4 ml-20 flex justify-center items-center">
                     <the-button 
                         v-if="String(this.$route.params.user_id) === String(currentUserId.currentUserId)"
+                        @click="toggleSavedAnswers = !toggleSavedAnswers"
                         content="Saved Answers"
                         type="primary"
                         size="large"
@@ -86,6 +87,29 @@
                 </div>
             </div>
         </div>
+
+        <!-- Answers -->
+        <div class="ml-4" v-if="toggleSavedAnswers">
+          <!-- <div v-for="answer in answers" :key='answer'>
+            <answer-card :answer="answer" @syncAnswersLikeState="syncAnswersLikeState" />
+            <hr class="mx-2" />
+          </div> -->
+
+            <div class="flex flex-col mt-4">
+                <question-card
+                    v-for="(question) in renderedQuestions"
+                    :key="question"
+                    :question="question"
+                />
+            </div>
+
+            <pagination-buttons 
+                class="mb-10"
+                :list="questions"
+                @paginatedList="syncCurrentList"
+            />
+        </div>
+
     </div>
 </template>
 
@@ -95,12 +119,18 @@ import ThePopup from '@/components/ThePopup.vue'
 import profileInfo from '@/mixins/profileInfo'
 import authMixin from '@/mixins/authMixin'
 import getFromIdMixin from '@/mixins/getFromIdMixin'
+// import AnswerCard from "@/components/AnswerCard.vue";
+import QuestionCard from "@/components/QuestionCard.vue";
+import PaginationButtons from '@/components/PaginationButtons.vue';
 
 export default({
     mixins: [authMixin, getFromIdMixin],
     components: {
         TheButton,
-        ThePopup
+        ThePopup,
+        // AnswerCard,
+        QuestionCard,
+        PaginationButtons
     },
     data() {
         return {
@@ -113,12 +143,19 @@ export default({
             rank: -1,
             userImg: "",
             currentUserId: "",
+            toggleSavedAnswers: false,
+            questions : [],
+            renderedQuestions: [],
         }
     },
     async mounted(){
-        this.initializeValues();
+        await this.initializeValues();
+        this.prepareSavedQuestions();
     },
     methods: {
+        syncCurrentList(questions){
+            this.renderedQuestions = questions;
+        },
         async onFileChanged(e){
             const FR = new FileReader();
             FR.addEventListener("load", async (ev) => {
@@ -128,6 +165,15 @@ export default({
             
             FR.readAsDataURL( e.target.files[0] );
 
+        },
+        async prepareSavedQuestions(){            
+            const bookmarkedQuestionIds = (await this.getUserFromUniversityId(this.currentUserId.currentUserId)).bookmarkedQuestionIds;
+            this.$store.state.questions.forEach(question => {
+                if (bookmarkedQuestionIds.includes(question.id)) {
+                    this.questions.push(question)
+                }
+            })
+            console.log("currentUser", this.questions);
         },
         async initializeValues(){
             this.currentUserId = await this.getCurrentUser();

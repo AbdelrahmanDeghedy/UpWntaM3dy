@@ -68,7 +68,7 @@ export default ({
     
     async mounted(){
         await setTimeout(() => {
-            this.$store.state.pageMode !== "questions" || (this.initializeButtonValues());
+            this.$store.state.pageMode !== "questions" && this.$store.state.pageMode !== "profile" || (this.initializeButtonValues());
         }, 0)
         this.initializeNumberOfPaginationButtons();
         this.partitionList();
@@ -150,7 +150,7 @@ export default ({
             }
             
             [this.firstPagVal, this.secondPagVal, this.thirdPagVal] = this.buttonsActiveRange;
-            this.$refs.firstPagVal.classList.add(...this.selectedClass);
+            this.$refs.firstPagVal?.classList.add(...this.selectedClass);
         }
     }
 

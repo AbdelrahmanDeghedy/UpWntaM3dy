@@ -39,13 +39,11 @@
       />
     </div>
 
-  <!-- <div :key="change"> -->
-      <pagination-buttons 
-        class="mb-10"
-        :list="$store.state.questions"
-        @paginatedList="syncCurrentList"
-      />
-  <!-- </div> -->
+    <pagination-buttons 
+      class="mb-10"
+      :list="$store.state.questions"
+      @paginatedList="syncCurrentList"
+    />
 
   </div>
 </template>
