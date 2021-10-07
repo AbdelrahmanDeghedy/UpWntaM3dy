@@ -144,10 +144,17 @@ def questions_like (qid) :
     db.session.add(editedQuestion)
     db.session.commit()
 
-    likedQuestion = QuestionLike(
-                            likedQid = qid,
-                            owner = currentUserObject
-                        )
+
+    likedQuestion = QuestionLike.query.filter_by(likedQid = qid).first()
+
+    if likedQuestion is None :
+        likedQuestion = QuestionLike(
+                                likedQid = qid,
+                            )
+    
+
+    
+    likedQuestion.users.append(currentUserObject)
     db.session.close_all()
     db.session.add(likedQuestion)
     db.session.commit()

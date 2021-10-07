@@ -34,6 +34,8 @@ class Question(UserMixin, db.Model):
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     answerIds = db.relationship('Answer', backref = "parentQuestion")
 
+
+
     def serializeQuestion(self) :
         schema = QuestionSchema()
         result = schema.dump(self)

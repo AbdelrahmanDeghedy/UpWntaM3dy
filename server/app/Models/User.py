@@ -22,6 +22,11 @@ UserSchema = Schema.from_dict(
     }
 )
 
+association_table = db.Table('association',
+    db.Column('question_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
+    db.Column('like_id', db.Integer, db.ForeignKey('questionLikes.likedQid'), primary_key=True)
+)
+
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -36,12 +41,12 @@ class User(UserMixin, db.Model):
     department = db.Column(db.String, nullable=False)
     questionIds = db.relationship('Question', backref = "owner")
     answerIds = db.relationship('Answer', backref = "owner")
-    questionLikes = db.relationship('QuestionLike', backref = "owner")
     questionBookmarks = db.relationship('QuestionBookmark', backref = "owner")
     
     answerLikes = db.relationship('AnswerLike', backref = "owner")
     answerBookmarks = db.relationship('AnswerBookmark', backref = "owner")
 
+    questionLikes = db.relationship('QuestionLike', secondary=association_table, backref=db.backref('users', lazy=True))
 
     def serializeUser(self) :
         schema = UserSchema(exclude=['password'])

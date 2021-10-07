@@ -16,7 +16,7 @@ class QuestionLike(UserMixin, db.Model):
     __tablename__ = 'questionLikes'
     likedQid = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
-    parentQuestion_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    # parentQuestion_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     def serializeLike(self) :
         schema = QuestionLikesSchema()
