@@ -90,7 +90,7 @@
   </div>
   <div v-else-if="questionMode === 'edit'">
     <question-create 
-      :editMode = "{ editText : fullQuestionText }"
+      :editMode = "{ editText : fullQuestionText, editTags: questionTagsSpaceSeparated }"
       :qid="$route.params.qId"
     />
   </div>
@@ -131,6 +131,7 @@ export default {
       currentBookmarkColor: "",
       questionMode: "details",  // "details" or "edit"
       answers : [],
+      questionTagsSpaceSeparated: ""
     };
   },
   updated(){
@@ -192,6 +193,7 @@ export default {
       this.ownerId = this.findQuestionById(this.$route.params.qId).owner;
       this.fullQuestionText = this.findQuestionById(this.$route.params.qId)?.body;
       this.time = this.findQuestionById(this.$route.params.qId)?.pub_date;
+      this.questionTagsSpaceSeparated = this.findQuestionById(this.$route.params.qId)?.commaSeparatedTags.split(",").join(" ");
 
       const currentUser = await this.currentUser();
 

@@ -21,7 +21,7 @@
         required
     >
     <div v-if="!answerMode" class="ml-8">
-      {{ listedTags }}
+      <span class="font-bold"> Tags: </span> {{ listedTags }}
     </div>
     <div class="flex justify-end">
       <the-button 
@@ -36,6 +36,8 @@
   </form>
 </template>
 
+
+
 <script lang="ts">
 import TheButton from "@/components/TheButton.vue";
 import marked from "marked";
@@ -47,6 +49,7 @@ import { isArabic } from '@/_utils/helper';
 
 import currentuserDataMixin from '@/mixins/currentuserDataMixin';
 import getFromIdMixin from '@/mixins/getFromIdMixin';
+import authMixin from '@/mixins/authMixin';
 
 
 // import { DateFormatter } from '@/_utils/dateFormatter';
@@ -55,7 +58,7 @@ export default {
   components: {
     TheButton,
   },
-  mixins: [currentuserDataMixin, getFromIdMixin],
+  mixins: [currentuserDataMixin, getFromIdMixin, authMixin],
   props: {
     answerMode :{
       type: Boolean,
@@ -76,7 +79,7 @@ export default {
   data() {
     return {
       markdown: "",
-      spaceSeparatedTags: "",
+      spaceSeparatedTags: this.editMode ? this.editMode.editTags : "",
       listedTags: "",
       text: this.editMode ? HTMLToText(this.editMode.editText) : "",
       language: "en",
@@ -151,13 +154,16 @@ export default {
       const title = HTMLToText(this.markdown).split("\n")[0].replaceAll("&#39;", "'") + '..';
       const body = this.markdown;
       
-      await this.editQuestion (this.qid, { title, body })
+      await this.editQuestion (this.qid, { title, body, commaSeparatedTags: this.listedTags })
 
       this.questions =  await this.getAllQuestions();
       this.$store.commit("loadQuestions", this.questions.questions);
 
+      const currentUserId = await this.getCurrentUser();
+      console.log("sss", currentUserId);
+
       // Route to questions page
-      this.$router.push({ name: "Questions", params: { 'user_id': 18010917 } });
+      this.$router.push({ name: "Questions", params: { 'user_id': currentUserId.currentUserId } });
       this.$store.commit("setPageMode", "questions");
     },
     async createNewQuestion(){

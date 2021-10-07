@@ -1,12 +1,12 @@
 <template>
-  <div class="my-6 flex flex-col">
+  <div class="my-6 flex flex-col w-full">
     <label :for="label" class="mb-2 font-bold">{{ label }}</label>
     <select
       @change="currentValueChange()"
       v-model="currentValue"
       :name="label"
       :id="label"
-      class="cursor-pointer rounded-lg p-2 outline-none bg-gray-200"
+      class="shadow cursor-pointer rounded-lg p-2 outline-none bg-gray-200"
     >
       <option :key="value" v-for="value in values" :value="value">{{
         value

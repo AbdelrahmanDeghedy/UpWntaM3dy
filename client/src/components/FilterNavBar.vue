@@ -1,9 +1,9 @@
 <template>
   <div class="h-screen bg-white p-4 -mt-4 mr-6">
     <!-- Search Input -->
-    <div class="flex justify-center mt-8">
+    <div class="flex justify-center mt-8 w-full">
       <input
-        class="h-8 rounded-md shadow-md outline-none p-4 py-6 text-base bg-gray-100"
+        class="h-8 rounded-md shadow-md outline-none p-4 py-6 bg-gray-100 w-full text-sm"
         @input="filterQuestions"
         type="text"
         v-model="searchText"
@@ -25,6 +25,7 @@
         @currentValueChange="getCurrentCourse"
       />
       <the-selector label="Tag" :values="tags" />
+
     </div>
   </div>
 </template>
@@ -32,6 +33,7 @@
 <script>
 import TheSelector from "@/components/TheSelector.vue";
 
+  
 export default {
   components: {
     TheSelector,
@@ -43,7 +45,8 @@ export default {
       tags: [],
       currentTerm: "1",
       currentCourse: "",
-      searchText: ""
+      searchText: "",
+      value: ""
     };
   },
   updated() {
