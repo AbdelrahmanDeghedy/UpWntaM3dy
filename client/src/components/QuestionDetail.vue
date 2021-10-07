@@ -70,7 +70,7 @@
         <hr class="mx-2" />
 
         <!-- Answers -->
-        <div class="ml-4" :key="answers">
+        <div class="ml-4">
           <div v-for="answer in answers" :key='answer'>
             <answer-card :answer="answer" @syncAnswersLikeState="syncAnswersLikeState" />
             <hr class="mx-2" />
@@ -144,7 +144,14 @@ export default {
       this.handleLanguage();
   },
   computed : {
-    //
+    storeAnswers(){
+      return this.$store.state.answers;
+    }
+  },
+  watch: {
+    storeAnswers(){
+      this.answers = this.$store.state.answers;
+    }
   },
   methods :{
     async getAnswersOfQuestion(){

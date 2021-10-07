@@ -140,6 +140,7 @@ export default {
 
       const answers = await this.getQuestionAnswers (this.qid);
       this.$store.commit("loadAnswers", answers.Answers);
+      
       console.log("test", this.$store.state.answers);
 
       this.text = "";
