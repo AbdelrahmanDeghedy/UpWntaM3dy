@@ -51,13 +51,14 @@ export default {
   },
   methods: {
     async setCurrentUser(){
-      this.currentUserId = (await this.getCurrentUser()).currentUserId;
+      this.currentUserId = (await this.getCurrentUser()).currentUserId || 0;
     },
     signOut(){
         this.logout();
         this.$store.commit("setPageMode", "auth");
     },
     handlePageRouting(mode) {
+      if (!this.isLoggedIn()) return;
       this.$store.commit("setPageMode", mode);
     },
   },

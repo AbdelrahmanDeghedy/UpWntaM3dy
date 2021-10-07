@@ -31,13 +31,11 @@ const routes: Array<RouteRecordRaw> = [
     {
       path: "/signin",
       name: "Signin",
-
       component: () => import("@/App.vue"),
     },
     {
       path: "/signup",
       name: "Signup",
-
       component: () => import("@/App.vue"),
     },
     {
@@ -53,17 +51,25 @@ const router = createRouter({
   routes,
 });
 
+
+function jwtDecode(t: string) {
+  const payload = JSON.parse(window.atob(t.split('.')[1]));
+  return payload
+}
+
 const validateAuthedUser = (to, from, next) => {
   if (!to.meta.requiresAuth) return next();
   
-  if (!to.params.user_id) {
-    // redirect to sign in page
-    router.push({ name: "Signin" });
+  if (store.state.token) {
+    console.log("looged in");
+    store.commit("setPageMode", "questions");
+    if (to.name === "Questions") return next()
+    
+    next ({ name: "Questions", params: { user_id: jwtDecode(store.state.token).sub } });
+  } else  {
     store.commit("setPageMode", "auth");
-    return next()
+    next ({ name: "Signin" });
   }
-  return next();
-
 }
 
 router.beforeEach(validateAuthedUser);
