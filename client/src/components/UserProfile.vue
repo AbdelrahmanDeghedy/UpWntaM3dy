@@ -131,15 +131,19 @@ export default({
         },
         async initializeValues(){
             this.currentUserId = await this.getCurrentUser();
-
-            const profile =  await this.getUserFromUniversityId(this.$route.params.user_id);
-            
+            let profile;
+            if (String(this.$route.params.user_id) === String(this.currentUserId.currentUserId)) {
+                // Profile of current user
+                profile =  await this.getUserFromUniversityId(this.currentUserId.currentUserId);
+            } else {
+                profile =  await this.getUserFromUniversityId(this.$route.params.user_id);
+            }
             this.username = profile.name;
             this.userImg = profile.picture;
             this.bioText = profile.bio;
             this.rank = profile.rank;
             this.pointsCount = profile.points;
-            this.answersCount = profile.questionIds.length;
+            this.answersCount = profile.answerIds.length;
         },
         editBio(){
             this.currentBio = this.bioText;
