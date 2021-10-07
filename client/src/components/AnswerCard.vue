@@ -5,11 +5,11 @@
         <div class="w-6 h-6 mr-2 rounded-full overflow-hidden shadow-lg flex justify-center items-center">
             <img 
                 class="w-6 h-6"
-                :src="userImg || $store.state?.alternativeImg"
+                :src="owner.picture || $store.state?.alternativeImg"
                 alt="profile pic"
             />
         </div>
-        <div class="text-blue-800 font-bold">{{ getUsernameFromId(answer.owner_id) }} </div>
+        <div class="text-blue-800 font-bold">{{ owner.name }} </div>
         <div class="opacity-80 ml-2">{{ answerTime }} </div>
       </div>
     </div>
@@ -79,6 +79,7 @@ export default {
       answerLocal: this.answer,
       userImg: "",
       localAnswerLikes: 0,
+      owner: ""
     };
   },
   async mounted(){
@@ -96,8 +97,9 @@ export default {
     async initializeValues(){
       const currentUser = await this.currentUser();
       this.userImg = currentUser.picture;
+      this.owner =  await this.getUserFromId(this.answer.owner_id);
+      
       this.localAnswerLikes = this.answer.likes;
-
       if (currentUser.likedAnswerIds.includes (this.answer.id)) {
         this.currentLikeColor = this.$store.state.likePrimaryColor;
       } else {

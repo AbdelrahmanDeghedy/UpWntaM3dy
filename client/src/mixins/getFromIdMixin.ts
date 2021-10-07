@@ -31,6 +31,11 @@ export default {
           return String(user.id) === String(id)
         })[0]?.name;
       },
+      getUserFromId(id){
+        return this.$store.state.users.filter(user => {
+          return String(user.id) === String(id)
+        })[0];
+      },
     // getAnswersOfQuestion(qId) {
     // if (!qId) return "";
     // const answers = [];

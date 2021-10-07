@@ -35,10 +35,17 @@
             {{ text }}
           </div>
           <div class="flex ml-2 my-2">
+            <div class="w-6 h-6 mr-2 rounded-full overflow-hidden shadow-lg flex justify-center items-center">
+                <img 
+                    class="w-6 h-6"
+                    :src="picture || $store.state?.alternativeImg"
+                    alt="profile pic"
+                >
+            </div>
             <div class="text-blue-800 font-bold">
               {{ owner }}
             </div>
-            <div class="opacity-80 ml-2">{{ time }} days ago</div>
+            <div class="opacity-80 ml-2">{{ time }}</div>
           </div>
         </div>
 
@@ -63,7 +70,7 @@
         <hr class="mx-2" />
 
         <!-- Answers -->
-        <div class="ml-4" :key="$store.state.answers.length">
+        <div class="ml-4" :key="answers">
           <div v-for="answer in answers" :key='answer'>
             <answer-card :answer="answer" @syncAnswersLikeState="syncAnswersLikeState" />
             <hr class="mx-2" />
@@ -116,6 +123,7 @@ export default {
       answersNumber : 0,
       text : "",
       owner : "",
+      picture: "",
       ownerId: "",
       fullQuestionText : "",
       time: 0,
@@ -128,15 +136,12 @@ export default {
   updated(){
     this.scrollToAnswer();
   },
-  async mounted(){
-    await setTimeout(() => {
+  mounted(){
+    setTimeout(() => {this.getAnswersOfQuestion()}, 0)
+      
       this.initializeValues();
       this.scrollToAnswer();
       this.handleLanguage();
-    }, 0)
-    
-
-    
   },
   computed : {
     //
@@ -165,10 +170,18 @@ export default {
      this.questionMode = "edit";
     },
    async initializeValues(){
+      const questions =  await this.getAllQuestions();
+      this.$store.commit("loadQuestions", questions.questions);
+      const users =  await this.getLeaderboard();
+      this.$store.commit("loadUsers", users.users);
+
       this.likes = this.findQuestionById(this.$route.params.qId)?.likes;
-      this.answersNumber = this.getAnswersOfQuestion(this.$route.params.qId)?.length;
+      this.answersNumber = this.findQuestionById(this.$route.params.qId).answerIds.length;
       this.text = this.findQuestionById(this.$route.params.qId)?.title;
-      this.owner = this.getUsernameFromId(this.findQuestionById(this.$route.params.qId)?.ownerId);
+      this.owner = this.getUsernameFromId(this.findQuestionById(this.$route.params.qId)?.owner_id);
+      this.picture = this.getUserFromId(this.findQuestionById(this.$route.params.qId)?.owner_id)?.picture;
+      
+
       this.ownerId = this.findQuestionById(this.$route.params.qId).owner;
       this.fullQuestionText = this.findQuestionById(this.$route.params.qId)?.body;
       this.time = this.findQuestionById(this.$route.params.qId)?.pub_date;
