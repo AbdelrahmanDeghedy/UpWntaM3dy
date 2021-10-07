@@ -63,7 +63,7 @@ const validateAuthedUser = (to, from, next) => {
   if (store.state.token) {
     console.log("looged in");
     store.commit("setPageMode", "questions");
-    if (to.name === "Questions" || to.name === "Profile") return next()
+    if (to.name === "Questions" || to.name === "Profile" || to.name === "Ask" || to.name === "Question") return next()
     
     next ({ name: "Questions", params: { user_id: jwtDecode(store.state.token).sub } });
   } else  {

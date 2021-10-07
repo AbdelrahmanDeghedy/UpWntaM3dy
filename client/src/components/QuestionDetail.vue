@@ -162,7 +162,7 @@ export default {
       if (!this.$store.state.scrollToAnswer) return;
       
       await setTimeout(() => {
-        this.$refs.answerComment.scrollIntoView({behavior: 'smooth'});
+        this.$refs.answerComment?.scrollIntoView({behavior: 'smooth'});
         this.$store.commit("toggleScrollToAnswer");
       }, 800); 
     },

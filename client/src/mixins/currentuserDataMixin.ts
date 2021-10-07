@@ -34,7 +34,7 @@ export default {
             return data;
       },
       async getAllQuestionsSortedByAnswers(){
-        const res = await fetch(`${this.$store.state.baseUrl}/questions/sortedByAnswersCount/`, {
+        const res = await fetch(`${this.$store.state.baseUrl}/questions/sortedByAnswersCount`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",

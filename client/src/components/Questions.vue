@@ -92,17 +92,16 @@ export default {
         index !== val && (this.btnStates[index] = true);
       })
 
-      // if (val === 0) {
-      //   const questions = await this.getAllQuestionsSortedByLikes();
-      //   console.log(questions);
-      //   this.$store.commit ("loadQuestions", questions);
-      // } else if (val === 1) {
-      //   this.$store.commit ("sortQuestions", "likes");
-      //   // this.syncCurrentList(this.$store.state.questions)
-      // } else if (val === 2) {
-      //   this.$store.commit ("sortQuestions", "pub_date");
-      //   // this.syncCurrentList(this.$store.state.questions)
-      // }
+      if (val === 0) {
+        const questions = await this.getAllQuestionsSortedByAnswers();
+        this.$store.commit ("loadQuestions", questions.questions);
+      } else if (val === 1) {
+        const questions = await this.getAllQuestionsSortedByLikes();
+        this.$store.commit ("loadQuestions", questions.questions);
+      } else if (val === 2) {
+        const questions = await this.getAllQuestions();
+        this.$store.commit ("loadQuestions", questions.questions);
+      }
         this.change = Math.random();
     },
   },

@@ -12,7 +12,8 @@ export const mutations = {
     state.answers = payload;
   },
   loadQuestions(state: stateType, payload: questionInterface[]): void {
-    state.questions = payload;
+    state.questions = []
+    state.questions = [...payload];
   },
   loadBackupQuestions(state: stateType, payload: questionInterface[]): void {
     state.backupQuestions = payload;
@@ -38,14 +39,6 @@ export const mutations = {
     state.questions = state.backupQuestions.filter((question) => {
       return question.title.toLowerCase().includes(filterText.toLowerCase());
     })
-  },
-
-  sortQuestions (state: stateType, field : string): void {
-    if (field === 'answerIds') {
-      state.questions.sort((a, b) => (a[field].length > b[field].length) ? 1 : -1).reverse();
-    } else {
-      state.questions.sort((a, b) => (a[field] > b[field]) ? 1 : -1).reverse();
-    }
   },
 
   createAnswer (state: stateType, payload: answerInterface): void {
