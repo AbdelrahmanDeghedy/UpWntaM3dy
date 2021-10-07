@@ -40,6 +40,23 @@ export const mutations = {
       return question.title.toLowerCase().includes(filterText.toLowerCase());
     })
   },
+  filterQuestionsByTags (state: stateType, tag : string): void {
+    state.questions = state.backupQuestions.filter((question) => {
+      let matcher = false;
+      question.commaSeparatedTags.split(",").forEach(questionTag => {
+        if (questionTag === tag) {
+          console.log("tyyyy");
+          matcher = true
+        }
+      })
+      return matcher;
+    })
+  },
+
+  clearFilterTags (state: stateType): void {
+    state.questions = state.backupQuestions;
+  },
+
 
   createAnswer (state: stateType, payload: answerInterface): void {
     state.answers.push(payload);

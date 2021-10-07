@@ -8,6 +8,7 @@ question_bp.route('/', methods=['Get'])(questions_get)  # Sorted by date
 question_bp.route('/', methods=['OPTIONS'])(optionsHanlder)
 question_bp.route('/sortedByLikes', methods=['GET'])(sort_by_likes)
 question_bp.route('/sortedByAnswersCount', methods=['GET'])(sort_by_answersCount)
+question_bp.route('/tags', methods=['GET'])(get_tags)
 question_bp.route('/create', methods=['POST'])(questions_post)
 question_bp.route('<qid>/edit', methods=['PUT'])(questions_edit)
 question_bp.route('<qid>/delete', methods=['DELETE'])(questions_delete)

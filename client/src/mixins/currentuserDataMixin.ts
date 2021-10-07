@@ -9,18 +9,30 @@ export default {
             const token = window.localStorage.getItem("token");
             this.$store.commit ("setToken", token);
         },
+        async getTags(){
+          const res = await fetch(`${this.$store.state.baseUrl}/questions/tags`, {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization" : `Bearer ${this.$store.state.token}`
+              },
+            });
+      
+            const data = await res.json();
+            return data;
+      },
         async getAllQuestions(){
-            const res = await fetch(`${this.$store.state.baseUrl}/questions/`, {
-                method: "GET",
-                headers: {
-                  "Content-Type": "application/json",
-                  "Authorization" : `Bearer ${this.$store.state.token}`
-                },
-              });
-        
-              const data = await res.json();
-              return data;
-        },
+          const res = await fetch(`${this.$store.state.baseUrl}/questions/`, {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization" : `Bearer ${this.$store.state.token}`
+              },
+            });
+      
+            const data = await res.json();
+            return data;
+      },
         async getAllQuestionsSortedByLikes(){
           const res = await fetch(`${this.$store.state.baseUrl}/questions/sortedByLikes`, {
               method: "GET",

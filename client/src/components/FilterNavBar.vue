@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen bg-white p-4 -mt-4 mr-6">
+  <div class="h-auto bg-white p-4 -mt-4 mr-6">
     <!-- Search Input -->
     <div class="flex justify-center mt-8 w-full">
       <input
@@ -12,39 +12,42 @@
     </div>
 
     <!-- Selection Items -->
-    <div class="mt-14 flex flex-col items-center">
-      <the-selector
-        defaultChoice="1"
-        label="Term"
-        :values="terms"
-        @currentValueChange="getCurrentTerm"
-      />
-      <the-selector
-        label="Course"
-        :values="courses"
-        @currentValueChange="getCurrentCourse"
-      />
-      <the-selector label="Tag" :values="tags" />
-
+    <div class="mt-20 flex flex-col items-center">
+      <the-selector label="Tag" :values="tags" @currentValueChange="syncSelectedTag" />
+      <div class="flex justify-center">
+        <the-button 
+          class="mr-2"
+          @click="clearTags"
+          content="Clear"
+          type="primary"
+          size="small"
+        />
+        <the-button 
+          @click="filterByTag"
+          content="Filter"
+          type="secondary"
+          size="small"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import TheSelector from "@/components/TheSelector.vue";
-
+import TheButton from "@/components/TheButton.vue";
+import currentuserDataMixin from '@/mixins/currentuserDataMixin';
   
 export default {
+  mixins: [currentuserDataMixin],
   components: {
     TheSelector,
+    TheButton
   },
   data() {
     return {
-      terms: [],
-      courses: [],
       tags: [],
-      currentTerm: "1",
-      currentCourse: "",
+      selectedTag: "",
       searchText: "",
       value: ""
     };
@@ -53,57 +56,25 @@ export default {
     // console.log(this.$store.state.courseInfoPerTerm);
   },
   mounted() {
-    this.loadTerms();
-    this.loadCourses(this.currentTerm);
-    // This component is rendered before app, so load the data (after 0!) to
-    // make the data be loaded (a hack!)
-    // setTimeout(() => {console.log(this.$store.state.courseInfoPerTerm)}, 0);
+    this.loadTags();
+    
+    console.log(this.$store.state.questions);
   },
   methods: {
+    async loadTags(){
+      this.tags = (await this.getTags())?.tags;
+    },
     filterQuestions(){
       this.$store.commit("filterQuestions", this.searchText);
     },
-    getCurrentCourse(currentCourse) {
-      this.currentCourse = currentCourse;
-      this.tags = [];
-      this.loadTags(this.currentCourse);
+    syncSelectedTag(tag){
+      this.selectedTag = tag;
     },
-    getCurrentTerm(currentTerm) {
-      this.currentTerm = currentTerm;
-      this.courses = [];
-      this.tags = [];
-      this.loadCourses(this.currentTerm);
+    filterByTag(){
+      this.$store.commit("filterQuestionsByTags", this.selectedTag);
     },
-    loadTerms() {
-      setTimeout(() => {
-        this.$store.state.courseInfoPerTerm.forEach((element) => {
-          this.terms.push(element.term);
-        });
-      }, 0);
-    },
-    loadCourses(currentTerm) {
-      setTimeout(() => {
-        this.$store.state.courseInfoPerTerm.forEach((element) => {
-          if (element.term === currentTerm) {
-            element.courses.forEach((course) => {
-              this.courses.push(course.name);
-            });
-          }
-        });
-      }, 0);
-    },
-    loadTags(currentCourse) {
-      setTimeout(() => {
-        this.$store.state.courseInfoPerTerm.forEach((courses) => {
-          courses.courses.forEach((course) => {
-            if (course.name === currentCourse) {
-              course.tags.forEach((tag) => {
-                this.tags.push(tag);
-              });
-            }
-          });
-        });
-      }, 0);
+    clearTags(){
+      this.$store.commit('clearFilterTags');
     },
   },
 };

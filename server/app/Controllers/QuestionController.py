@@ -247,6 +247,18 @@ def sort_by_answersCount () :
         'questions': questionsList
      }
 
+@jwt_required()
+@cross_origin()
+def get_tags () :
+    questions = Question.query.filter().all()
+    tags = list(set([question.serializeQuestion()['commaSeparatedTags'] for question in questions if question.serializeQuestion()['commaSeparatedTags'] != ""]))
+    
+    return { 
+        'msg' : 'success',
+        'length' : len(tags),
+        'tags': tags
+     }
+
 @cross_origin()
 def optionsHanlder() :
     return "OK", 200
