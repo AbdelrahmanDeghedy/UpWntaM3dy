@@ -22,11 +22,6 @@ UserSchema = Schema.from_dict(
     }
 )
 
-association_table = db.Table('association',
-    db.Column('question_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
-    db.Column('like_id', db.Integer, db.ForeignKey('questionLikes.likedQid'), primary_key=True)
-)
-
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -46,8 +41,6 @@ class User(UserMixin, db.Model):
     answerLikes = db.relationship('AnswerLike', backref = "owner")
     answerBookmarks = db.relationship('AnswerBookmark', backref = "owner")
 
-    questionLikes = db.relationship('QuestionLike', secondary=association_table, backref=db.backref('users', lazy=True))
-
     def serializeUser(self) :
         schema = UserSchema(exclude=['password'])
         result = schema.dump(self)
@@ -56,9 +49,6 @@ class User(UserMixin, db.Model):
 
         answerIds = [answer.id for answer in list(self.answerIds)]
         result['answerIds'] = answerIds
-        
-        questionLikes = [like.likedQid for like in list(self.questionLikes)]
-        result['likedQuestionIds'] = questionLikes
 
         questionBookmarks = [bookmark.bookmarkedQid for bookmark in list(self.questionBookmarks)]
         result['bookmarkedQuestionIds'] = questionBookmarks

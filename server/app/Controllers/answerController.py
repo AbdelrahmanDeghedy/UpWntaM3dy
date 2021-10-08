@@ -4,7 +4,6 @@ from flask import request, jsonify
 from Models.Question import Question
 from Models.Answer import Answer
 from Models.User import User
-from Models.AnswerLikes import AnswerLike
 from Models.AnswerBookmarks import AnswerBookmark
 from flask_sqlalchemy import SQLAlchemy
 from Controllers.UserController import getCurrnetUser
@@ -91,32 +90,18 @@ def delete_answer(aid):
 @jwt_required()
 @cross_origin()
 def like_answer (aid) :
-    if AnswerLike.query.filter_by(likedAid = aid).first() :
-        return { 'msg' : 'already liked!' }
-
     currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
-
-    editedAnswer = Answer.query.filter_by(id = aid).first()
-
-    print (editedAnswer.likes)
-
-    editedAnswer.likes += 1
+    answer = Question.query.filter_by(id = aid).first()
+    if int(currentUserObject.id) in list(answer.serializeQuestion()['userLikes']) :
+        return { 'msg' : 'already liked!' }
+        
+    answer.userLikes.append(currentUserObject)
+    answer.likes += 1
     db.session.close_all()
-    db.session.add(editedAnswer)
+    db.session.add(answer)
     db.session.commit()
-
-    likedAnswer = AnswerLike(
-                            likedAid = aid,
-                            owner = currentUserObject
-                        )
-    
-    db.session.close_all()
-    db.session.add(likedAnswer)
-    db.session.commit()
-
     return { 
-            'msg' : 'success',
-            'likedAnswers' : likedAnswer.serializeAnswerLike()
+            'msg' : 'The answer has been disliked!'
            }
 
 @jwt_required()

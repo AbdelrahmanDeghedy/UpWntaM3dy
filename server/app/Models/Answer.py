@@ -16,6 +16,10 @@ AnswerSchema = Schema.from_dict(
     }
 )
 
+answer_user_likes_identifier = db.Table('answer_user_likes_identifier', 
+    db.Column('answer_id', db.Integer, db.ForeignKey('answers.id')),
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id'))
+)
 class Answer(UserMixin, db.Model):
     __tablename__ = 'answers'
     id = id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -26,10 +30,14 @@ class Answer(UserMixin, db.Model):
     parentQuestion_id = db.Column(db.Integer, db.ForeignKey('questions.id'), nullable=False)
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
+    userLikes = db.relationship('User', secondary=answer_user_likes_identifier)
+
 
     def serializeAnswer(self) :
         schema = AnswerSchema()
         result = schema.dump(self)
+        userLikes = [user.id for user in list(self.userLikes)]
+        result['userLikes'] = userLikes
         return result
 
     def __repr__(self):
