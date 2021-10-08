@@ -12,6 +12,17 @@ import { store } from '@/store/index'
 
 library.add(faThumbsUp, faBookmark);
 
+function removeAnyConsolesOnProduction(){
+    if(process.env.NODE_ENV === 'production') {
+        console.log = function () {
+                //
+        }   
+    }
+}
+
+removeAnyConsolesOnProduction()
+
+
 export const app = createApp(App);
 
 app.use (store);
