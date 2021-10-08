@@ -1,14 +1,14 @@
 <template>
-  <div class="h-20 bg-gray-200 flex justify-around rounded-bl-lg rounded-br-lg">
-    <router-link :to="{ name: 'Questions', params: { 'user_id': currentUserId } }" class="flex">
+  <div class="navbar shadow h-20 flex items-center justify-around rounded-bl-lg rounded-br-lg">
+    <router-link active-class="selected" :to="{ name: 'Questions', params: { 'user_id': currentUserId } }" class="flex">
       <div
         class="flex items-center cursor-pointer"
         @click="handlePageRouting('questions')"
       >
-        UpWntaM3dy
+        <span class="upColor"> UP </span> <span class="wntaColor"> Wnta </span> <span class="m3dyColor"> M3dy </span>
       </div>
     </router-link>
-    <router-link :to="{ name: 'Profile', params: { 'user_id': currentUserId } }" class="flex">
+    <router-link active-class="selected" :to="{ name: 'Profile', params: { 'user_id': currentUserId } }" class="flex">
       <div
         class="flex items-center cursor-pointer"
         @click="handlePageRouting('profile')"
@@ -16,7 +16,7 @@
         Profile
       </div>
     </router-link>
-    <router-link :to="{ name: 'Signin' }" class="flex">
+    <router-link active-class="selected" v-if="!isLoggedIn()" :to="{ name: 'Signin' }" class="flex">
       <div
         class="flex items-center cursor-pointer"
         @click="handlePageRouting('auth')"
@@ -24,7 +24,7 @@
         Sign in
       </div>
     </router-link>
-    <router-link :to="{ name: 'Signin' }" class="flex">
+    <router-link active-class="selected" v-if="isLoggedIn()" :to="{ name: 'Signin' }" class="flex">
       <div
         class="flex items-center cursor-pointer"
         @click="signOut"
@@ -32,7 +32,6 @@
         Sign out
       </div>
     </router-link>
-    <div class="flex items-center">&nbsp;</div>
   </div>
 </template>
 
@@ -54,10 +53,11 @@ export default {
   watch :{
     watchToken(){
       this.setCurrentUser()
-    }
+    },
   },
   mounted(){
     this.setCurrentUser();
+    
   },
   methods: {
     async setCurrentUser(){
@@ -75,3 +75,39 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+
+.navbar {
+background-color: #fff293;
+background-image: linear-gradient(315deg, #fff293 0%, #ffe884 74%);
+
+}
+
+.selected {
+  background-color: #fff;
+  border-radius: 100rem;
+  padding: .5rem 1rem;
+  
+}
+
+.m3dyColor, .wntaColor, .upColor {
+  /* font-size: 1.5rem; */
+  font-weight: 700;
+  
+}
+ 
+.m3dyColor {
+  color: #FF06D7;
+  
+
+}
+.wntaColor {
+  color: #FF5106;
+}
+
+.upColor {
+  color: #F7AF43;
+} 
+
+</style>
