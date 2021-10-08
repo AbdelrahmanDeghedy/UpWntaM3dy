@@ -139,6 +139,7 @@ def questions_like (qid) :
         question.userDislikes.remove(currentUserObject)
     
     question.userLikes.append(currentUserObject)
+    currentUserObject.liked_questions.append(question)
     question.likes +=1 
     
     db.session.close_all()
