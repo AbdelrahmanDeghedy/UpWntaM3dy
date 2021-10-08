@@ -9,7 +9,11 @@
                 alt="profile pic"
             />
         </div>
-        <div class="text-blue-800 font-bold">{{ owner.name }} </div>
+        
+        <router-link :to="{ name: 'Profile', params: { 'user_id': (owner.universityId || 0) } }" class="flex">
+          <div class="cursor-pointer text-blue-800 font-bold">{{ owner.name }} </div>
+        </router-link>  
+        
         <div class="opacity-80 ml-2">{{ answerTime }} </div>
       </div>
     </div>

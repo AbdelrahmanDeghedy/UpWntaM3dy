@@ -62,3 +62,6 @@ API_USERNAME = config('USER')
 API_KEY = config('KEY')
 
 https://docs.python-cerberus.org/en/stable/customize.html
+
+
+Delete questionLikes file**

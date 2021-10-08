@@ -103,7 +103,7 @@ def signup_post():
                     points = 0,
                   )
 
-    db.session.add(newUser)
+    db.session.add(newUser) 
     db.session.commit()
     
     access_token = create_access_token(identity=newUser.universityId)

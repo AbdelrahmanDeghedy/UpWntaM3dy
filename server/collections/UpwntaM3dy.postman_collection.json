@@ -1,8 +1,8 @@
 {
 	"info": {
-		"_postman_id": "43f2a14e-2919-4529-b077-54c5578cc4cc",
+		"_postman_id": "b7f41a1b-8f93-45cf-a140-471e4bbdfc52",
 		"name": "UpwntaM3dy",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -15,14 +15,28 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"test10@test.com\",\n    \"name\": \"Abdelrahman\",\n    \"password\": \"password\",\n    \"universityId\": 18010916,\n    \"department\": \"Comm\"\n}",
+							"raw": "{\n    \"email\": \"test@gmail.com\",\n    \"name\": \"Abdelrahman\",\n    \"password\": \"password\",\n    \"universityId\": \"12345678\",\n    \"department\": \"Comm\",\n    \"bio\":\"No bio\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "http://127.0.0.1:5000/users/signup"
+						"url": {
+							"raw": "http://127.0.0.1:5000/users/signup",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"users",
+								"signup"
+							]
+						}
 					},
 					"response": []
 				},
@@ -46,7 +60,21 @@
 								}
 							}
 						},
-						"url": "http://127.0.0.1:5000/users/edit"
+						"url": {
+							"raw": "http://127.0.0.1:5000/users/edit",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"users",
+								"edit"
+							]
+						}
 					},
 					"response": []
 				},
@@ -64,7 +92,21 @@
 								}
 							}
 						},
-						"url": "http://127.0.0.1:5000/users/delete"
+						"url": {
+							"raw": "http://127.0.0.1:5000/users/delete",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"users",
+								"delete"
+							]
+						}
 					},
 					"response": []
 				},
@@ -91,7 +133,21 @@
 								}
 							}
 						},
-						"url": "http://127.0.0.1:5000/users/leaderboard"
+						"url": {
+							"raw": "http://127.0.0.1:5000/users/leaderboard",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"users",
+								"leaderboard"
+							]
+						}
 					},
 					"response": []
 				},
@@ -118,7 +174,21 @@
 								}
 							}
 						},
-						"url": "http://127.0.0.1:5000/users/currentUser"
+						"url": {
+							"raw": "http://127.0.0.1:5000/users/currentUser",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"users",
+								"currentUser"
+							]
+						}
 					},
 					"response": []
 				},
@@ -130,9 +200,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": ""
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
 						},
 						"method": "GET",
 						"header": [
@@ -151,7 +225,21 @@
 								}
 							}
 						},
-						"url": "http://127.0.0.1:5000/users/logout"
+						"url": {
+							"raw": "http://127.0.0.1:5000/users/logout",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"users",
+								"logout"
+							]
+						}
 					},
 					"response": []
 				},
@@ -180,7 +268,21 @@
 								}
 							}
 						},
-						"url": "http://127.0.0.1:5000/users/login"
+						"url": {
+							"raw": "http://127.0.0.1:5000/users/login",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"users",
+								"login"
+							]
+						}
 					},
 					"response": []
 				}
@@ -200,7 +302,21 @@
 								"type": "text"
 							}
 						],
-						"url": "http://127.0.0.1:5000/questions/"
+						"url": {
+							"raw": "http://127.0.0.1:5000/questions/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"questions",
+								""
+							]
+						}
 					},
 					"response": []
 				},
@@ -224,7 +340,21 @@
 								}
 							}
 						},
-						"url": "http://127.0.0.1:5000/questions/create"
+						"url": {
+							"raw": "http://127.0.0.1:5000/questions/create",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"questions",
+								"create"
+							]
+						}
 					},
 					"response": []
 				},
@@ -248,13 +378,38 @@
 								}
 							}
 						},
-						"url": "http://127.0.0.1:5000/questions/2/edit"
+						"url": {
+							"raw": "http://127.0.0.1:5000/questions/2/edit",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"questions",
+								"2",
+								"edit"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "Delete  a Question",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"body": {
@@ -266,7 +421,22 @@
 								}
 							}
 						},
-						"url": "http://127.0.0.1:5000/questions/1/delete"
+						"url": {
+							"raw": "http://127.0.0.1:5000/questions/3/delete",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"questions",
+								"3",
+								"delete"
+							]
+						}
 					},
 					"response": []
 				},
@@ -290,7 +460,22 @@
 								}
 							}
 						},
-						"url": "http://127.0.0.1:5000/questions/11/like"
+						"url": {
+							"raw": "http://127.0.0.1:5000/questions/1/like",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"questions",
+								"1",
+								"like"
+							]
+						}
 					},
 					"response": []
 				},
@@ -314,7 +499,22 @@
 								}
 							}
 						},
-						"url": "http://127.0.0.1:5000/questions/1/dislike"
+						"url": {
+							"raw": "http://127.0.0.1:5000/questions/1/dislike",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"questions",
+								"1",
+								"dislike"
+							]
+						}
 					},
 					"response": []
 				},
@@ -338,7 +538,22 @@
 								}
 							}
 						},
-						"url": "http://127.0.0.1:5000/questions/11/removeBookmark"
+						"url": {
+							"raw": "http://127.0.0.1:5000/questions/11/removeBookmark",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"questions",
+								"11",
+								"removeBookmark"
+							]
+						}
 					},
 					"response": []
 				},
@@ -362,7 +577,22 @@
 								}
 							}
 						},
-						"url": "http://127.0.0.1:5000/questions/2/bookmark"
+						"url": {
+							"raw": "http://127.0.0.1:5000/questions/2/bookmark",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"questions",
+								"2",
+								"bookmark"
+							]
+						}
 					},
 					"response": []
 				},
@@ -371,7 +601,79 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "http://127.0.0.1:5000/questions/sort-by-likes"
+						"url": {
+							"raw": "http://127.0.0.1:5000/questions/sort-by-likes",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"questions",
+								"sort-by-likes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Question total likes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/questions/1/total-likes",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"questions",
+								"1",
+								"total-likes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Is liked by a user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/questions/1/is-liked",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"questions",
+								"1",
+								"is-liked"
+							]
+						}
 					},
 					"response": []
 				}
@@ -400,7 +702,22 @@
 								}
 							}
 						},
-						"url": "http://127.0.0.1:5000/answers/2/create"
+						"url": {
+							"raw": "http://127.0.0.1:5000/answers/2/create",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"answers",
+								"2",
+								"create"
+							]
+						}
 					},
 					"response": []
 				},
@@ -418,7 +735,22 @@
 								}
 							}
 						},
-						"url": "http://127.0.0.1:5000/answers/1/edit"
+						"url": {
+							"raw": "http://127.0.0.1:5000/answers/1/edit",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"answers",
+								"1",
+								"edit"
+							]
+						}
 					},
 					"response": []
 				},
@@ -436,7 +768,22 @@
 								}
 							}
 						},
-						"url": "http://127.0.0.1:5000/answers/2/delete"
+						"url": {
+							"raw": "http://127.0.0.1:5000/answers/2/delete",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"answers",
+								"2",
+								"delete"
+							]
+						}
 					},
 					"response": []
 				},
@@ -463,7 +810,22 @@
 								}
 							}
 						},
-						"url": "http://127.0.0.1:5000/answers/2/"
+						"url": {
+							"raw": "http://127.0.0.1:5000/answers/2/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"answers",
+								"2",
+								""
+							]
+						}
 					},
 					"response": []
 				},
@@ -487,7 +849,22 @@
 								}
 							}
 						},
-						"url": "http://127.0.0.1:5000/answers/11/like"
+						"url": {
+							"raw": "http://127.0.0.1:5000/answers/11/like",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"answers",
+								"11",
+								"like"
+							]
+						}
 					},
 					"response": []
 				},
@@ -511,7 +888,22 @@
 								}
 							}
 						},
-						"url": "http://127.0.0.1:5000/answers/1/bookmark"
+						"url": {
+							"raw": "http://127.0.0.1:5000/answers/1/bookmark",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"answers",
+								"1",
+								"bookmark"
+							]
+						}
 					},
 					"response": []
 				},
@@ -535,7 +927,22 @@
 								}
 							}
 						},
-						"url": "http://127.0.0.1:5000/answers/1/removeBookmark"
+						"url": {
+							"raw": "http://127.0.0.1:5000/answers/1/removeBookmark",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"answers",
+								"1",
+								"removeBookmark"
+							]
+						}
 					},
 					"response": []
 				},
@@ -559,7 +966,22 @@
 								}
 							}
 						},
-						"url": "http://127.0.0.1:5000/answers/11/dislike"
+						"url": {
+							"raw": "http://127.0.0.1:5000/answers/11/dislike",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"answers",
+								"11",
+								"dislike"
+							]
+						}
 					},
 					"response": []
 				}

@@ -42,9 +42,13 @@
                     alt="profile pic"
                 >
             </div>
-            <div class="text-blue-800 font-bold">
-              {{ owner }}
-            </div>
+            <router-link :to="{ name: 'Profile', params: { 'user_id': (this.ownerId || 0) } }" class="flex">
+              <div class="cursor-pointer text-blue-800 font-bold">
+                {{ owner }}
+              </div>
+            </router-link>
+
+
             <div class="opacity-80 ml-2">{{ time }}</div>
           </div>
         </div>

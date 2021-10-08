@@ -8,7 +8,10 @@
       </div>
       <div class="flex flex-col items-center mx-2">
         <img :src="users[0]?.picture || $store.state.alternativeImg" alt="Winner" class="w-14 rounded-full" />
-        <div class="font-semibold text-xl mt-2"> {{ users[0]?.name }} </div>
+        <router-link :to="{ name: 'Profile', params: { 'user_id': (users[0]?.universityId || 0) } }" class="flex">
+          <div class="font-semibold text-xl mt-2"> {{ users[0]?.name }} </div>
+        </router-link>
+
       </div>
       <div class="flex flex-col items-center mx-2 justify-center">
         <div class="opacity-60">Rank</div>
@@ -24,7 +27,9 @@
           <div class="mr-4">
             <img :src="user.picture || $store.state.alternativeImg" :alt="`${user.name}`" class="w-6 rounded-full" />
           </div>
-          <div> {{ user.name }} </div>
+          <router-link :to="{ name: 'Profile', params: { 'user_id': (user?.universityId || 0) } }" class="flex">
+            <div> {{ user.name }} </div>
+          </router-link>
         </div>
         <hr />
       </div>

@@ -3,7 +3,6 @@ from flask import request, jsonify
 
 from Models.Question import Question
 from Models.User import User
-from Models.QuestionLikes import QuestionLike
 from Models.QuestionBookmarks import QuestionBookmark
 from Controllers.UserController import getCurrnetUser, currnetUser
 from flask_sqlalchemy import SQLAlchemy
@@ -41,7 +40,6 @@ import json
 @cross_origin()
 def questions_post():
     # departments = ['CCE', 'EME', 'CAE', 'CSE'] #Add all departments
-    reqData = request.get_json()
     questions_schema = {
     'title':{'required':True,'type':'string', 'maxlength':140},
     'body':{'type':'string','nullable':True},
@@ -80,6 +78,8 @@ def questions_post():
         "msg": "success",
         "Created Question": newQuestion.serializeQuestion()
     }
+
+
 
 def find_question_by_id (qid) :
     return Question.query.filter_by(id = qid).first()
@@ -131,76 +131,63 @@ def questions_delete (qid) :
 @jwt_required()
 @cross_origin()
 def questions_like (qid) :
-
     currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
-
-    if int(qid) in list(currentUserObject.serializeUser()['likedQuestionIds']) :
+    question = Question.query.filter_by(id = qid).first()
+    if int(currentUserObject.id) in list(question.serializeQuestion()['userLikes']) :
         return { 'msg' : 'already liked!' }
-
-    editedQuestion = Question.query.filter_by(id = qid).first()
-    editedQuestion.likes += 1
+    if int(currentUserObject.id) in list(question.serializeQuestion()['userDisLikes']) :
+        question.userDislikes.remove(currentUserObject)
+    
+    question.userLikes.append(currentUserObject)
+    question.likes +=1 
     
     db.session.close_all()
-    db.session.add(editedQuestion)
+    db.session.add(question)
     db.session.commit()
     db.session.close_all()
 
+    return {
+        'msg':'Question liked successfully!'
+    }
 
-    likedQuestion = QuestionLike.query.filter_by(likedQid = qid).first()
+#Get total likes for a certain question 
+#CAN BE REMOVED**
+def question_total_likes(qid):
+    question = Question.query.filter_by(id = qid).first()
+    return {
+        'Total likes' : len(question.userLikes)
+    }
 
-    if likedQuestion is None :
-        db.session.close_all()
-        likedQuestion = QuestionLike(
-                                likedQid = qid,
-                            )
-        db.session.add(likedQuestion)
-        db.session.commit()
-    else :
-        print (likedQuestion.users)
-        likedQuestion.users.append(currentUserObject)
-        db.session.add(likedQuestion)
-        db.session.commit()
-    
-
-    return { 
-            'msg' : 'success',
-            'likedQuestions' : likedQuestion.serializeLike()
-           }
+#Helper function may help in the front-end
+@cross_origin()
+def is_liked_by(qid):
+    currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
+    question = Question.query.filter_by(id = qid).first()
+    if int(currentUserObject.id) in list(question.serializeQuestion()['userLikes']) :
+        return {"liked":True}
+    return {"liked":False}
 
 
 @jwt_required()
 @cross_origin()
 def questions_dislike (qid) :
     currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
-        
-    likedQues = QuestionLike.query.filter_by(likedQid = qid).first()
-    if likedQues.users and currentUserObject not in likedQues.users :
+    question = Question.query.filter_by(id = qid).first()
+    if int(currentUserObject.id) in list(question.serializeQuestion()['userDisLikes']) :
         return { 'msg' : 'already disliked!' }
+    if int(currentUserObject.id) in list(question.serializeQuestion()['userLikes']) :
+        question.userLikes.remove(currentUserObject)
+
+    question.userDisLikes.append(currentUserObject)
     
     db.session.close_all()
-    likedQues.users.remove(currentUserObject)
-    db.session.add(likedQues)
+    db.session.add(question)
     db.session.commit()
 
-    if len(list(likedQues.users)) == 0 :
-        db.session.close_all()
-        db.session.delete(likedQues)
-        db.session.commit()
-
+    return {
+        'msg':'Question disliked successfully!'
+    }
     
-    editedQuestion = Question.query.filter_by(id = qid).first()
-    editedQuestion.likes -= 1
-    
-    db.session.close_all()
-    db.session.add(editedQuestion)
-    db.session.commit()
-
-    
-    
-
-    return { 
-            'msg' : 'success',
-           }
 
 @jwt_required()
 @cross_origin()
