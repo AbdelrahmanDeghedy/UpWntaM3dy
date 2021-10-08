@@ -12,6 +12,7 @@ export const mutations = {
     state.answers = payload;
   },
   loadQuestions(state: stateType, payload: questionInterface[]): void {
+    if (!payload) return;
     state.questions = []
     state.questions = [...payload];
   },

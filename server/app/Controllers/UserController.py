@@ -13,18 +13,26 @@ from flask_cors import cross_origin
 
 db = SQLAlchemy()
 
+import math
+
 @jwt_required()
 @cross_origin()
 def get_leaderboard () :
-        users = User.query.filter().all()
-        usersList = [user.serializeUser() for user in users]
-        usersList = sorted(usersList, key = lambda k : k['rank'], reverse=False)
+    users = User.query.filter().all()
+    print ("test", users[0].serializeUser())
+    for user in users :
+        currentUser = User.query.filter_by(universityId = user.serializeUser()['universityId']).first()
+        currentUser.points = math.ceil(len(currentUser.serializeUser()['likedQuestionIds']) * 1/2 + len(currentUser.serializeUser()['likedAnswerIds']) * 1/2 + len(currentUser.serializeUser()['questionIds']) + len(currentUser.serializeUser()['answerIds']) * 3 / 2)
 
-        return {
-            'msg': 'Success',
-            'length' : len(usersList),
-            'users': usersList
-        }
+    
+    usersList = [user.serializeUser() for user in users]
+    usersList = sorted(usersList, key = lambda k : k['points'], reverse=True)
+
+    return {
+        'msg': 'Success',
+        'length' : len(usersList),
+        'users': usersList
+    }
         
 @cross_origin()
 def login_post():
