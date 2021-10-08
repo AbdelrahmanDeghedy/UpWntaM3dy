@@ -40,7 +40,7 @@
         </div>
       </div>
     </div>
-    <div class="py-6 w-1/6 flex flex-col items-center">
+    <div class="py-6 w-1/6 mx-4 flex flex-col items-center">
       <router-link :to="{ name: 'Question', params: { qId: id, 'user_id': currentUserId } }">
         <the-button content="Answer" type="secondary" size="small" @click="handleAnswerClick"/>
       </router-link>

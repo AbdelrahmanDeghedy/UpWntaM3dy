@@ -30,8 +30,8 @@
        
         
         <div ref="profileContainer" class="">
-            <div class="flex items-center">
-                <div class="w-1/4 ml-20 flex justify-center items-center">
+            <div :class="$store.state.mobileResponsive ? 'flex-col' : ''" class="flex items-center">
+                <div :class="$store.state.mobileResponsive ? 'order-3' : 'w-1/4 ml-20'" class="items-center">
                     <the-button 
                         v-if="String(this.$route.params.user_id) === String(currentUserId.currentUserId)"
                         @click="toggleSavedAnswers = !toggleSavedAnswers"
@@ -42,7 +42,7 @@
                         :key="disableBtn"
                     />
                 </div>
-                <div class=" w-2/4 flex flex-col items-center py-8">
+                <div :class="$store.state.mobileResponsive ? 'w-full' : 'w-2/4'" class="flex flex-col items-center py-8">
                     <div class="w-48 h-48 rounded-full overflow-hidden shadow-lg flex justify-center items-center">
                         <input type="file" @change="onFileChanged" class="z-50 bg-gray-200 w-48 absolute h-32 rounded-full opacity-0 cursor-pointer">
                         <img 
@@ -59,7 +59,7 @@
                     </div>
                 </div>
                 <div 
-                    class="mr-20 w-1/4 flex justify-center items-center"
+                    :class="$store.state.mobileResponsive ? 'order-2 mb-2': 'mr-20 w-1/4'" class="flex justify-center items-center"
                     @click="editBio"
                 >
                     <the-button 

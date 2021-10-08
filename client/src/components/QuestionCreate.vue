@@ -87,7 +87,7 @@ export default {
         containerClass: "bg-white rounded-3xl p-6 flex flex-col shadow-md",
         textareaClass: "outline-none text-2xl question-text shadow border rounded-lg p-4 mb-4",
         textareaPlaceholder : "What's in Your Mind?",
-        buttonSize: "large",
+        buttonSize: this.$store.state.mobileResponsive ? "small" : "large",
         buttonContent: this.editMode ? 'Save' : 'Ask'
       },
       answerConfig :{

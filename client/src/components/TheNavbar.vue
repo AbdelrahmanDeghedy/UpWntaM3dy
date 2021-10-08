@@ -16,6 +16,14 @@
         Profile
       </div>
     </router-link>
+    <router-link v-if="$store.state.mobileResponsive === true" active-class="selected" :to="{ name: 'Leaderboard' }" class="flex">
+      <div
+        class="flex items-center cursor-pointer"
+        @click="handlePageRouting('leaderboard')"
+      >
+        Leaderboard
+      </div>
+    </router-link>
     <router-link active-class="selected" v-if="!isLoggedIn()" :to="{ name: 'Signin' }" class="flex">
       <div
         class="flex items-center cursor-pointer"

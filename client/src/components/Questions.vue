@@ -1,7 +1,15 @@
 <template>
   <div class="flex flex-col">
-    <!-- Filter By Date Buttons -->
-    <div class="flex justify-end">
+      <router-link class="flex justify-center mb-4" v-if="$store.state.mobileResponsive === true" :to="{ name: 'Ask', params: { 'user_id': currentUserId } }">
+          <!-- v-if="mode !== 'questionCreate'" -->
+        <the-button
+          @click="handlePageRouting()"
+          content="Ask A Question"
+          type="primary"
+          size="large"
+        />
+      </router-link>
+    <div class="flex justify-end" :class="{ 'justify-center' : $store.state.mobileResponsive }">
       <the-button
         @click="handleActiveBtns(0)"
         :disabled="btnStates[0]"
@@ -53,10 +61,11 @@ import TheButton from "@/components/TheButton.vue";
 import QuestionCard from "@/components/QuestionCard.vue";
 import PaginationButtons from '@/components/PaginationButtons.vue';
 import currentuserDataMixin from '@/mixins/currentuserDataMixin';
+import authMixin from '@/mixins/authMixin';
 
 
 export default {
-  mixins: [currentuserDataMixin],
+  mixins: [currentuserDataMixin, authMixin],
   components: {
     TheButton,
     QuestionCard,
@@ -72,12 +81,20 @@ export default {
       btnStates: [true, true, false],
       change: 0,
       renderedQuestions: [],
+      currentUserId: 0
     };
   },
   mounted () {
-    //
+    this.setCurrentUser();
+    
   },
   methods: {
+    async setCurrentUser(){
+      this.currentUserId = (await this.getCurrentUser()).currentUserId;
+    },
+    handlePageRouting(){
+      this.$store.commit("setPageMode", "questionCreate");
+    },
     syncCurrentList(questions){
       this.renderedQuestions = questions;
     },

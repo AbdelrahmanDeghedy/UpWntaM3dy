@@ -10,6 +10,10 @@
       v-else-if="$store.state.pageMode ==='profile'"
       class="pt-10"
     />
+    <leaderboard-card 
+      class="flex flex-col justify-center items-center mx-52"
+      v-else-if="$store.state.pageMode ==='leaderboard'"
+    />
     <question-layout v-else class="mt-4" :key="$store.state.pageMode">
       <template #questionDetail>
         <question-detail />
@@ -34,12 +38,12 @@ import Questions from "@/components/Questions.vue";
 import QuestionCreate from "@/components/QuestionCreate.vue";
 import UserProfile from '@/components/UserProfile.vue';
 
-// import { users, answers, questions, courseInfoPerTerm } from "@/_utils/data";
 import Auth from './components/Auth.vue';
 import NotFound from './components/NotFound.vue';
 
 import authMixin from '@/mixins/authMixin';
 import currentuserDataMixin from '@/mixins/currentuserDataMixin';
+import LeaderboardCard from '@/components/LeaderboardCard.vue';
 
 export default {
   name: "App",
@@ -53,6 +57,7 @@ export default {
     UserProfile,
     Auth,
     NotFound,
+    LeaderboardCard,
   },
   data() {
     return {
@@ -73,6 +78,8 @@ export default {
         this.$store.commit("setPageMode", "profile");
       } else if (this.$route.name === "Signin" || this.$route.name === "Signup" ) {
         this.$store.commit("setPageMode", "auth");
+      } else if (this.$route.name === "Leaderboard") {
+        this.$store.commit("setPageMode", "leaderboard");
       } else if (this.$route.name === "NotFound") {
         this.$store.commit("setPageMode", "notfound");
       }

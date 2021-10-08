@@ -1,14 +1,14 @@
 <template>
-  <div :class="['questionDetails', 'questionCreate'].includes(mode) && 'px-20'">
+  <div :class="['questionDetails', 'questionCreate'].includes(mode) && $store.state.mobileResponsive !== true ? 'px-20' : 'px-4'">
     <div class="flex justify-around">
-      <filter-nav-bar v-if="mode === 'questions'" class="w-1/5" />
-      <div :class="mode === 'questionDetails' ? 'w-4/5' : 'w-3/5'">
+      <filter-nav-bar v-if="mode === 'questions' && $store.state.mobileResponsive === false" class="w-1/5" />
+      <div :class="questionCardWidth">
         <slot v-if="mode === 'questions'" name="questions"></slot>
         <slot v-if="mode === 'questionDetails'" name="questionDetail"></slot>
         <slot v-if="mode === 'questionCreate'" name="questionCreate"></slot>
       </div>
 
-      <div class="w-1/5 ml-6 flex flex-col items-center mt-4">
+      <div v-if="$store.state.mobileResponsive !== true" class="w-1/5 ml-6 flex flex-col items-center mt-4">
         <router-link :to="{ name: 'Ask', params: { 'user_id': currentUserId } }">
           <the-button
             @click="handlePageRouting()"
@@ -46,6 +46,18 @@ export default {
       mode: this.$store.state.pageMode,
       currentUserId: 0,
     };
+  },
+  computed: {
+    questionCardWidth(){
+      if (this.$store.state.mobileResponsive === true) {
+        return 'w-full';
+      }
+      else if (this.mode === 'questionDetails') {
+        return 'w-4/5';
+      } else {
+        return 'w-3/5'
+      }
+    }
   },
   mounted() {
     this.setCurrentUser();

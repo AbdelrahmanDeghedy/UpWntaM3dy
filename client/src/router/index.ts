@@ -29,6 +29,12 @@ const routes: Array<RouteRecordRaw> = [
       meta: { requiresAuth: true }
     },
     {
+      path: "/:user_id/leaderboard",
+      name: "Leaderboard",
+      component: () => import("@/App.vue"),
+      meta: { requiresAuth: true }
+    },
+    {
       path: "/signin",
       name: "Signin",
       component: () => import("@/App.vue"),
@@ -63,7 +69,7 @@ const validateAuthedUser = (to, from, next) => {
   if (store.state.token) {
     console.log("looged in");
     store.commit("setPageMode", "questions");
-    if (to.name === "Questions" || to.name === "Profile" || to.name === "Ask" || to.name === "Question") return next()
+    if (to.name === "Questions" || to.name === "Profile" || to.name === "Ask" || to.name === "Question" || to.name === 'Leaderboard') return next()
     
     next ({ name: "Questions", params: { user_id: jwtDecode(store.state.token).sub } });
   } else  {
