@@ -143,34 +143,50 @@ def questions_like (qid) :
     db.session.close_all()
     db.session.add(editedQuestion)
     db.session.commit()
+    db.session.close_all()
 
 
     likedQuestion = QuestionLike.query.filter_by(likedQid = qid).first()
 
     if likedQuestion is None :
+        db.session.close_all()
         likedQuestion = QuestionLike(
                                 likedQid = qid,
                             )
+        db.session.add(likedQuestion)
+        db.session.commit()
+    else :
+        print (likedQuestion.users)
+        likedQuestion.users.append(currentUserObject)
+        db.session.add(likedQuestion)
+        db.session.commit()
     
-
-    
-    likedQuestion.users.append(currentUserObject)
-    db.session.close_all()
-    db.session.add(likedQuestion)
-    db.session.commit()
 
     return { 
             'msg' : 'success',
             'likedQuestions' : likedQuestion.serializeLike()
            }
 
+
 @jwt_required()
 @cross_origin()
 def questions_dislike (qid) :
-    if not (QuestionLike.query.filter_by(likedQid = qid).first()) :
-        return { 'msg' : 'already disliked!' }
-
+    currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
+        
     likedQues = QuestionLike.query.filter_by(likedQid = qid).first()
+    if likedQues.users and currentUserObject not in likedQues.users :
+        return { 'msg' : 'already disliked!' }
+    
+    db.session.close_all()
+    likedQues.users.remove(currentUserObject)
+    db.session.add(likedQues)
+    db.session.commit()
+
+    if len(list(likedQues.users)) == 0 :
+        db.session.close_all()
+        db.session.delete(likedQues)
+        db.session.commit()
+
     
     editedQuestion = Question.query.filter_by(id = qid).first()
     editedQuestion.likes -= 1
@@ -179,9 +195,8 @@ def questions_dislike (qid) :
     db.session.add(editedQuestion)
     db.session.commit()
 
-    db.session.delete(likedQues)
-    db.session.commit()
-    db.session.close_all()
+    
+    
 
     return { 
             'msg' : 'success',
@@ -193,12 +208,14 @@ def questions_bookmark (qid) :
     if QuestionBookmark.query.filter_by(bookmarkedQid = qid).first() :
         return { 'msg' : 'already bookmarked!' }
 
-    currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
 
-    bookmarkedQuestion = QuestionBookmark(
-                            bookmarkedQid = qid,
-                            owner = currentUserObject
-                        )
+    bookmarkedQuestion = QuestionBookmark.query.filter_by(bookmarkedQid = qid).first()
+
+    if bookmarkedQuestion is None :
+        bookmarkedQuestion = QuestionBookmark (
+                                bookmarkedQid = qid,
+                            )
+
     db.session.close_all()
     db.session.add(bookmarkedQuestion)
     db.session.commit()

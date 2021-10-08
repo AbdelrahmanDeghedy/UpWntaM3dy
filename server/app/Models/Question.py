@@ -21,7 +21,7 @@ QuestionSchema = Schema.from_dict(
     }
 )
 
-class Question(UserMixin, db.Model):
+class Question(db.Model):
     __tablename__ = 'questions'
     id  = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
     pub_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -34,8 +34,6 @@ class Question(UserMixin, db.Model):
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     answerIds = db.relationship('Answer', backref = "parentQuestion")
 
-
-
     def serializeQuestion(self) :
         schema = QuestionSchema()
         result = schema.dump(self)
@@ -43,7 +41,7 @@ class Question(UserMixin, db.Model):
         result['answerIds'] = answerIds
 
         return result
-
+        
     def __repr__(self):
         return '<Question %r' % self.title
 

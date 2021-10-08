@@ -12,7 +12,7 @@ QuestionLikesSchema = Schema.from_dict(
     }
 )
 
-class QuestionLike(UserMixin, db.Model):
+class QuestionLike(db.Model):
     __tablename__ = 'questionLikes'
     likedQid = db.Column(db.Integer, primary_key=True, autoincrement=True)
 

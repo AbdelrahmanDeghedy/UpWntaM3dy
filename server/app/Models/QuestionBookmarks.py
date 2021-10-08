@@ -16,8 +16,6 @@ class QuestionBookmark(UserMixin, db.Model):
     __tablename__ = 'questionBookmarks'
     bookmarkedQid = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
-    parentQuestion_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-
     def serializeQuestionBookmark(self) :
         schema = QuestionBookmarksSchema()
         result = schema.dump(self)
