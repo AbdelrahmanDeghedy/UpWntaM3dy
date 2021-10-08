@@ -5,7 +5,7 @@ from sqlalchemy.orm import backref
 from .database import db
 from flask_login import UserMixin
 from marshmallow import Schema, fields, ValidationError
-
+from .Question import user_likes_identifier
 
 UserSchema = Schema.from_dict(
     {
@@ -40,6 +40,8 @@ class User(UserMixin, db.Model):
     
     answerBookmarks = db.relationship('AnswerBookmark', backref = "owner")
 
+    liked_questions = db.relationship('Question', secondary=user_likes_identifier)
+
     def serializeUser(self) :
         schema = UserSchema(exclude=['password'])
         result = schema.dump(self)
@@ -52,9 +54,11 @@ class User(UserMixin, db.Model):
         # questionBookmarks = [bookmark.bookmarkedQid for bookmark in list(self.questionBookmarks)]
         # result['bookmarkedQuestionIds'] = questionBookmarks
 
-
         answerBookmarks = [bookmark.bookmarkedAid for bookmark in list(self.answerBookmarks)]
         result['bookmarkedAnswerIds'] = answerBookmarks
+
+        liked_questions = [question.id for question in list(self.liked_questions)]
+        result['liked_questions'] = liked_questions
 
         # print (result)
         return result
