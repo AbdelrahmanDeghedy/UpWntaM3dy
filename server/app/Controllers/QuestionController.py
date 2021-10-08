@@ -133,13 +133,12 @@ def questions_delete (qid) :
 def questions_like (qid) :
     currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
     question = Question.query.filter_by(id = qid).first()
-    if int(currentUserObject.id) in list(question.serializeQuestion()['userLikes']) :
-        return { 'msg' : 'already liked!' }
-    if int(currentUserObject.id) in list(question.serializeQuestion()['userDisLikes']) :
-        question.userDislikes.remove(currentUserObject)
     
+    if int(question.id) in list(currentUserObject.serializeUser()['likedQuestions']) :
+        return { 'msg' : 'already liked!' }
+
+
     question.userLikes.append(currentUserObject)
-    currentUserObject.liked_questions.append(question)
     question.likes +=1 
     
     db.session.close_all()
@@ -151,35 +150,17 @@ def questions_like (qid) :
         'msg':'Question liked successfully!'
     }
 
-#Get total likes for a certain question 
-#CAN BE REMOVED**
-def question_total_likes(qid):
-    question = Question.query.filter_by(id = qid).first()
-    return {
-        'Total likes' : len(question.userLikes)
-    }
-
-#Helper function may help in the front-end
-@cross_origin()
-def is_liked_by(qid):
-    currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
-    question = Question.query.filter_by(id = qid).first()
-    if int(currentUserObject.id) in list(question.serializeQuestion()['userLikes']) :
-        return {"liked":True}
-    return {"liked":False}
-
-
 @jwt_required()
 @cross_origin()
 def questions_dislike (qid) :
     currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
     question = Question.query.filter_by(id = qid).first()
-    if int(currentUserObject.id) in list(question.serializeQuestion()['userDisLikes']) :
+    if int(question.id) not in list(currentUserObject.serializeUser()['likedQuestions']) :
         return { 'msg' : 'already disliked!' }
-    if int(currentUserObject.id) in list(question.serializeQuestion()['userLikes']) :
-        question.userLikes.remove(currentUserObject)
+    
 
-    question.userDisLikes.append(currentUserObject)
+    question.userLikes.remove(currentUserObject)
+    question.likes -=1 
     
     db.session.close_all()
     db.session.add(question)
@@ -190,40 +171,48 @@ def questions_dislike (qid) :
     }
     
 
+
+
 @jwt_required()
 @cross_origin()
 def questions_bookmark (qid) :
-    if QuestionBookmark.query.filter_by(bookmarkedQid = qid).first() :
+    currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
+    question = Question.query.filter_by(id = qid).first()
+    
+    if int(question.id) in list(currentUserObject.serializeUser()['bookmarkedQuestions']) :
         return { 'msg' : 'already bookmarked!' }
 
 
-    bookmarkedQuestion = QuestionBookmark.query.filter_by(bookmarkedQid = qid).first()
-
-    if bookmarkedQuestion is None :
-        bookmarkedQuestion = QuestionBookmark (
-                                bookmarkedQid = qid,
-                            )
-
+    question.userBookmarks.append(currentUserObject)
+    
     db.session.close_all()
-    db.session.add(bookmarkedQuestion)
+    db.session.add(question)
     db.session.commit()
+    db.session.close_all()
+
 
     return { 
             'msg' : 'success',
-            'likedQuestions' : bookmarkedQuestion.serializeQuestionBookmark()
            }
+
 
 @jwt_required()
 @cross_origin()
 def questions_removeBookmark (qid) :
-    if not (QuestionBookmark.query.filter_by(bookmarkedQid = qid).first()) :
+    currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
+    question = Question.query.filter_by(id = qid).first()
+    
+    if int(question.id) not in list(currentUserObject.serializeUser()['bookmarkedQuestions']) :
         return { 'msg' : 'already not bookmarked!' }
 
-    bookmarkedQuestion = QuestionBookmark.query.filter_by(bookmarkedQid = qid).first()
+
+    question.userBookmarks.remove(currentUserObject)
     
     db.session.close_all()
-    db.session.delete(bookmarkedQuestion)
+    db.session.add(question)
     db.session.commit()
+    db.session.close_all()
+
 
     return { 
             'msg' : 'success',
@@ -281,3 +270,19 @@ def get_tags () :
 def optionsHanlder() :
     return "OK", 200
 
+#Get total likes for a certain question 
+#CAN BE REMOVED**
+# def question_total_likes(qid):
+#     question = Question.query.filter_by(id = qid).first()
+#     return {
+#         'Total likes' : len(question.userLikes)
+#     }
+
+# #Helper function may help in the front-end
+# @cross_origin()
+# def is_liked_by(qid):
+#     currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
+#     question = Question.query.filter_by(id = qid).first()
+#     if int(currentUserObject.id) in list(question.serializeQuestion()['userLikes']) :
+#         return {"liked":True}
+#     return {"liked":False}

@@ -3,9 +3,7 @@ from flask_jwt_extended.utils import get_current_user
 import sqlalchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from Models.User import User
-from Models.Question import user_likes_identifier
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import login_user, logout_user, login_required
 from flask_jwt_extended import get_jwt_identity, create_access_token, jwt_required
 from flask_cors import cross_origin
 from validators.validation import *

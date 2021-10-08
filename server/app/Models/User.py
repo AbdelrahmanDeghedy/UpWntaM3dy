@@ -3,9 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import backref
 
 from .database import db
-from flask_login import UserMixin
 from marshmallow import Schema, fields, ValidationError
-from .Question import user_likes_identifier
 
 UserSchema = Schema.from_dict(
     {
@@ -22,7 +20,16 @@ UserSchema = Schema.from_dict(
     }
 )
 
-class User(UserMixin, db.Model):
+user_likes_identifier = db.Table('user_likes_identifier', 
+    db.Column('question_id', db.Integer, db.ForeignKey('questions.id')),
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id'))
+)
+user_bookmarks_identifier = db.Table('user_bookmarks_identifier', 
+    db.Column('question_id', db.Integer, db.ForeignKey('questions.id')),
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id'))
+)
+
+class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(80), nullable=False)
@@ -36,11 +43,10 @@ class User(UserMixin, db.Model):
     department = db.Column(db.String, nullable=False)
     questionIds = db.relationship('Question', backref = "owner")
     answerIds = db.relationship('Answer', backref = "owner")
-    # questionBookmarks = db.relationship('QuestionBookmark', backref = "owner")
-    
-    answerBookmarks = db.relationship('AnswerBookmark', backref = "owner")
+    # answerBookmarks = db.relationship('AnswerBookmark', backref = "owner")
 
-    liked_questions = db.relationship('Question', secondary=user_likes_identifier)
+    userLikes = db.relationship('Question', secondary=user_likes_identifier, lazy='subquery', backref=db.backref('userLikes', lazy=True))
+    userBookmarks = db.relationship('Question', secondary=user_bookmarks_identifier, lazy='subquery', backref=db.backref('userBookmarks', lazy=True))
 
     def serializeUser(self) :
         schema = UserSchema(exclude=['password'])
@@ -51,16 +57,16 @@ class User(UserMixin, db.Model):
         answerIds = [answer.id for answer in list(self.answerIds)]
         result['answerIds'] = answerIds
 
-        # questionBookmarks = [bookmark.bookmarkedQid for bookmark in list(self.questionBookmarks)]
-        # result['bookmarkedQuestionIds'] = questionBookmarks
+        # answerBookmarks = [bookmark.bookmarkedAid for bookmark in list(self.answerBookmarks)]
+        # result['bookmarkedAnswerIds'] = answerBookmarks
 
-        answerBookmarks = [bookmark.bookmarkedAid for bookmark in list(self.answerBookmarks)]
-        result['bookmarkedAnswerIds'] = answerBookmarks
+        likedQuestions = [question.id for question in list(self.userLikes)]
+        result['likedQuestions'] = likedQuestions
 
-        liked_questions = [question.id for question in list(self.liked_questions)]
-        result['liked_questions'] = liked_questions
+        bookmarkedQuestions = [question.id for question in list(self.userBookmarks)]
+        result['bookmarkedQuestions'] = bookmarkedQuestions
 
-        # print (result)
+
         return result
     
     def __repr__(self):

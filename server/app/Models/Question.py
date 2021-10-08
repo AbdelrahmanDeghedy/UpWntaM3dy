@@ -20,14 +20,14 @@ QuestionSchema = Schema.from_dict(
     }
 )
 
-user_likes_identifier = db.Table('user_likes_identifier', 
-    db.Column('question_id', db.Integer, db.ForeignKey('questions.id')),
-    db.Column('user_id', db.Integer, db.ForeignKey('users.id'))
-)
-user_dislikes_identifier = db.Table('user_dislikes_identifier', 
-    db.Column('question_id', db.Integer, db.ForeignKey('questions.id')),
-    db.Column('user_id', db.Integer, db.ForeignKey('users.id'))
-)
+# user_likes_identifier = db.Table('user_likes_identifier', 
+#     db.Column('question_id', db.Integer, db.ForeignKey('questions.id')),
+#     db.Column('user_id', db.Integer, db.ForeignKey('users.id'))
+# )
+# user_dislikes_identifier = db.Table('user_dislikes_identifier', 
+#     db.Column('question_id', db.Integer, db.ForeignKey('questions.id')),
+#     db.Column('user_id', db.Integer, db.ForeignKey('users.id'))
+# )
 
 class Question(UserMixin, db.Model):
     __tablename__ = 'questions'
@@ -42,19 +42,17 @@ class Question(UserMixin, db.Model):
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     answerIds = db.relationship('Answer', backref = "parentQuestion")
 
-    userLikes = db.relationship('User', secondary=user_likes_identifier)
-    userDisLikes = db.relationship('User', secondary=user_dislikes_identifier)
+    # userLikes = db.relationship('User', secondary=user_likes_identifier)
+    # userDisLikes = db.relationship('User', secondary=user_dislikes_identifier)
 
 
     def serializeQuestion(self) :
         schema = QuestionSchema()
         result = schema.dump(self)
         answerIds = [answer.id for answer in list(self.answerIds)]
-        userLikes = [user.id for user in list(self.userLikes)]
-        userDisLikes = [user.id for user in list(self.userDisLikes)]
         result['answerIds'] = answerIds
-        result['userLikes'] = userLikes
-        result['userDisLikes'] = userDisLikes
+        
+        
 
         return result
         
