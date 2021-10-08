@@ -38,7 +38,6 @@ class User(UserMixin, db.Model):
     answerIds = db.relationship('Answer', backref = "owner")
     questionBookmarks = db.relationship('QuestionBookmark', backref = "owner")
     
-    answerLikes = db.relationship('AnswerLike', backref = "owner")
     answerBookmarks = db.relationship('AnswerBookmark', backref = "owner")
 
     def serializeUser(self) :
@@ -53,8 +52,6 @@ class User(UserMixin, db.Model):
         questionBookmarks = [bookmark.bookmarkedQid for bookmark in list(self.questionBookmarks)]
         result['bookmarkedQuestionIds'] = questionBookmarks
 
-        answerLikes = [like.likedAid for like in list(self.answerLikes)]
-        result['likedAnswerIds'] = answerLikes
 
         answerBookmarks = [bookmark.bookmarkedAid for bookmark in list(self.answerBookmarks)]
         result['bookmarkedAnswerIds'] = answerBookmarks
