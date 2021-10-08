@@ -29,6 +29,16 @@ user_bookmarks_identifier = db.Table('user_bookmarks_identifier',
     db.Column('user_id', db.Integer, db.ForeignKey('users.id'))
 )
 
+user_liked_Answers_identifier = db.Table('user_liked_Answers_identifier', 
+    db.Column('answer_id', db.Integer, db.ForeignKey('answers.id')),
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id'))
+)
+
+user_bookmarked_Answers_identifier = db.Table('user_bookmarked_Answers_identifier', 
+    db.Column('answer_id', db.Integer, db.ForeignKey('answers.id')),
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id'))
+)
+
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -43,10 +53,12 @@ class User(db.Model):
     department = db.Column(db.String, nullable=False)
     questionIds = db.relationship('Question', backref = "owner")
     answerIds = db.relationship('Answer', backref = "owner")
-    # answerBookmarks = db.relationship('AnswerBookmark', backref = "owner")
 
     userLikes = db.relationship('Question', secondary=user_likes_identifier, lazy='subquery', backref=db.backref('userLikes', lazy=True))
     userBookmarks = db.relationship('Question', secondary=user_bookmarks_identifier, lazy='subquery', backref=db.backref('userBookmarks', lazy=True))
+
+    userAnswerLikes = db.relationship('Answer', secondary=user_liked_Answers_identifier, lazy='subquery', backref=db.backref('userLikedAnswers', lazy=True))
+    userAnswerBookmarks = db.relationship('Answer', secondary=user_bookmarked_Answers_identifier, lazy='subquery', backref=db.backref('userBookmarkedAnswers', lazy=True))
 
     def serializeUser(self) :
         schema = UserSchema(exclude=['password'])
@@ -57,15 +69,17 @@ class User(db.Model):
         answerIds = [answer.id for answer in list(self.answerIds)]
         result['answerIds'] = answerIds
 
-        # answerBookmarks = [bookmark.bookmarkedAid for bookmark in list(self.answerBookmarks)]
-        # result['bookmarkedAnswerIds'] = answerBookmarks
-
         likedQuestions = [question.id for question in list(self.userLikes)]
         result['likedQuestions'] = likedQuestions
 
         bookmarkedQuestions = [question.id for question in list(self.userBookmarks)]
         result['bookmarkedQuestions'] = bookmarkedQuestions
 
+        likedAnswers = [question.id for question in list(self.userAnswerLikes)]
+        result['likedAnswers'] = likedAnswers
+
+        bookmarkedAnswers = [question.id for question in list(self.userAnswerBookmarks)]
+        result['bookmarkedAnswers'] = bookmarkedAnswers
 
         return result
     

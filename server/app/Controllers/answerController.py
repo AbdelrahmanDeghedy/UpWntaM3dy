@@ -4,7 +4,6 @@ from flask import request, jsonify
 from Models.Question import Question
 from Models.Answer import Answer
 from Models.User import User
-from Models.AnswerBookmarks import AnswerBookmark
 from flask_sqlalchemy import SQLAlchemy
 from Controllers.UserController import getCurrnetUser
 
@@ -91,56 +90,89 @@ def delete_answer(aid):
 @cross_origin()
 def like_answer (aid) :
     currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
-    answer = Question.query.filter_by(id = aid).first()
-    if int(currentUserObject.id) in list(answer.serializeQuestion()['userLikes']) :
+    answer = Answer.query.filter_by(id = aid).first()
+    
+    if int(answer.id) in list(currentUserObject.serializeUser()['likedAnswers']) :
         return { 'msg' : 'already liked!' }
-        
-    answer.userLikes.append(currentUserObject)
-    answer.likes += 1
+
+
+    answer.userLikedAnswers.append(currentUserObject)
+    answer.likes +=1 
+    
     db.session.close_all()
     db.session.add(answer)
     db.session.commit()
-    return { 
-            'msg' : 'The answer has been disliked!'
-           }
+    db.session.close_all()
 
+    return {
+        'msg':'Question liked successfully!'
+    }
+
+@jwt_required()
+@cross_origin()
+def dislike_answer (aid) :
+    currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
+    answer = Answer.query.filter_by(id = aid).first()
+    
+    if int(answer.id) not in list(currentUserObject.serializeUser()['likedAnswers']) :
+        return { 'msg' : 'already disliked!' }
+
+
+    answer.userLikedAnswers.remove(currentUserObject)
+    answer.likes -=1 
+    
+    db.session.close_all()
+    db.session.add(answer)
+    db.session.commit()
+    db.session.close_all()
+
+    return {
+        'msg':'Question disliked successfully!'
+    }
 
 @jwt_required()
 @cross_origin()
 def bookmark_answer (aid) :
-    if AnswerBookmark.query.filter_by(bookmarkedAid = aid).first() :
-        return { 'msg' : 'already bookmarked!' }
-    
     currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
+    answer = Answer.query.filter_by(id = aid).first()
+    
+    if int(answer.id) in list(currentUserObject.serializeUser()['bookmarkedAnswers']) :
+        return { 'msg' : 'already bookmarked!' }
 
-    bookmarkedAnswer = AnswerBookmark(
-                            bookmarkedAid = aid,
-                            owner = currentUserObject
-                        )
+
+    answer.userBookmarkedAnswers.append(currentUserObject)
+    
     db.session.close_all()
-    db.session.add(bookmarkedAnswer)
+    db.session.add(answer)
     db.session.commit()
+    db.session.close_all()
 
-    return { 
-            'msg' : 'success',
-            'bookmrkedAnswers' : bookmarkedAnswer.serializeAnswerBookmark()
-           }
+    return {
+        'msg':'Question bookmarked successfully!'
+    }
+
 
 @jwt_required()
 @cross_origin()
 def removeBookmark_answer (aid) :
-    if not (AnswerBookmark.query.filter_by(bookmarkedAid = aid).first()) :
+    currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
+    answer = Answer.query.filter_by(id = aid).first()
+    
+    if int(answer.id) not in list(currentUserObject.serializeUser()['bookmarkedAnswers']) :
         return { 'msg' : 'already not bookmarked!' }
 
-    bookmarkedAnswer = AnswerBookmark.query.filter_by(bookmarkedAid = aid).first()
+
+    answer.userBookmarkedAnswers.remove(currentUserObject)
     
     db.session.close_all()
-    db.session.delete(bookmarkedAnswer)
+    db.session.add(answer)
     db.session.commit()
+    db.session.close_all()
 
-    return { 
-            'msg' : 'success',
-           }
+    return {
+        'msg':'bookmarked removed successfully!'
+    }
+    
 
 @cross_origin()
 def optionsHanlder() :

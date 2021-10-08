@@ -3,7 +3,6 @@ from flask import request, jsonify
 
 from Models.Question import Question
 from Models.User import User
-from Models.QuestionBookmarks import QuestionBookmark
 from Controllers.UserController import getCurrnetUser, currnetUser
 from flask_sqlalchemy import SQLAlchemy
 
@@ -19,9 +18,8 @@ from sqlalchemy import desc
 
 db = SQLAlchemy()
 
-#No need for authentication
-# @jwt_required()
-# @cross_origin()
+@jwt_required()
+@cross_origin()
 def questions_get():
     questions = Question.query.filter().all()
     questionsList = [question.serializeQuestion() for question in questions]
@@ -90,7 +88,7 @@ def questions_edit (qid):
     editedQuestion = Question.query.filter_by(id = qid).first()
     db.session.close_all()
 
-    #Instead of returning None it returns the old value
+    #Instead of returning None it returns the old value (smart, Thanks!)
     reqData = request.get_json()
     title = reqData.get("title", editedQuestion.title)
     body = reqData.get("body", editedQuestion.body)
@@ -172,7 +170,6 @@ def questions_dislike (qid) :
     
 
 
-
 @jwt_required()
 @cross_origin()
 def questions_bookmark (qid) :
@@ -189,7 +186,6 @@ def questions_bookmark (qid) :
     db.session.add(question)
     db.session.commit()
     db.session.close_all()
-
 
     return { 
             'msg' : 'success',
@@ -212,7 +208,6 @@ def questions_removeBookmark (qid) :
     db.session.add(question)
     db.session.commit()
     db.session.close_all()
-
 
     return { 
             'msg' : 'success',
