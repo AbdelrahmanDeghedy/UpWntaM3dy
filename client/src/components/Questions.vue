@@ -9,6 +9,7 @@
           size="large"
         />
       </router-link>
+      <filter-nav-bar v-if="$store.state.mobileResponsive === true" />
     <div class="flex justify-end" :class="{ 'justify-center' : $store.state.mobileResponsive }">
       <the-button
         @click="handleActiveBtns(0)"
@@ -62,6 +63,7 @@ import QuestionCard from "@/components/QuestionCard.vue";
 import PaginationButtons from '@/components/PaginationButtons.vue';
 import currentuserDataMixin from '@/mixins/currentuserDataMixin';
 import authMixin from '@/mixins/authMixin';
+import FilterNavBar from './FilterNavBar.vue';
 
 
 export default {
@@ -70,6 +72,7 @@ export default {
     TheButton,
     QuestionCard,
     PaginationButtons,
+    FilterNavBar,
   },
   updated(){
     // console.log(this.$store.state.questions);

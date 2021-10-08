@@ -16,7 +16,7 @@
         Profile
       </div>
     </router-link>
-    <router-link v-if="$store.state.mobileResponsive === true" active-class="selected" :to="{ name: 'Leaderboard' }" class="flex">
+    <router-link v-if="$store.state.mobileResponsive === true" active-class="selected" :to="{ name: 'Leaderboard', params: { 'user_id': currentUserId } }" class="flex">
       <div
         class="flex items-center cursor-pointer"
         @click="handlePageRouting('leaderboard')"

@@ -28,7 +28,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import "./index.css";
 import TheNavbar from "@/components/TheNavbar.vue";
 
@@ -64,10 +64,11 @@ export default {
       // mode: "questions", // questions, questionDetails, or questionCreate
       questions : {},
       users: {},
+      windowWidth : 0,
     };
   },
   watch: {
-    $route(): void {
+    $route() {
       if (this.$route.name === "Ask") {
         this.$store.commit("setPageMode", "questionCreate");
       } else if (this.$route.name === "Questions") {
@@ -85,28 +86,37 @@ export default {
       }
       
     },
+    windowWidth : {
+      immediate: true,
+      handler(){
+        if (this.windowWidth < 900) {
+          this.$store.state.mobileResponsive = true;
+        } else {
+          this.$store.state.mobileResponsive = false;
+        }
+      }
+    }
   },
   async mounted() {
-    console.log("router mode", this.$store.state.pageMode);
+    this.$nextTick(() => {
+        window.addEventListener('resize', this.onResize);
+    })
 
-    // await this.login({ email : "test@test.com", password : "password" });
-    // await this.createQuestion({ title: "test question", body: "from client", department: "comm", commaSeparatedTags: "" })
-    // console.log(await this.getAllQuestions());
-    
+
     this.questions =  await this.getAllQuestions();
-    this.users =  await this.getLeaderboard();
-    console.log(this.users.users);
-    // const user = await this.getCurrentUser()
-    // console.log(user);
-
-    console.log(this.questions.questions);
-    // this.logout();
-    
+    this.users =  await this.getLeaderboard();   
     this.loadData();
+  },
+  updated(){
+    // console.log(this.windowWidth);
+
   },
 
   methods: {
-    loadData(): void {
+    onResize() {
+        this.windowWidth = window.innerWidth;
+    },
+    loadData() {
       this.$store.commit("loadUsers", this.users.users);
       // this.$store.commit("loadAnswers", answers);
       this.$store.commit("loadQuestions", this.questions.questions);

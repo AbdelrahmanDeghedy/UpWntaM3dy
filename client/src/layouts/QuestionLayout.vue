@@ -1,5 +1,5 @@
 <template>
-  <div :class="['questionDetails', 'questionCreate'].includes(mode) && $store.state.mobileResponsive !== true ? 'px-20' : 'px-4'">
+  <div :class="['questionDetails', 'questionCreate'].includes(mode) && $store.state.mobileResponsive !== true ? 'px-20' : 'px-0'">
     <div class="flex justify-around">
       <filter-nav-bar v-if="mode === 'questions' && $store.state.mobileResponsive === false" class="w-1/5" />
       <div :class="questionCardWidth">

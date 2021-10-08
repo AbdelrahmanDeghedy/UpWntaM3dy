@@ -1,9 +1,9 @@
 <template>
-  <div class="h-auto bg-white p-4 -mt-4 mr-6">
-    <!-- Search Input -->
-    <div class="flex justify-center mt-8 w-full">
+  <div :class="$store.state.mobileResponsive === true ? mobileClasses.container : laptopClasses.container">
+    <div class="flex justify-center w-full" :class="$store.state.mobileResponsive === true ? '' : 'mt-8'">
       <input
-        class="h-8 rounded-md shadow-md outline-none p-4 py-6 bg-gray-100 w-full text-sm"
+        :class="$store.state.mobileResponsive === true ? mobileClasses.input : laptopClasses.input"
+        class="h-8 rounded-md shadow-md outline-none mt-2 p-4 py-6 bg-gray-100 text-sm"
         @input="filterQuestions"
         type="text"
         v-model="searchText"
@@ -12,7 +12,7 @@
     </div>
 
     <!-- Selection Items -->
-    <div class="mt-20 flex flex-col items-center">
+    <div class="flex flex-col items-center" :class="$store.state.mobileResponsive === true ? '' : 'mt-20'">
       <the-selector label="Tag" :values="tags" @currentValueChange="syncSelectedTag" />
       <div class="flex justify-center">
         <the-button 
@@ -49,7 +49,15 @@ export default {
       tags: [],
       selectedTag: "",
       searchText: "",
-      value: ""
+      value: "",
+      mobileClasses : {
+        input : "h-8 rounded-md shadow-md outline-none p-4 py-6 bg-gray-100 w-full text-sm",
+        container: "h-auto rounded-xl mb-4 flex flex-col items-center bg-white p-4  w-1/2 mx-auto",
+      },
+      laptopClasses : {
+        input : "h-8 rounded-md shadow-md outline-none p-4 py-6 bg-gray-100 w-full text-sm",
+        container : "h-auto bg-white p-4 -mt-4 mr-6",
+      }
     };
   },
   updated() {
