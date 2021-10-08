@@ -104,26 +104,7 @@ def like_answer (aid) :
             'msg' : 'The answer has been disliked!'
            }
 
-@jwt_required()
-@cross_origin()
-def dislike_answer (aid) :
-    # if not (AnswerLike.query.filter_by(likedAid = aid).first()) :
-    #     return { 'msg' : 'already disliked!' }
 
-    # likedAnswer = AnswerLike.query.filter_by(likedAid = aid).first()
-    
-    # editedAnswer = Answer.query.filter_by(id = aid).first()
-    # editedAnswer.likes -= 1
-
-    # db.session.close_all()
-    # db.session.add(editedAnswer)
-    # db.session.delete(likedAnswer)
-    # db.session.commit()
-
-    # return { 
-    #         'msg' : 'success',
-    #        }
-    pass
 @jwt_required()
 @cross_origin()
 def bookmark_answer (aid) :
