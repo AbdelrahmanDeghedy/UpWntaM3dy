@@ -18,5 +18,8 @@ app.use (store);
 
 app.component("font-awesome-icon", FontAwesomeIcon);
 
-app.use(router).mount("#app");
+app.use(router)
+router.replace("/signin")
+
+app.mount("#app");
 

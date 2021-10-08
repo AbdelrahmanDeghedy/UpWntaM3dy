@@ -11,7 +11,7 @@
       class="pt-10"
     />
     <leaderboard-card 
-      class="flex flex-col justify-center items-center mx-52"
+      class="flex flex-col justify-center items-center w-auto mx-auto"
       v-else-if="$store.state.pageMode ==='leaderboard'"
     />
     <question-layout v-else class="mt-4" :key="$store.state.pageMode">
@@ -87,8 +87,9 @@ export default {
       
     },
     windowWidth : {
-      immediate: true,
+      // immediate: true,
       handler(){
+        console.log(this.windowWidth);
         if (this.windowWidth < 900) {
           this.$store.state.mobileResponsive = true;
         } else {

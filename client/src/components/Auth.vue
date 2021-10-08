@@ -10,7 +10,7 @@
         <form class="signup-form flex flex-col items-center mt-4">
             <input 
                 v-if="authMode === 'signup'"
-                class="w-96 p-4 rounded-xl shadow outline-none mb-4"
+                class="w-auto p-4 rounded-xl shadow outline-none mb-4"
                 type="text"
                 placeholder="Full Name"
                 v-model="name"
@@ -18,7 +18,7 @@
             >
 
             <input 
-                class="w-96 p-4 rounded-xl shadow outline-none mb-4"
+                class="w-auto p-4 rounded-xl shadow outline-none mb-4"
                 type="email"
                 placeholder="Email Address"
                 v-model="email"
@@ -26,7 +26,7 @@
             >
 
             <input 
-                class="w-96 p-4 rounded-xl shadow outline-none mb-4"
+                class="w-auto p-4 rounded-xl shadow outline-none mb-4"
                 type="password"
                 placeholder="Password"
                 v-model="password"
@@ -35,7 +35,7 @@
 
             <input 
                 v-if="authMode === 'signup'"
-                class="w-96 p-4 rounded-xl shadow outline-none mb-4"
+                class="w-auto p-4 rounded-xl shadow outline-none mb-4"
                 type="text"
                 placeholder="University ID"
                 v-model="uniId"
@@ -45,7 +45,7 @@
             
             <input 
                 v-if="authMode === 'signup'"
-                class="w-96 p-4 rounded-xl shadow outline-none mb-4"
+                class="w-auto p-4 rounded-xl shadow outline-none mb-4"
                 type="text"
                 placeholder="Bio (optional)"
                 v-model="bio"
