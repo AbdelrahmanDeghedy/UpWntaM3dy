@@ -132,7 +132,7 @@ def questions_like (qid) :
     currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
     question = Question.query.filter_by(id = qid).first()
     
-    if int(question.id) in list(currentUserObject.serializeUser()['likedQuestions']) :
+    if int(question.id) in list(currentUserObject.serializeUser()['likedQuestionIds']) :
         return { 'msg' : 'already liked!' }
 
 
@@ -153,7 +153,7 @@ def questions_like (qid) :
 def questions_dislike (qid) :
     currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
     question = Question.query.filter_by(id = qid).first()
-    if int(question.id) not in list(currentUserObject.serializeUser()['likedQuestions']) :
+    if int(question.id) not in list(currentUserObject.serializeUser()['likedQuestionIds']) :
         return { 'msg' : 'already disliked!' }
     
 
@@ -176,7 +176,7 @@ def questions_bookmark (qid) :
     currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
     question = Question.query.filter_by(id = qid).first()
     
-    if int(question.id) in list(currentUserObject.serializeUser()['bookmarkedQuestions']) :
+    if int(question.id) in list(currentUserObject.serializeUser()['bookmarkedQuestionIds']) :
         return { 'msg' : 'already bookmarked!' }
 
 
@@ -198,7 +198,7 @@ def questions_removeBookmark (qid) :
     currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
     question = Question.query.filter_by(id = qid).first()
     
-    if int(question.id) not in list(currentUserObject.serializeUser()['bookmarkedQuestions']) :
+    if int(question.id) not in list(currentUserObject.serializeUser()['bookmarkedQuestionIds']) :
         return { 'msg' : 'already not bookmarked!' }
 
 
@@ -264,20 +264,3 @@ def get_tags () :
 @cross_origin()
 def optionsHanlder() :
     return "OK", 200
-
-#Get total likes for a certain question 
-#CAN BE REMOVED**
-# def question_total_likes(qid):
-#     question = Question.query.filter_by(id = qid).first()
-#     return {
-#         'Total likes' : len(question.userLikes)
-#     }
-
-# #Helper function may help in the front-end
-# @cross_origin()
-# def is_liked_by(qid):
-#     currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
-#     question = Question.query.filter_by(id = qid).first()
-#     if int(currentUserObject.id) in list(question.serializeQuestion()['userLikes']) :
-#         return {"liked":True}
-#     return {"liked":False}

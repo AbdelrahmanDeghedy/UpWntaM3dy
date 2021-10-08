@@ -92,7 +92,7 @@ def like_answer (aid) :
     currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
     answer = Answer.query.filter_by(id = aid).first()
     
-    if int(answer.id) in list(currentUserObject.serializeUser()['likedAnswers']) :
+    if int(answer.id) in list(currentUserObject.serializeUser()['likedAnswerIds']) :
         return { 'msg' : 'already liked!' }
 
 
@@ -114,7 +114,7 @@ def dislike_answer (aid) :
     currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
     answer = Answer.query.filter_by(id = aid).first()
     
-    if int(answer.id) not in list(currentUserObject.serializeUser()['likedAnswers']) :
+    if int(answer.id) not in list(currentUserObject.serializeUser()['likedAnswerIds']) :
         return { 'msg' : 'already disliked!' }
 
 
@@ -136,7 +136,7 @@ def bookmark_answer (aid) :
     currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
     answer = Answer.query.filter_by(id = aid).first()
     
-    if int(answer.id) in list(currentUserObject.serializeUser()['bookmarkedAnswers']) :
+    if int(answer.id) in list(currentUserObject.serializeUser()['bookmarkedAnswerIds']) :
         return { 'msg' : 'already bookmarked!' }
 
 
@@ -158,7 +158,7 @@ def removeBookmark_answer (aid) :
     currentUserObject = User.query.filter_by(universityId = json.loads(getCurrnetUser().data)['universityId']).first()
     answer = Answer.query.filter_by(id = aid).first()
     
-    if int(answer.id) not in list(currentUserObject.serializeUser()['bookmarkedAnswers']) :
+    if int(answer.id) not in list(currentUserObject.serializeUser()['bookmarkedAnswerIds']) :
         return { 'msg' : 'already not bookmarked!' }
 
 

@@ -70,16 +70,16 @@ class User(db.Model):
         result['answerIds'] = answerIds
 
         likedQuestions = [question.id for question in list(self.userLikes)]
-        result['likedQuestions'] = likedQuestions
+        result['likedQuestionIds'] = likedQuestions
 
         bookmarkedQuestions = [question.id for question in list(self.userBookmarks)]
-        result['bookmarkedQuestions'] = bookmarkedQuestions
+        result['bookmarkedQuestionIds'] = bookmarkedQuestions
 
         likedAnswers = [question.id for question in list(self.userAnswerLikes)]
-        result['likedAnswers'] = likedAnswers
+        result['likedAnswerIds'] = likedAnswers
 
         bookmarkedAnswers = [question.id for question in list(self.userAnswerBookmarks)]
-        result['bookmarkedAnswers'] = bookmarkedAnswers
+        result['bookmarkedAnswerIds'] = bookmarkedAnswers
 
         return result
     
