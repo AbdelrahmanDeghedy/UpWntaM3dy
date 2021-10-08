@@ -3,3 +3,7 @@ venv
 migrations
 db.sqlite
 .env
+*.sqlite
+server/app/migrations/alembic.ini
+server/app/migrations/README
+*.mako
