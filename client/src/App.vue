@@ -87,7 +87,7 @@ export default {
       
     },
     windowWidth : {
-      // immediate: true,
+      immediate: true,
       handler(){
         console.log(this.windowWidth);
         if (this.windowWidth < 900) {
