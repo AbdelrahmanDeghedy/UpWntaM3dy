@@ -81,7 +81,7 @@ export default {
       markdown: "",
       spaceSeparatedTags: this.editMode ? this.editMode.editTags : "",
       listedTags: "",
-      text: this.editMode ? HTMLToText(this.editMode.editText) : "",
+      text: this.editMode ? HTMLToText(this.editMode.editText).replaceAll("&#39;", "'") : "",
       language: "en",
       createConfig : {
         containerClass: "bg-white rounded-3xl p-6 flex flex-col shadow-md",
@@ -174,7 +174,7 @@ export default {
       console.log(currentUser);
 
 
-      const title = HTMLToText(this.markdown).split("\n")[0] + '..';
+      const title = HTMLToText(this.markdown).split("\n")[0].replaceAll("&#39;", "'") + '..';
       const body = this.markdown;
       const res = await this.createQuestion({ title, body, department: currentUser.department, commaSeparatedTags: this.listedTags  })
       console.log(res);

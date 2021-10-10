@@ -2,8 +2,14 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import { store } from '@/store/index';
 
 import App from "@/App.vue";
+import HomePage from '@/layouts/HomePage.vue';
 
 const routes: Array<RouteRecordRaw> = [
+    {
+      path: "/home",
+      name: "Home",
+      component: HomePage,
+    },  
     {
       path: "/:user_id/questions",
       name: "Questions",
@@ -70,7 +76,7 @@ const validateAuthedUser = (to, from, next) => {
   if (store.state.token) {
     console.log("looged in");
     store.commit("setPageMode", "questions");
-    if (to.name === "Questions" || to.name === "Profile" || to.name === "Ask" || to.name === "Question" || to.name === 'Leaderboard') return next()
+    if (to.name === "Questions" || to.name === "Profile" || to.name === "Ask" || to.name === "Question" || to.name === 'Leaderboard' || to.name === "Home") return next()
     
     next ({ name: "Questions", params: { user_id: jwtDecode(store.state.token).sub } });
   } else  {

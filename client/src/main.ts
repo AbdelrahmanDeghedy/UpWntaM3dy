@@ -30,7 +30,7 @@ app.use (store);
 app.component("font-awesome-icon", FontAwesomeIcon);
 
 app.use(router)
-router.replace("/signin")
+// router.replace("/home")
 
 app.mount("#app");
 

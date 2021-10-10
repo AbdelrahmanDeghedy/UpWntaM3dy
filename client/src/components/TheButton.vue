@@ -92,5 +92,6 @@ export default {
 .UpWntaM3dyButton__small-size {
   width: 6rem;
   height: 3rem;
+  font-size: 75%;
 }
 </style>

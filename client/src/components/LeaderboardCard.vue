@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-50 mt-10 rounded-xl overflow-hidden">
+  <div class="bg-gray-50 px-6 mt-10 rounded-xl overflow-hidden">
     <!-- First Name -->
     <div class="flex px-4 pt-4">
 

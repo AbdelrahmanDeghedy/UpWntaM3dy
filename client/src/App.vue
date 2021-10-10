@@ -1,30 +1,33 @@
 <template>
   <div class="bg-yellow-100 min-h-screen">
-    <the-navbar v-if="$store.state.pageMode !== 'notfound'" />
-    <not-found v-if="$store.state.pageMode ==='notfound'"/>
-    <auth 
-      v-else-if="$store.state.pageMode ==='auth'"
-      class="pt-10"
-    />
-    <user-profile 
-      v-else-if="$store.state.pageMode ==='profile'"
-      class="pt-10"
-    />
-    <leaderboard-card 
-      class="flex flex-col justify-center items-center w-auto mx-auto"
-      v-else-if="$store.state.pageMode ==='leaderboard'"
-    />
-    <question-layout v-else class="mt-4" :key="$store.state.pageMode">
-      <template #questionDetail>
-        <question-detail />
-      </template>
-      <template #questions>
-        <questions />
-      </template>
-      <template #questionCreate>
-        <question-create />
-      </template>
-    </question-layout>
+    <router-view v-if ="$store.state.pageMode === 'home'"></router-view>
+    <div v-else>
+      <the-navbar v-if="$store.state.pageMode !== 'notfound'" />
+      <not-found v-if="$store.state.pageMode ==='notfound'"/>
+      <auth 
+        v-else-if="$store.state.pageMode ==='auth'"
+        class="pt-10"
+      />
+      <user-profile 
+        v-else-if="$store.state.pageMode ==='profile'"
+        class="pt-10"
+      />
+      <leaderboard-card 
+        class="flex flex-col justify-center items-center w-auto mx-auto"
+        v-else-if="$store.state.pageMode ==='leaderboard'"
+      />
+      <question-layout v-else class="mt-4" :key="$store.state.pageMode">
+        <template #questionDetail>
+          <question-detail />
+        </template>
+        <template #questions>
+          <questions />
+        </template>
+        <template #questionCreate>
+          <question-create />
+        </template>
+      </question-layout>
+    </div>
   </div>
 </template>
 
@@ -87,7 +90,6 @@ export default {
       
     },
     windowWidth : {
-      immediate: true,
       handler(){
         console.log(this.windowWidth);
         if (this.windowWidth < 900) {
@@ -99,8 +101,10 @@ export default {
     }
   },
   async mounted() {
+    console.log(this.$store.state.pageMode);
     this.$nextTick(() => {
         window.addEventListener('resize', this.onResize);
+        this.onResize();
     })
 
 

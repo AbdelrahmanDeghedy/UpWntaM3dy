@@ -13,7 +13,7 @@ export const store = createStore({
       questions: [],
       backupQuestions: [],
       courseInfoPerTerm: [],
-      pageMode: "questions",
+      pageMode: "home",
       likePrimaryColor: "#4287f5",
       likeSecondaryColor: "#e3e3e3",
       bookmarkPrimaryColor: "#d4267a",
