@@ -141,10 +141,10 @@ export default {
   updated(){
     this.scrollToAnswer();
   },
-  mounted(){
+  async mounted(){
     setTimeout(() => {this.getAnswersOfQuestion()}, 0)
       
-      this.initializeValues();
+      await this.initializeValues();
       this.scrollToAnswer();
       this.handleLanguage();
   },
@@ -164,6 +164,7 @@ export default {
       this.answers = answers.Answers;
     },
     handleLanguage(){
+      console.log("rrr", this.text, this.fullQuestionText);
       if (isArabic(this.text)) {
         this.language = "ar";
       } else {
