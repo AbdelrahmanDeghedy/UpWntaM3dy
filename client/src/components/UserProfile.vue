@@ -43,8 +43,8 @@
                     />
                 </div>
                 <div :class="$store.state.mobileResponsive ? 'w-full' : 'w-2/4'" class="flex flex-col items-center py-8">
-                    <div class="w-48 h-48 rounded-full overflow-hidden shadow-lg flex justify-center items-center">
-                        <input type="file" @change="onFileChanged" class="z-50 bg-gray-200 w-48 absolute h-32 rounded-full opacity-0 cursor-pointer">
+                    <div class="w-48 h-48 rounded-full overflow-hidden shadow-lg flex justify-center items-center">                        
+                        <input v-if="String(this.$route.params.user_id) === String(currentUserId.currentUserId)" type="file" @change="onFileChanged" class="z-50 bg-gray-200 w-48 absolute h-32 rounded-full opacity-0 cursor-pointer">
                         <img 
                             class="w-48 h-48 relative"
                             :src="userImg || $store.state?.alternativeImg"

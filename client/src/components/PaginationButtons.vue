@@ -1,5 +1,6 @@
 <template>
-    <div class="pagination-color-primary h-14 w-96 mx-auto shadow-lg rounded-md mt-2 flex items-center justify-around p-4 text-xl">
+    <!-- <div class="pagination-color-primary h-14 w-96 mx-auto shadow-lg rounded-md mt-2 flex items-center justify-around p-4 text-xl"> -->
+    <div class="pagination-color-primary h-14 w-1/3 mx-auto shadow-lg rounded-md mt-2 flex items-center justify-around p-4 text-xl">
       <div class="font-bold cursor-pointer select-none" @click="decrementActivePagBtns"> &#60; </div>
       <div class="flex items-center">
         <div
