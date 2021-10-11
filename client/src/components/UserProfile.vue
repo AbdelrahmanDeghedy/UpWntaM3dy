@@ -35,7 +35,7 @@
                     <the-button 
                         v-if="String(this.$route.params.user_id) === String(currentUserId.currentUserId)"
                         @click="toggleSavedAnswers = !toggleSavedAnswers"
-                        content="Saved Answers"
+                        content="Saved Questions"
                         type="primary"
                         size="large"
                         :disabled="disableBtn"

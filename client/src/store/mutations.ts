@@ -6,14 +6,16 @@ import { userInterface } from '@/_utils/interfaces/user'
 
 export const mutations = {
   loadUsers(state: stateType, payload: userInterface[]): void {
+    state.users = [];
     state.users = payload;
   },
   loadAnswers(state: stateType, payload: answerInterface[]): void {
+    state.answers = [];
     state.answers = payload;
   },
   loadQuestions(state: stateType, payload: questionInterface[]): void {
     if (!payload) return;
-    state.questions = []
+    state.questions = [];
     state.questions = [...payload];
   },
   loadBackupQuestions(state: stateType, payload: questionInterface[]): void {

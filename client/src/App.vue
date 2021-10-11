@@ -98,6 +98,17 @@ export default {
           this.$store.state.mobileResponsive = false;
         }
       }
+    },
+    token : {
+      immediate : true,
+      handler() {
+        this.loadData();
+      }
+    }
+  },
+  computed : {
+    token(){
+      return this.$store.state.token;
     }
   },
   async mounted() {

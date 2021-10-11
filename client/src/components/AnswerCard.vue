@@ -40,12 +40,12 @@
           </div>
         </div>
 
-          <div
-            class="ml-4 mt-2 bg-gray-500 w-8 h-8 flex  items-center justify-center rounded-full shadow-md cursor-pointer"
-            @click="toggleBookmark"
-          >
-            <font-awesome-icon icon="bookmark" :style="{ color: currentBookmarkColor }" />
-        </div>
+        <!-- <div
+          class="ml-4 mt-2 bg-gray-500 w-8 h-8 flex  items-center justify-center rounded-full shadow-md cursor-pointer"
+          @click="toggleBookmark"
+        >
+          <font-awesome-icon icon="bookmark" :style="{ color: currentBookmarkColor }" />
+        </div> -->
 
       </div>
     </div>

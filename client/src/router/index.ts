@@ -6,7 +6,7 @@ import HomePage from '@/layouts/HomePage.vue';
 
 const routes: Array<RouteRecordRaw> = [
     {
-      path: "/home",
+      path: "/",
       name: "Home",
       component: HomePage,
     },  
