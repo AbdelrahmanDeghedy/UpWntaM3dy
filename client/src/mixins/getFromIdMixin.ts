@@ -36,6 +36,14 @@ export default {
           return String(user.id) === String(id)
         })[0];
       },
+      getIndexFromUniversityId(uid){
+        console.log("sss", this.$store.state.users);
+        for (let i = 0; i < this.$store.state.users.length; i++) {
+          if (String(uid) === String(this.$store.state.users[i].universityId)) {
+            return i + 1;
+          }
+        }
+      },
     // getAnswersOfQuestion(qId) {
     // if (!qId) return "";
     // const answers = [];

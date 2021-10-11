@@ -184,10 +184,11 @@ export default({
             } else {
                 profile =  await this.getUserFromUniversityId(this.$route.params.user_id);
             }
+            console.log("sssprofile", profile);
             this.username = profile.name;
             this.userImg = profile.picture;
             this.bioText = profile.bio;
-            this.rank = profile.rank;
+            this.rank = this.getIndexFromUniversityId(profile.universityId);
             this.pointsCount = profile.points;
             this.answersCount = profile.answerIds.length;
         },
