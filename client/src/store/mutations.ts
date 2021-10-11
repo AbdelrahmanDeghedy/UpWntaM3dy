@@ -47,7 +47,7 @@ export const mutations = {
     state.questions = state.backupQuestions.filter((question) => {
       let matcher = false;
       question.commaSeparatedTags.split(",").forEach(questionTag => {
-        if (questionTag.trim() === tag.trim()) {
+        if (questionTag.trim().toLowerCase() === tag.trim().toLowerCase()) {
           matcher = true
         }
       })
